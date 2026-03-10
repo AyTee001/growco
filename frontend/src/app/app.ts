@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { CategoryCard } from './homepage/category-card/category-card';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatToolbarModule, 
     MatButtonModule, 
     MatIconModule, 
-    MatCardModule],
+    MatCardModule,
+    CategoryCard
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
