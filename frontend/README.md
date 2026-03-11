@@ -1,59 +1,91 @@
-# Frontend
+# Frontend Guide
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+## 🛠 Частина 1: Середовище та налаштування (Environment & Setup)
 
-## Development server
+### 1. Встановіть Node.js
 
-To start a local development server, run:
+Переконайтеся, що у вас встановлена **Node.js версії 22 або новіша (LTS)**.
+
+Завантажити можна тут:  
+<https://nodejs.org>
+
+### 2. Встановіть Angular CLI
+
+Angular CLI — це інструмент командного рядка для створення та запуску Angular-проєктів.
+
+```bash
+npm install -g @angular/cli
+```
+
+### 3. Клонуйте репозиторій
+
+1. Перейдіть у термінал.
+2. Перейдіть у папку, де бажаєте встановити репозиторій.
+3. У терміналі введіть подану команду:
+
+    ```bash
+    git clone https://github.com/AyTee001/growco.git
+    ```
+
+4. Після цього відкрийте папку репозиторію (growco) у VS Code.
+
+### 4. Встановіть залежності проєкту
+
+Всередині папки проєкту (growco) виконайте:
+
+```bash
+npm install
+```
+
+### 5. Встановіть Angular Language Service (VS Code)
+
+1. Відкрийте Visual Studio Code
+2. Перейдіть у вкладку Extensions (Ctrl + Shift + X)
+3. У полі пошуку введіть: "Angular Language Service"
+4. Встановіть розширення, опубліковане командою Angular
+
+## Частина 2: 💻 Основні команди Angular CLI
+
+### Виконання
+
+#### Запуск проєкту (Development Server)
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+#### Збірка проєкту (Build)
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Створення елементів Angular
 
-## Running unit tests
+Пропускаємо тести з опцією --skip-tests. Якщо не використати цю опцію і CLI згенерує файл some-name.spec.ts, його можна видалити.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+#### Компоненти — основні будівельні блоки в Angular
 
 ```bash
-ng e2e
+ng generate component component-name --skip-tests
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Коротка версія команди:
 
-## Additional Resources
+```bash
+ng g c component-name --skip-tests
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+#### Сервіси – використовуються для складної логіки, роботи з API, спільної логіки між компонентами
+
+```bash
+ng generate service service-name --skip-tests
+```
+
+Коротка версія команди:
+
+```bash
+ng g s service-name --skip-tests
+```
+
+Є **інші види елементів**, не тільки сервіси та компоненти, але ці найважливіші
