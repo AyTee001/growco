@@ -1,0 +1,12 @@
+<div class="grid-content">
+    <h2 class="category-title">{{ category().label }}</h2>
+
+    <div class="grid">
+        @for (sub of category().subcategories; track sub.id) {
+        <div class="category-card" [style.backgroundColor]="category().color">
+            <span class="label">{{ sub.label }}</span>
+            <img [src]="'main-menu/subcategories' + sub.imagePath" [alt]="sub.label">
+        </div>
+        }
+    </div>
+</div>

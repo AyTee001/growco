@@ -1,0 +1,7 @@
+<div class="menu-container">
+    <app-sidebar-nav [activeId]="selectedCategoryId()" (selectionChange)="selectedCategoryId.set($event)">
+    </app-sidebar-nav>
+
+    <app-subcategory-grid [category]="activeCategory()">
+    </app-subcategory-grid>
+</div>

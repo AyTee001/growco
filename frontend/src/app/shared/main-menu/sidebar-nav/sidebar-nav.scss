@@ -1,0 +1,35 @@
+[mat-list-item].mat-mdc-list-item-activated {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+}
+
+.sidebar {
+    --mdc-list-item-label-text-size: 14px;
+    --mdc-list-item-label-text-weight: 500;
+    --mdc-list-item-label-text-tracking: 0.2px;
+
+    width: 280px;
+    border-right: 1px solid #eee;
+
+
+    .mat-mdc-list-item-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block !important;
+    }
+}
+
+[matListItemTitle] {
+    flex: 1;
+}
+
+[mat-list-item].mat-mdc-list-item-activated .category-icon {
+  filter: invert(34%) sepia(85%) saturate(388%) hue-rotate(81deg) brightness(92%) contrast(89%); 
+}
+
+.category-icon {
+  --mat-list-list-item-leading-icon-size: 28px;
+  object-fit: contain;
+  margin-right: 16px; 
+}

@@ -1,0 +1,13 @@
+<mat-nav-list class="sidebar">
+    @for (cat of menuData; track cat.id) {
+    <a mat-list-item [activated]="activeId() === cat.id" (click)="selectionChange.emit(cat.id)">
+
+        <img matListItemIcon [src]="'/main-menu/category-icons/' + cat.iconPath" alt="" class="category-icon">
+        <span matListItemTitle>{{ cat.label }}</span>
+
+        <div matListItemMeta style="display: flex; align-items: center; justify-content: center;">
+            <mat-icon>chevron_right</mat-icon>
+        </div>
+    </a>
+    }
+</mat-nav-list>
