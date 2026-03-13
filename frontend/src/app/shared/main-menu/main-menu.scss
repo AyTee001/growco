@@ -1,5 +1,58 @@
 .menu-container {
     display: flex;
     height: 100vh;
-    background: white;
+    background: var(--mat-sys-surface);
+}
+
+.brand-strip {
+    height: 100px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding: 4px 24px;
+    background:  #EFF2E8;
+    gap: 16px;
+}
+
+.about-btn {
+    color: #555;
+    transition: color 0.2s;
+
+    &:hover {
+        color: var(--mat-sys-primary);
+    }
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background-color: var(--mat-sys-outline-variant);
+    margin: 0 8px;
+}
+
+.brands-container {
+    display: flex;
+    height: 44px;
+    align-items: center;
+    gap: 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+    justify-content: space-evenly;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.brand-item img {
+    height: 40px;
+    width: auto;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
 }

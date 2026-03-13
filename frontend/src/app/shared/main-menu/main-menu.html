@@ -5,3 +5,19 @@
     <app-subcategory-grid [category]="activeCategory()">
     </app-subcategory-grid>
 </div>
+
+<div class="brand-strip">
+    <a mat-icon-button routerLink="/about" class="about-btn" title="Про нас">
+        <mat-icon>info</mat-icon>
+    </a>
+
+    <div class="divider"></div>
+
+    <div class="brands-container">
+        @for (brand of brands(); track brand.id) {
+        <div class="brand-item">
+            <img [src]="'main-menu/brands/' + brand.logoFile" [alt]="brand.name">
+        </div>
+        }
+    </div>
+</div>
