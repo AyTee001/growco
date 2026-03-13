@@ -2,7 +2,8 @@
     @for (cat of menuData; track cat.id) {
     <a mat-list-item [activated]="activeId() === cat.id" (click)="selectionChange.emit(cat.id)">
 
-        <img matListItemIcon [src]="'/main-menu/category-icons/' + cat.iconPath" alt="" class="category-icon">
+        <div matListItemIcon class="category-icon"
+            [style.--icon]="'url(/main-menu/category-icons/' + cat.iconPath + ')'"></div>
         <span matListItemTitle>{{ cat.label }}</span>
 
         <div matListItemMeta style="display: flex; align-items: center; justify-content: center;">
