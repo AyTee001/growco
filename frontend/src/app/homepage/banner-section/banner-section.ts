@@ -22,10 +22,26 @@ export class BannerSectionComponent implements AfterViewInit, OnDestroy {
   cardClick = output<BannerCardClick>();
 
   private readonly staticCardsData = [
-    { id: 'breakfast', title: 'Сніданки', imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=150&fit=crop' },
-    { id: 'lunch', title: 'Обіди', imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=150&fit=crop' },
-    { id: 'dinner', title: 'Вечері', imageUrl: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=200&h=150&fit=crop' },
-    { id: 'dessert', title: 'Десерти', imageUrl: 'https://images.unsplash.com/photo-1603064752734-4c48eff53d05?w=200&h=150&fit=crop' },
+    { 
+      id: 'discounts', 
+      title: 'Всі акції', 
+      imageUrl: 'discount.png'
+    },
+    { 
+      id: 'about', 
+      title: 'Про нас', 
+      imageUrl: 'logo-no-bg.png'
+    },
+    { 
+      id: 'week-products', 
+      title: 'Товари тижня', 
+      imageUrl: 'product-of-the-week.png'
+    },
+    { 
+      id: 'new-items', 
+      title: 'Новинки', 
+      imageUrl: 'new-items.png'
+    },
   ];
 
   get rightCards() {
@@ -44,26 +60,26 @@ export class BannerSectionComponent implements AfterViewInit, OnDestroy {
     this.swiper?.destroy();
   }
 
-private initSwiper(): void {
-  this.swiper = new Swiper(this.swiperContainerRef.nativeElement, {
-    modules: [Navigation, Pagination, Autoplay],
-    slidesPerView: 1,
-    spaceBetween: 0,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    navigation: {
-      nextEl: '.banner-swiper-button-next',
-      prevEl: '.banner-swiper-button-prev',
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-  });
-}
+  private initSwiper(): void {
+    this.swiper = new Swiper(this.swiperContainerRef.nativeElement, {
+      modules: [Navigation, Pagination, Autoplay],
+      slidesPerView: 1,
+      spaceBetween: 0,
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.banner-swiper-button-next',
+        prevEl: '.banner-swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+  }
 
   onCardClick(card: { id: string; title: string }): void {
     this.cardClick.emit({ id: card.id, title: card.title });

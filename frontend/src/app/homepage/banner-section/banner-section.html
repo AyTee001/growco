@@ -13,7 +13,7 @@
         <!-- Кнопки навігації -->
         <div class="banner-swiper-button-prev"></div>
         <div class="banner-swiper-button-next"></div>
-        <!-- Пагінація (крапки) -->
+        <!-- Пагінація -->
         <div class="swiper-pagination"></div>
       </div>
     </div>
@@ -21,13 +21,17 @@
     <!-- Права сітка карток -->
     <div class="right-grid">
       @for (card of rightCards; track card.id) {
-        <div class="banner-card" (click)="onCardClick(card)">
-          <div class="card-header">
+        <div class="banner-card" 
+            (click)="onCardClick(card)"
+            [attr.data-id]="card.id">
+        <div class="card-header">
             <span class="title">{{ card.title }}</span>
             <mat-icon class="arrow-icon">chevron_right</mat-icon>
-          </div>
-          <img [src]="card.imageUrl" [alt]="card.title">
         </div>
+        <div class="image-container">
+            <img [src]="card.imageUrl" [alt]="card.title">
+        </div>
+      </div>
       }
     </div>
   </div>
