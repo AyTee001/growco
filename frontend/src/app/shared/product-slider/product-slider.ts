@@ -42,7 +42,6 @@ export class ProductSliderComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  // Методы для своих кнопок (если понадобятся)
   prev(): void {
     this.swiper?.slidePrev();
   }

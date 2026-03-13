@@ -54,27 +54,24 @@
   overflow: visible;
 }
 
-/* ✅ Исправление: слайды располагаются горизонтально */
 .swiper-wrapper {
   display: flex;
-  flex-direction: row; /* явно указываем горизонтальное направление */
+  flex-direction: row;
 }
 
 .swiper-slide {
-  width: auto; /* ширина по содержимому */
-  flex-shrink: 0; /* запрещаем сжатие */
+  width: auto;
+  flex-shrink: 0;
   height: auto;
-  margin-right: 16px; /* отступ между слайдами (дублирует spaceBetween из Swiper) */
+  margin-right: 16px;
 }
 
-/* Убираем margin у последнего слайда (опционально) */
 .swiper-slide:last-child {
   margin-right: 0;
 }
 
-/* Стили для карточки товара внутри слайда */
 app-product-card {
   display: block;
-  width: 220px; /* фиксированная ширина карточки */
+  width: 220px;
   flex-shrink: 0;
 }
