@@ -4,7 +4,6 @@ import { App } from './app/app';
 import { registerLocaleData } from '@angular/common';
 import localeUk from '@angular/common/locales/uk';
 
-// Регистрируем украинскую локаль
 registerLocaleData(localeUk);
 
 bootstrapApplication(App, appConfig)
