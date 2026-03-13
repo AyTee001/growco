@@ -1,0 +1,22 @@
+<div class="slider-container">
+  <div class="slider-header">
+    <h2>{{ title }}</h2>
+    <div class="navigation-buttons">
+      <button class="nav-btn prev" (click)="prev()" aria-label="Попередні">‹</button>
+      <button class="nav-btn next" (click)="next()" aria-label="Наступні">›</button>
+    </div>
+  </div>
+
+  <div class="swiper" #swiperContainer>
+    <div class="swiper-wrapper">
+      @for (product of items; track product) {
+        <div class="swiper-slide">
+          <app-product-card
+            [product]="product"
+            (addToCart)="addToCart.emit(product)"
+          />
+        </div>
+      }
+    </div>
+  </div>
+</div>

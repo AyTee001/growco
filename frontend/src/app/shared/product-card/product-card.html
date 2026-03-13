@@ -1,0 +1,14 @@
+<mat-card class="product-card">
+  <img mat-card-image [src]="product().imageUrl" [alt]="product().name">
+  <mat-card-content>
+    <h3>{{ product().name }}</h3>
+    <p>{{ product().description }}</p>
+    <div class="price-row">
+      <span class="price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
+      <span class="unit">/ {{ product().unit }}</span>
+      <button mat-icon-button class="add-button" (click)="addToCart.emit()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
