@@ -1,17 +1,17 @@
 :host {
-    width: calc(100% - 280px)
+  width: calc(100% - 280px)
 }
 
 .grid-content {
-    flex: 1;
-    padding: 32px;
-    overflow-y: auto;
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
 }
 
 .category-title {
-    font-size: 24px;
-    margin-bottom: 24px;
-    font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 24px;
+  font-weight: 500;
 }
 
 .grid {
@@ -20,6 +20,7 @@
   gap: 16px;
   padding: 8px;
 }
+
 .category-card {
   height: 140px;
   border-radius: 12px;
@@ -30,7 +31,7 @@
 }
 
 .category-card:hover {
-    transform: translateY(-4px);
+  transform: translateY(-4px);
 }
 
 .label {
@@ -38,7 +39,7 @@
   font-size: 15px;
   line-height: 1.2;
   color: #333;
-  max-width: 65%; 
+  max-width: 65%;
   display: block;
   z-index: 2;
 }
@@ -47,13 +48,13 @@ img {
   position: absolute;
   bottom: 0;
   right: 0;
-  
+
   max-width: 150px;
   max-height: 120px;
-  
+
   object-fit: contain;
-  
-  padding: 0 4px 4px 0; 
+
+  padding: 0 4px 4px 0;
   z-index: 1;
 }
 

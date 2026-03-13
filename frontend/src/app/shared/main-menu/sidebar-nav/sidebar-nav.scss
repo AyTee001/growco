@@ -1,12 +1,10 @@
 [mat-list-item].mat-mdc-list-item-activated {
     background-color: rgba(76, 175, 80, 0.1);
-    color: #2e7d32;
+    color: var(--mat-sys-primary);
 }
 
 .sidebar {
-    --mdc-list-item-label-text-size: 14px;
-    --mdc-list-item-label-text-weight: 500;
-    --mdc-list-item-label-text-tracking: 0.2px;
+    --mat-list-list-item-label-text-size: 14px;
 
     width: 280px;
     border-right: 1px solid #eee;
@@ -31,5 +29,20 @@
 .category-icon {
   --mat-list-list-item-leading-icon-size: 28px;
   object-fit: contain;
-  margin-right: 16px; 
+}
+
+.category-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+
+mat-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  height: 100%;
 }
