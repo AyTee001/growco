@@ -1,7 +1,7 @@
 .menu-page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
 }
 
@@ -14,7 +14,6 @@
 
 .brand-strip {
     height: 80px;
-    justify-content: space-between;
     display: flex;
     align-items: center;
     padding: 4px 24px;
@@ -27,6 +26,9 @@
     color: #555;
     transition: color 0.2s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         color: var(--mat-sys-primary);
@@ -42,14 +44,12 @@
 
 .brands-container {
     display: flex;
-    height: 44px;
     align-items: center;
     gap: 32px;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
     flex: 1;
-    justify-content: flex-start;
 
     &::-webkit-scrollbar {
         display: none;
@@ -60,7 +60,7 @@
     height: 40px;
     width: auto;
     opacity: 0.5;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
 
     &:hover {
@@ -74,11 +74,8 @@
 }
 
 .close-btn {
-    border: none;
-    background: transparent;
     color: var(--mat-sys-on-primary-fixed);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
 }

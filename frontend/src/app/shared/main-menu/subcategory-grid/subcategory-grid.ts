@@ -7,5 +7,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './subcategory-grid.scss',
 })
 export class SubcategoryGrid {
-  category = input.required<Category>();
+  readonly category = input.required<Category>();
 }

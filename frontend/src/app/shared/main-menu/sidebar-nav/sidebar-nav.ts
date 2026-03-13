@@ -10,8 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './sidebar-nav.scss',
 })
 export class SidebarNav {
-
-  menuData = MAIN_MENU_SCHEMA;
+  readonly menuData = MAIN_MENU_SCHEMA;
   activeId = input.required<string>();
   selectionChange = output<string>();
 }
