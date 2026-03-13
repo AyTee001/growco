@@ -1,0 +1,34 @@
+<div class="banner-section-wrapper">
+  <div class="banner-section">
+    <!-- Ліва карусель -->
+    <div class="left-carousel">
+      <div class="swiper" #swiperContainer>
+        <div class="swiper-wrapper">
+          @for (img of leftImages; track img) {
+            <div class="swiper-slide">
+              <img [src]="img" alt="banner">
+            </div>
+          }
+        </div>
+        <!-- Кнопки навігації -->
+        <div class="banner-swiper-button-prev"></div>
+        <div class="banner-swiper-button-next"></div>
+        <!-- Пагінація (крапки) -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+
+    <!-- Права сітка карток -->
+    <div class="right-grid">
+      @for (card of rightCards; track card.id) {
+        <div class="banner-card" (click)="onCardClick(card)">
+          <div class="card-header">
+            <span class="title">{{ card.title }}</span>
+            <mat-icon class="arrow-icon">chevron_right</mat-icon>
+          </div>
+          <img [src]="card.imageUrl" [alt]="card.title">
+        </div>
+      }
+    </div>
+  </div>
+</div>

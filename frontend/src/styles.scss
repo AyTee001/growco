@@ -1,5 +1,8 @@
 @use "@angular/material" as mat;
 @use "../theme-colors" as custom-theme;
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
 
 html {
   @include mat.theme((
