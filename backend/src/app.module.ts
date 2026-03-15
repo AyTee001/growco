@@ -1,0 +1,47 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { CategoriesModule } from './сategories/сategories.module';
+import { Addresses } from './entities/Addresses';
+import { Cart } from './entities/Cart';
+import { CartItems } from './entities/CartItems';
+import { Categories } from './entities/Categories';
+import { DeliverySlots } from './entities/DeliverySlots';
+import { LoyaltyTransactions } from './entities/LoyaltyTransactions';
+import { OrderItems } from './entities/OrderItems';
+import { Orders } from './entities/Orders';
+import { Products } from './entities/Products';
+import { Stores } from './entities/Stores';
+import { Users } from './entities/Users';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5438,
+      username: 'postgres',
+      password: '12345',
+      database: 'postgres',
+      synchronize: false,
+      entities: [
+        Addresses,
+        Cart,
+        CartItems,
+        Categories,
+        DeliverySlots,
+        LoyaltyTransactions,
+        OrderItems,
+        Orders,
+        Products,
+        Stores,
+        Users,
+      ],
+    }),
+    CategoriesModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
