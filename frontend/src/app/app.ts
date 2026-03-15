@@ -1,11 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CategoryCard } from './homepage/category-card/category-card';
 import { Header } from './shared/header/header';
 
 @Component({
   selector: 'app-root',
   imports: [
     CommonModule, 
+    MatToolbarModule, 
+    MatButtonModule, 
+    MatIconModule, 
+    MatCardModule,
+    CategoryCard
     Header
   ],
   templateUrl: './app.html',
