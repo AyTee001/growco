@@ -1,0 +1,30 @@
+<div class="menu-page">
+    <div class="menu-container">
+        <app-sidebar-nav [activeId]="selectedCategoryId()" (selectionChange)="selectedCategoryId.set($event)">
+        </app-sidebar-nav>
+
+        <app-subcategory-grid [category]="activeCategory()">
+        </app-subcategory-grid>
+    </div>
+
+    <div class="brand-strip">
+        <a mat-icon-button routerLink="/about" class="about-btn" title="Про нас">
+            <mat-icon>info</mat-icon>
+        </a>
+
+        <div class="divider"></div>
+
+        <div class="brands-container">
+            @for (brand of brands(); track brand.id) {
+            <div class="brand-item">
+                <img [src]="'main-menu/brands/' + brand.logoFile" [alt]="brand.name">
+            </div>
+            }
+        </div>
+
+        <button mat-icon-button class="close-btn" (click)="closeMenu()" aria-label="Close menu">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+</div>

@@ -1,0 +1,77 @@
+.slider-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 8px;
+
+  h2 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  width: 56px;
+  height: 56px;
+  border: 0px;
+  box-shadow: var(--mat-sys-level2);
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-primary);
+  border-radius: var(--mat-sys-corner-large);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--mat-sys-secondary-fixed-dim);
+  }
+
+  &:active {
+    background-color: var(--mat-sys-secondary-fixed-dim);
+  }
+}
+
+.swiper {
+  width: 100%;
+  overflow: visible;
+}
+
+.swiper-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.swiper-slide {
+  width: auto;
+  flex-shrink: 0;
+  height: auto;
+  margin-right: 16px;
+}
+
+.swiper-slide:last-child {
+  margin-right: 0;
+}
+
+app-product-card {
+  display: block;
+  width: 220px;
+  flex-shrink: 0;
+}

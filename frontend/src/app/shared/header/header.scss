@@ -1,0 +1,77 @@
+.header-toolbar {
+    height: 80px;
+    background-color: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.left-section,
+.center-section,
+.right-section {
+    display: flex;
+    align-items: center;
+}
+
+.menu-button {
+    color: var(--mat-sys-primary);
+}
+
+.brand-logo {
+    height: 48px;
+    margin-left: 1rem;
+}
+
+.delivery-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    background-color: var(--mat-sys-surface-container-high);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background-color: var(--mat-sys-surface-container-highest);
+    }
+
+    .pill-icon {
+        color: var(--mat-sys-primary);
+    }
+
+    .pill-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+
+        .pill-label {
+            font-size: 16x;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--mat-sys-on-surface);
+        }
+
+        .pill-subtext {
+            font-size: 12x;
+            font-size: 0.75rem;
+            color: var(--mat-sys-on-surface-variant);
+        }
+    }
+}
+
+.cart-pill {
+    font-size: 16x;
+    border-radius: 100px;
+    height: 48px;
+    background-color: var(--mat-sys-secondary-container) !important;
+    color: var(--mat-sys-on-secondary-container) !important;
+
+    mat-icon {
+        margin-right: 8px;
+    }
+}
