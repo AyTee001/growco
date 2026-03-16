@@ -1,0 +1,13 @@
+<div class="sort-select-container">
+  <mat-icon class="filter-icon">filter_list</mat-icon>
+  <mat-select
+    class="sort-select"
+    [value]="selectedOption"
+    (selectionChange)="onSortChange($event.value)"
+    disableRipple
+  >
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+</div>

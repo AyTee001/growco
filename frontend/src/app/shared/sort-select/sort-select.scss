@@ -1,0 +1,60 @@
+.sort-select-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--mat-sys-surface-container-lowest);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--mat-sys-corner-small);
+  padding: 4px 8px;
+  min-width: 200px;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-container-high);
+    box-shadow: var(--mat-sys-level1);
+  }
+}
+
+.filter-icon {
+  color: var(--mat-sys-primary);
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.sort-select {
+  flex: 1;
+  // Стилізація самого селекта (Material Design)
+  ::ng-deep .mat-mdc-select-value {
+    color: var(--mat-sys-on-surface);
+  }
+
+  ::ng-deep .mat-mdc-select-arrow {
+    color: var(--mat-sys-primary);
+  }
+}
+
+// Стилі для випадаючого меню (глобальні, можна винести в styles.scss)
+::ng-deep .sort-select-panel {
+  background-color: var(--mat-sys-surface-container-lowest);
+  border-radius: var(--mat-sys-corner-small);
+  box-shadow: var(--mat-sys-level2);
+
+  .mat-mdc-option {
+    color: var(--mat-sys-on-surface);
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+
+    &.mat-mdc-option-active {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+
+    &.mdc-list-item--selected {
+      background-color: var(--mat-sys-primary-container);
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}
