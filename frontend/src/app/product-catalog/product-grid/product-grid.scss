@@ -8,7 +8,6 @@
   box-sizing: border-box;
   padding: 16px;
 
-  // Якщо потрібна адаптивність – можна додати медіа-запити
   @media (max-width: 1400px) {
     grid-template-columns: repeat(4, 220px);
   }

@@ -13,7 +13,6 @@ export class ProductGridComponent {
   items = input.required<Product[]>();
   addToCart = output<Product>();
 
-  // Обработчик клика по карточке
   onCardClick(product: Product): void {
     this.addToCart.emit(product);
   }
