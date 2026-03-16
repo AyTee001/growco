@@ -1,14 +1,12 @@
 .product-grid {
   display: grid;
-  // 6 колонок фіксованої ширини 220px (як у картці)
-  grid-template-columns: repeat(6, 220px);
-  gap: 16px; // відступ між картками (згідно з макетом)
-  justify-content: center; // центруємо сітку, якщо екран ширший
-  margin: 0 auto;
-  width: fit-content; // контейнер займає рівно стільки, скільки треба
-  max-width: 100%; // не вилазить за межі батька
-  overflow-x: auto; // на вузьких екранах з'явиться горизонтальний скрол
-  padding: 16px 0; // вертикальні відступи за потреби
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
 
   // Якщо потрібна адаптивність – можна додати медіа-запити
   @media (max-width: 1400px) {
