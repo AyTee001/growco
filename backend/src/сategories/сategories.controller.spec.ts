@@ -1,17 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { СategoriesController } from './сategories.controller';
-import { СategoriesService } from './сategories.service';
+import { CategoriesController } from './сategories.controller';
+import { CategoriesService } from './сategories.service';
 
-describe('СategoriesController', () => {
-  let controller: СategoriesController;
+describe('CategoriesController', () => {
+  let controller: CategoriesController;
+
+  const categoriesServiceMock = {
+    create: jest.fn(),
+    findAll: jest.fn(),
+    findAllTree: jest.fn(),
+    findOne: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [СategoriesController],
-      providers: [СategoriesService],
+      controllers: [CategoriesController],
+      providers: [
+        {
+          provide: CategoriesService,
+          useValue: categoriesServiceMock,
+        },
+      ],
     }).compile();
 
-    controller = module.get<СategoriesController>(СategoriesController);
+    controller = module.get<CategoriesController>(CategoriesController);
   });
 
   it('should be defined', () => {
