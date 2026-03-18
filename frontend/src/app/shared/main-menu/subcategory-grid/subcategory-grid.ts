@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { Category } from '../interfaces';
 
 @Component({
   selector: 'app-subcategory-grid',

@@ -1,13 +1,7 @@
-interface Subcategory {
-  id: string;
-  label: string;
-  imagePath: string;
-}
-
-interface Category {
-  id: string;
-  label: string;
-  iconPath: string;
-  color: string;
-  subcategories: Subcategory[];
+export interface Category {
+  categoryId: number;
+  name: string;
+  parentCategoryId: number | null;
+  imgUrl: string | null;
+  subCategories?: Category[];
 }

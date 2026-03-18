@@ -2,10 +2,10 @@
   @let cat = category();
 
   <div class="grid">
-    @for (sub of cat.subcategories; track sub.id) {
-      <div class="category-card" [style.backgroundColor]="cat.color">
-        <span class="label">{{ sub.label }}</span>
-        <img [src]="'main-menu/subcategories' + sub.imagePath" [alt]="sub.label">
+    @for (sub of cat.subCategories; track sub.categoryId) {
+      <div class="category-card" [style.backgroundColor]="'#FFE3E3'"> <!--Add according property to the data model-->
+        <span class="label">{{ sub.name }}</span>
+        <img [src]="'main-menu/subcategories' + sub.imgUrl" [alt]="sub.name">
       </div>
     }
   </div>
