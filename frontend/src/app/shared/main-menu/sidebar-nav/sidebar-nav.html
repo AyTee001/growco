@@ -3,7 +3,7 @@
     <a mat-list-item [activated]="activeId() === cat.categoryId" (click)="selectionChange.emit(cat.categoryId)">
 
         <div matListItemIcon class="category-icon"
-            [style.--icon]="'url(/main-menu/category-icons/' + cat.imgUrl + ')'"></div>
+            [style.--icon]="'url(' + cat.imgUrl + ')'"></div>
         <span matListItemTitle>{{ cat.name }}</span>
 
         <div matListItemMeta style="display: flex; align-items: center; justify-content: center;">
