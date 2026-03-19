@@ -15,6 +15,7 @@ import { Orders } from './entities/Orders';
 import { Products } from './entities/Products';
 import { Stores } from './entities/Stores';
 import { Users } from './entities/Users';
+import {ProductsModule} from "./products/products.module";
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { Users } from './entities/Users';
     }),
     CategoriesModule,
     CartModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
