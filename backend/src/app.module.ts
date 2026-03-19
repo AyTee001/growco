@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CategoriesModule } from './сategories/сategories.module';
 import { CartModule } from './cart/cart.module';
+import { UsersModule } from './users/users.module';
 import { Addresses } from './entities/Addresses';
 import { Cart } from './entities/Cart';
 import { CartItems } from './entities/CartItems';
@@ -42,6 +43,7 @@ import { Users } from './entities/Users';
     }),
     CategoriesModule,
     CartModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
