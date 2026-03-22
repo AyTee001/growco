@@ -9,14 +9,11 @@
     </section>
 
     <section class="homepage__products">
-      <div class="homepage__section-header">
-        <h2 class="homepage__title">Швидко та смачно</h2>
-      </div>
-
-      <app-product-grid
+      <app-product-slider
+        [title]="'Швидко та смачно'"
         [items]="products"
         (addToCart)="onAddToCart($event)">
-      </app-product-grid>
+      </app-product-slider>
     </section>
 
     <section class="homepage__categories">
