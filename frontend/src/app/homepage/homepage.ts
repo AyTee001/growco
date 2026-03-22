@@ -3,7 +3,7 @@ import { Header } from '../shared/header/header';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
 import { Product } from '../shared/product-card/product-card';
-import { ProductSliderComponent } from '../shared/product-slider/product-slider';
+import { ProductSliderComponent } from "../shared/product-slider/product-slider";
 
 @Component({
   selector: 'app-homepage',
@@ -11,9 +11,9 @@ import { ProductSliderComponent } from '../shared/product-slider/product-slider'
   imports: [
     Header,
     BannerSectionComponent,
-    ProductSliderComponent,
-    CategoryCard
-  ],
+    CategoryCard,
+    ProductSliderComponent
+],
   templateUrl: './homepage.html',
   styleUrl: './homepage.scss'
 })
