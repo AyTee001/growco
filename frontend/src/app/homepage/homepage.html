@@ -1,0 +1,30 @@
+<div class="homepage">
+  <app-header></app-header>
+
+  <main class="homepage__content">
+    <section class="homepage__hero">
+      <div class="homepage__banner">
+        <app-banner-section [leftImages]="leftImages"></app-banner-section>
+      </div>
+    </section>
+
+    <section class="homepage__products">
+      <div class="homepage__section-header">
+        <h2 class="homepage__title">Швидко та смачно</h2>
+      </div>
+
+      <app-product-grid
+        [items]="products"
+        (addToCart)="onAddToCart($event)">
+      </app-product-grid>
+    </section>
+
+    <section class="homepage__categories">
+      <app-category-card [title]="'Макарони'" [image]="'images/categories/pasta.svg'"></app-category-card>
+      <app-category-card [title]="'Птиця'" [image]="'images/categories/chicken.svg'"></app-category-card>
+      <app-category-card [title]="'Піца та напівфабрикати'" [image]="'images/categories/pizza.svg'"></app-category-card>
+      <app-category-card [title]="'Соки'" [image]="'images/categories/juice.svg'"></app-category-card>
+      <app-category-card [title]="'Фрукти'" [image]="'images/categories/fruits.svg'"></app-category-card>
+    </section>
+  </main>
+</div>

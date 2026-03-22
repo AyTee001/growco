@@ -7,6 +7,7 @@ import { MainMenu } from '../main-menu/main-menu';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
