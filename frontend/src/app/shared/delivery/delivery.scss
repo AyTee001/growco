@@ -17,7 +17,7 @@
 .active-badge {
   padding: 7px 31px;
   border-radius: 100px;
-  border: 2px solid #5a7d62;
+  border: 2px solid #5a7d62; 
   color: #1a1a1a;
   font-size: 1rem;
   font-weight: 500;
@@ -31,7 +31,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: none;
+  border: none !important;
   background: transparent;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -52,6 +52,8 @@
   min-width: 400px;
   padding: 40px 32px;
   border-right: 1px solid var(--mat-sys-outline-variant, #e0e0e0);
+  display: flex;
+  flex-direction: column;
   
   h2 {
     font-size: 1.25rem;
@@ -98,6 +100,70 @@
   }
 }
 
+.store-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto; 
+  flex: 1;
+  padding-right: 8px; 
+}
+
+.store-list::-webkit-scrollbar {
+  width: 6px;
+}
+.store-list::-webkit-scrollbar-thumb {
+  background-color: #dcdcdc;
+  border-radius: 10px;
+}
+
+.store-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--mat-sys-outline-variant, #e0e0e0);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #5a7d62;
+    background-color: #f1f5f0;
+  }
+
+  &.active {
+    border: 2px solid #5a7d62;
+    background-color: #f1f5f0;
+    padding: 15px; 
+  }
+
+  .store-info {
+    h4 {
+      margin: 0 0 4px 0;
+      font-size: 1rem;
+      color: #1a1a1a;
+    }
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #6a6a6a;
+    }
+  }
+
+  .check-icon {
+    color: #5a7d62;
+  }
+}
+
+.no-results {
+  text-align: center;
+  color: #6a6a6a;
+  padding: 32px 0;
+  font-style: italic;
+}
+
 .right-panel {
   flex: 1;
   background-color: #e5e3df; 
@@ -109,4 +175,31 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+@media (max-width: 850px) {
+  .dialog-body {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .left-panel {
+    width: 100%;
+    min-width: 100%;
+    padding: 24px 16px;
+    border-right: none;
+    flex: none;
+  }
+
+  .store-list {
+    max-height: 300px;
+    flex: none;
+  }
+
+  .right-panel {
+    flex: none; 
+    height: 400px;
+    width: 100%;
+  }
 }
