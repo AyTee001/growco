@@ -1,0 +1,51 @@
+<div class="product-grid">
+    <div class="image-area">
+        <img [src]="data().imageUrl" [alt]="data().name" class="product-img">
+    </div>
+
+    <div class="content-area">
+        <h1 class="mat-headline-medium">{{ data().name + ' ' + data().quantity + data().quantityMeasure }}</h1>
+
+        <div class="price-cart-btn">
+            <p class="price-text">{{ data().price | number:'1.2-2' }}&nbsp;грн</p>
+            <button mat-flat-button color="primary" class="buy-btn" (click)="addToCart.emit(data())">
+                <mat-icon>shopping_cart</mat-icon>
+                До кошику
+            </button>
+        </div>
+
+        <mat-accordion [multi]="false" class="product-accordion">
+            <mat-expansion-panel expanded>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Опис</mat-panel-title>
+                </mat-expansion-panel-header>
+                <p class="product-descr-panel">{{ data().description }}</p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Загальна інформація</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="info-table">
+                    <div class="row">
+                        <span class="label">Країна</span>
+                        <span class="value">{{ data().country }}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Торгова марка</span>
+                        <span class="value">{{ data().brand }}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Продавець</span>
+                        <span class="value">{{ data().seller }}</span>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+
+<div class="product-slider">
+    <app-product-slider title="Схожі товари" [items]="similarProducts()"></app-product-slider>
+</div>
