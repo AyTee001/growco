@@ -7,7 +7,7 @@
         <h1 class="mat-headline-medium">{{ data().name + ' ' + data().quantity + data().quantityMeasure }}</h1>
 
         <div class="price-cart-btn">
-            <p class="price-text">{{ data().price | currency:'UAH':'symbol':'1.2-2' }}</p>
+            <p class="price-text">{{ data().price | number:'1.2-2' }}&nbsp;грн</p>
             <button mat-flat-button color="primary" class="buy-btn" (click)="addToCart.emit(data())">
                 <mat-icon>shopping_cart</mat-icon>
                 До кошику

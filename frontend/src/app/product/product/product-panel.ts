@@ -5,6 +5,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductSliderComponent } from "../../shared/product-slider/product-slider";
 import { Product } from '../../shared/product-card/product-card';
+import { MatCardModule } from "@angular/material/card";
 
 export interface ProductData {
   name: string;
@@ -22,14 +23,14 @@ export interface ProductData {
   selector: 'app-product',
   imports: [
     CommonModule,
-    CurrencyPipe,
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
-    ProductSliderComponent
+    ProductSliderComponent,
+    MatCardModule
 ],
-  templateUrl: './product.html',
-  styleUrl: './product.scss',
+  templateUrl: './product-panel.html',
+  styleUrl: './product-panel.scss',
 })
 export class ProductPanel {
   data = input.required<ProductData>();
