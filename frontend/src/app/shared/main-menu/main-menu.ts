@@ -10,6 +10,7 @@ import { Category } from './interfaces';
 
 @Component({
   selector: 'app-main-menu',
+  standalone: true,
   imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule],
   templateUrl: './main-menu.html',
   styleUrl: './main-menu.scss',
