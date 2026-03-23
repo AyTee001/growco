@@ -1,0 +1,150 @@
+.about-container {
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: #2b4d32;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.page-title {
+  width: 100%;
+  max-width: 1200px;
+  font-size: 2.5rem;
+  margin-bottom: -20px;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-heading::before {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  background-color: #2b4d32;
+}
+
+.hero-card {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+.hero-image {
+  flex: 1;
+}
+.hero-image img {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+.hero-content {
+  flex: 1;
+}
+.hero-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.hero-content p {
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.mission-section {
+  text-align: center;
+  padding: 20px 0;
+}
+.mission-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.mission-section p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.service-item {
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+}
+.service-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+.service-item p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.gallery-section {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  width: 100%;
+  max-width: 1200px;
+}
+.gallery-section img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+.value-item .icon {
+  font-size: 2rem;
+  color: #4a7c59;
+  display: block;
+  margin-bottom: 15px;
+}
+.value-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+.value-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .hero-card { flex-direction: column; }
+  .services-grid, .values-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-section { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .services-grid, .values-grid { grid-template-columns: 1fr; }
+  .gallery-section { grid-template-columns: repeat(2, 1fr); }
+}
