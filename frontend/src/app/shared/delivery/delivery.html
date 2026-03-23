@@ -1,0 +1,31 @@
+<div class="dialog-container">
+    <header class="dialog-header">
+        <div class="header-title">
+            <div class="active-badge">Самовивіз</div>
+        </div>
+
+        <button class="close-btn" mat-dialog-close aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <div class="dialog-body">
+
+        <aside class="left-panel">
+            <h2>Оберіть магазин</h2>
+
+            <div class="search-input-wrapper">
+                <mat-icon class="input-icon">search</mat-icon>
+                <input type="text" placeholder="Знайти магазин...">
+                <button class="clear-btn" aria-label="Clear input">
+                    <mat-icon class="input-icon">cancel</mat-icon>
+                </button>
+            </div>
+
+        </aside>
+
+        <main class="right-panel">
+            <div id="pickup-map" class="map-image"></div>
+        </main>
+    </div>
+</div>
