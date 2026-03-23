@@ -1,0 +1,35 @@
+<footer class="footer">
+  <div class="footer-container">
+
+    <!-- Левый блок -->
+    <div class="links-column">
+      @for (item of leftLinks; track item.label) {
+        <a class="link-item" [href]="item.link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </div>
+
+    <!-- Правый блок -->
+    <div class="links-column">
+      @for (item of rightLinks; track item.label) {
+        <a class="link-item" [href]="item.link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </div>
+
+    <!-- Лого -->
+    <div class="logo-section">
+      <img src="logo-no-bg.png" alt="Growco logo" />
+    </div>
+
+  </div>
+
+  <!-- Нижняя строка -->
+  <div class="footer-bottom">
+    © {{ currentYear() }} Darnytsia
+  </div>
+</footer>
