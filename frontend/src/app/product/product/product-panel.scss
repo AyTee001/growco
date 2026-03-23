@@ -58,6 +58,11 @@
     .product-grid {
         grid-template-columns: 1fr;
     }
+
+    .image-area {
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .price-cart-btn {
