@@ -50,3 +50,73 @@
   gap: 16px;
   align-items: start;
 }
+.homepage__promo {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  margin: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Додаємо фон сюди */
+  background-image: url('/шлях-до-вашого-патерну.svg'); /* Вкажіть правильний шлях */
+  background-repeat: repeat; /* Патерн буде повторюватись і не буде розтягуватись */
+  background-position: center;
+  /* background-size: 400px; - якщо елементи на фоні завеликі, можна задати фіксований розмір патерну */
+}
+.homepage__promo-banner {
+  position: absolute;
+   /* Прив'язуємо до верху замість центрування */
+  left: 0;
+  width: 100%;
+  height: 85%; /* Тепер банер займає всю висоту (min-height 260px) */
+  object-fit: cover; 
+  object-position: center; /* Гарантує, що малюнок буде по центру */
+  z-index: 1;
+  /* transform: translateY(-50%); - Цей рядок потрібно видалити */
+}
+
+.homepage__promo-card {
+  position: relative;
+  z-index: 2;
+  width: 680px; 
+  min-height: 220px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: visible;
+}
+
+.homepage__promo-content {
+  max-width: 300px; 
+}
+
+.homepage__promo-content h3 {
+  margin: 0 0 16px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.homepage__promo-content p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.homepage__promo-image {
+  position: absolute;
+  right: 20px;
+  bottom: -20px;
+}
+
+.homepage__promo-image img {
+  width: 270px;
+  height: auto;
+  display: block;
+}
