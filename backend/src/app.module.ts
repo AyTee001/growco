@@ -15,6 +15,7 @@ import { Orders } from './entities/Orders';
 import { Products } from './entities/Products';
 import { Stores } from './entities/Stores';
 import { Users } from './entities/Users';
+import { ProductsModule } from "./products/products.module";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -47,6 +48,7 @@ import { join } from 'path';
     }),
     CategoriesModule,
     CartModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
