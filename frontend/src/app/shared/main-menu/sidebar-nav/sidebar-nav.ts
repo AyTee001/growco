@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
-import { MAIN_MENU_SCHEMA } from '../main-menu-schema';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { Category } from '../interfaces';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './sidebar-nav.scss',
 })
 export class SidebarNav {
-  readonly menuData = MAIN_MENU_SCHEMA;
-  activeId = input.required<string>();
-  selectionChange = output<string>();
+  menuData = input.required<Category[]>();
+  activeId = input.required<number>();
+  selectionChange = output<number>();
 }

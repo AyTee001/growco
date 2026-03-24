@@ -15,11 +15,16 @@ import { Orders } from './entities/Orders';
 import { Products } from './entities/Products';
 import { Stores } from './entities/Stores';
 import { Users } from './entities/Users';
-import {ProductsModule} from "./products/products.module";
+import { ProductsModule } from "./products/products.module";
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+    }), TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5438,
@@ -48,4 +53,4 @@ import {ProductsModule} from "./products/products.module";
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

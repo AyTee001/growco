@@ -12,4 +12,5 @@ export class CategoryCard {
   readonly title = input<string>('Макарони');
   readonly image = input<string>('images/categories/pasta.svg');
   readonly alt = input<string>('Зображення категорії');
+  readonly bgColor = input<string>('#EDEEE9');
 }

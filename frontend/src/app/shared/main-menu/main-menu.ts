@@ -1,24 +1,47 @@
-import { Component, computed, signal, inject } from '@angular/core';
-import { MAIN_MENU_SCHEMA } from './main-menu-schema';
+import { Component, computed, signal, inject, OnInit } from '@angular/core';
 import { SidebarNav } from "./sidebar-nav/sidebar-nav";
 import { SubcategoryGrid } from "./subcategory-grid/subcategory-grid";
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
+import { Category } from './interfaces';
 
 @Component({
   selector: 'app-main-menu',
+  standalone: true,
   imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule],
   templateUrl: './main-menu.html',
   styleUrl: './main-menu.scss',
 })
-export class MainMenu {
-  readonly selectedCategoryId = signal<string>('meat-products');
+export class MainMenu implements OnInit {
   private dialogRef = inject(MatDialogRef<MainMenu>);
+  private httpClient = inject(HttpClient);
+  public categoryTree = signal<Category[]>([]);
+
+  readonly selectedCategoryId = signal<number>(0);
 
   activeCategory = computed(() =>
-    MAIN_MENU_SCHEMA.find(c => c.id === this.selectedCategoryId())! //Not sure how this schema info will propagate here in the end
+    this.categoryTree().find(c => c.categoryId === this.selectedCategoryId())!
   );
+
+  public ngOnInit(): void {
+    this.httpClient.get<Category[]>('http://localhost:4200/api/categories')
+      .pipe(
+        map(data => this.buildTree(data))
+      )
+      .subscribe(tree => this.categoryTree.set(tree));
+  }
+
+  private buildTree(flatData: Category[]): Category[] {
+    const roots = flatData.filter(item => item.parentCategoryId === null);
+
+    return roots.map(parent => ({
+      ...parent,
+      subCategories: flatData.filter(child => child.parentCategoryId === parent.categoryId)
+    }));
+  }
 
   readonly brands = signal([
     { id: '1', name: 'Наша ряба', logoFile: 'nasha_ryaba.png' },
