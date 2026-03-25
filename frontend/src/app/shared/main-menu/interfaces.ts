@@ -4,4 +4,5 @@ export interface Category {
   parentCategoryId: number | null;
   imgUrl: string | null;
   subCategories?: Category[];
+  accentColor: string;
 }

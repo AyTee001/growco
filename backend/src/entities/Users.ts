@@ -41,12 +41,6 @@ export class Users {
   )
   loyaltyTransactions: LoyaltyTransactions[];
 
-  @OneToMany(
-    () => LoyaltyTransactions,
-    (loyaltyTransactions) => loyaltyTransactions.user_2,
-  )
-  loyaltyTransactions2: LoyaltyTransactions[];
-
   @OneToMany(() => Orders, (orders) => orders.user)
   orders: Orders[];
 

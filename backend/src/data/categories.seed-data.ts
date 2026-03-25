@@ -3,67 +3,78 @@ export const CATEGORIES_SEED_DATA = [
     categoryId: 1,
     name: 'М\'ясні продукти',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/meat.svg'
+    imgUrl: 'main-menu/category-icons/meat.svg',
+    accentColor: '#FFE3E3'
   },
   {
     categoryId: 2,
     name: 'Молочні продукти',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/dairy.svg'
+    imgUrl: 'main-menu/category-icons/dairy.svg',
+    accentColor: '#D9E4FF'
   },
   {
     categoryId: 3,
     name: 'Рибні та морепродукти',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/fish.svg'
+    imgUrl: 'main-menu/category-icons/fish.svg',
+    accentColor: '#DCC6FF'
   },
   {
     categoryId: 4,
     name: 'Фрукти та овочі',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/fruits-and-veggies.svg'
+    imgUrl: 'main-menu/category-icons/fruits-and-veggies.svg',
+    accentColor: '#C5E1BD'
   },
   {
     categoryId: 5,
     name: 'Хліб та випічка',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/bakery.svg'
+    imgUrl: 'main-menu/category-icons/bakery.svg',
+    accentColor: '#F7EAB6'
   },
   {
     categoryId: 6,
     name: 'Бакалія',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/pantry.svg'
+    imgUrl: 'main-menu/category-icons/pantry.svg',
+    accentColor: '#FFEFF5'
   },
   {
     categoryId: 7,
     name: 'Заморожені продукти',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/frozen.svg'
+    imgUrl: 'main-menu/category-icons/frozen.svg',
+    accentColor: '#BCC1F5'
   },
   {
     categoryId: 8,
     name: 'Напої',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/drinks.svg'
+    imgUrl: 'main-menu/category-icons/drinks.svg',
+    accentColor: '#FCA9A9'
   },
   {
     categoryId: 9,
     name: 'Товари для дому',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/home.svg'
+    imgUrl: 'main-menu/category-icons/home.svg',
+    accentColor: '#A7CFBC'
   },
   {
     categoryId: 10,
     name: 'Товари для дітей',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/kids.svg'
+    imgUrl: 'main-menu/category-icons/kids.svg',
+    accentColor: '#F9F3B2'
   },
   {
     categoryId: 11,
     name: 'Товари для тварин',
     parentCategoryId: null,
-    imgUrl: 'main-menu/category-icons/pets.svg'
+    imgUrl: 'main-menu/category-icons/pets.svg',
+    accentColor: '#AFD081'
   },
   {
     categoryId: 12,
