@@ -1,4 +1,4 @@
-export const categories = [
+export const CATEGORIES_SEED_DATA = [
   {
     categoryId: 1,
     name: 'М\'ясні продукти',
@@ -295,21 +295,21 @@ export const categories = [
   },
   {
     categoryId: 50,
-    name: 'Заморожені овочі та суміші',
-    parentCategoryId: 7,
-    imgUrl: 'main-menu/subcategories/frozen/frozen_vegetables.png'
-  },
-  {
-    categoryId: 51,
-    name: 'Заморожені фрукти та ягоди',
+    name: 'Заморожені фрукти',
     parentCategoryId: 7,
     imgUrl: 'main-menu/subcategories/frozen/frozen_fruits.png'
   },
   {
-    categoryId: 52,
-    name: 'Напівфабрикати',
+    categoryId: 51,
+    name: 'Заморожені овочі',
     parentCategoryId: 7,
-    imgUrl: 'main-menu/subcategories/frozen/semi_finished.png'
+    imgUrl: 'main-menu/subcategories/frozen/frozen_vegetables.png'
+  },
+  {
+    categoryId: 52,
+    name: 'Піца та напівфабрикати',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/pizza_prepared_foods.png'
   },
   {
     categoryId: 53,
@@ -319,146 +319,122 @@ export const categories = [
   },
   {
     categoryId: 54,
-    name: 'Готові страви',
+    name: 'Заморожена риба та м\'ясо',
     parentCategoryId: 7,
-    imgUrl: 'main-menu/subcategories/frozen/ready_meals.png'
+    imgUrl: 'main-menu/subcategories/frozen/frozen_fish_meat.png'
   },
   {
     categoryId: 55,
-    name: 'Тісто та основа для піци',
-    parentCategoryId: 7,
-    imgUrl: 'main-menu/subcategories/frozen/dough.png'
+    name: 'Вода',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/water.png'
   },
   {
     categoryId: 56,
-    name: 'Вода',
-    parentCategoryId: 8,
-    imgUrl: 'main-menu/subcategories/drinks/still_water.png'
-  },
-  {
-    categoryId: 57,
-    name: 'Соки та нектари',
+    name: 'Соки',
     parentCategoryId: 8,
     imgUrl: 'main-menu/subcategories/drinks/juices.png'
   },
   {
-    categoryId: 58,
-    name: 'Солодкі газовані напої',
+    categoryId: 57,
+    name: 'Газовані напої',
     parentCategoryId: 8,
-    imgUrl: 'main-menu/subcategories/drinks/sparkling_water.png'
+    imgUrl: 'main-menu/subcategories/drinks/carbonated_drinks.png'
+  },
+  {
+    categoryId: 58,
+    name: 'Кава та чай',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/coffee_tea.png'
   },
   {
     categoryId: 59,
-    name: 'Чай',
-    parentCategoryId: 8,
-    imgUrl: 'main-menu/subcategories/drinks/tea.png'
-  },
-  {
-    categoryId: 60,
-    name: 'Кава',
-    parentCategoryId: 8,
-    imgUrl: 'main-menu/subcategories/drinks/coffee.png'
-  },
-  {
-    categoryId: 61,
-    name: 'Енергетичні напої',
+    name: 'Енергетики',
     parentCategoryId: 8,
     imgUrl: 'main-menu/subcategories/drinks/energy_drinks.png'
   },
   {
-    categoryId: 62,
-    name: 'Квас та інші напої',
+    categoryId: 60,
+    name: 'Алкоголь',
     parentCategoryId: 8,
-    imgUrl: 'main-menu/subcategories/drinks/kvas_others.png'
+    imgUrl: 'main-menu/subcategories/drinks/alcohol.png'
+  },
+  {
+    categoryId: 61,
+    name: 'Побутова хімія',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/household_chemicals.png'
+  },
+  {
+    categoryId: 62,
+    name: 'Для прибирання',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/cleaning_supplies.png'
   },
   {
     categoryId: 63,
-    name: 'Засоби для прання',
-    parentCategoryId: 9,
-    imgUrl: 'main-menu/subcategories/home/detergents.png'
-  },
-  {
-    categoryId: 64,
-    name: 'Засоби для миття посуду',
-    parentCategoryId: 9,
-    imgUrl: 'main-menu/subcategories/home/dishwashing.png'
-  },
-  {
-    categoryId: 65,
-    name: 'Прибирання та догляд',
-    parentCategoryId: 9,
-    imgUrl: 'main-menu/subcategories/home/cleaning.png'
-  },
-  {
-    categoryId: 66,
-    name: 'Паперова продукція',
+    name: 'Паперові вироби',
     parentCategoryId: 9,
     imgUrl: 'main-menu/subcategories/home/paper_products.png'
   },
   {
-    categoryId: 67,
+    categoryId: 64,
+    name: 'Посуд, кухонні товари',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/tableware_kitchenware.png'
+  },
+  {
+    categoryId: 65,
     name: 'Особиста гігієна',
     parentCategoryId: 9,
-    imgUrl: 'main-menu/subcategories/home/personal_care.png'
+    imgUrl: 'main-menu/subcategories/home/hygiene.png'
   },
   {
-    categoryId: 68,
-    name: 'Аксесуари для кухні',
-    parentCategoryId: 9,
-    imgUrl: 'main-menu/subcategories/home/kitchen_accessories.png'
-  },
-  {
-    categoryId: 69,
+    categoryId: 66,
     name: 'Дитяче харчування',
     parentCategoryId: 10,
     imgUrl: 'main-menu/subcategories/kids/baby_food.png'
   },
   {
-    categoryId: 70,
+    categoryId: 67,
     name: 'Гігієна та догляд',
     parentCategoryId: 10,
-    imgUrl: 'main-menu/subcategories/kids/hygiene_care.png'
+    imgUrl: 'main-menu/subcategories/kids/baby_care.png'
   },
   {
-    categoryId: 71,
+    categoryId: 68,
     name: 'Підгузки',
     parentCategoryId: 10,
     imgUrl: 'main-menu/subcategories/kids/diapers.png'
   },
   {
-    categoryId: 72,
+    categoryId: 69,
     name: 'Іграшки',
     parentCategoryId: 10,
-    imgUrl: 'main-menu/subcategories/kids/toys.png'
+    imgUrl: 'main-menu/subcategories/kids/basic_toys.png'
   },
   {
-    categoryId: 73,
+    categoryId: 70,
     name: 'Корм для котів',
     parentCategoryId: 11,
     imgUrl: 'main-menu/subcategories/pets/cat_food.png'
   },
   {
-    categoryId: 74,
+    categoryId: 71,
     name: 'Корм для собак',
     parentCategoryId: 11,
     imgUrl: 'main-menu/subcategories/pets/dog_food.png'
   },
   {
-    categoryId: 75,
-    name: 'Наповнювачі та гігієна',
+    categoryId: 72,
+    name: 'Наповнювачі',
     parentCategoryId: 11,
-    imgUrl: 'main-menu/subcategories/pets/litter_hygiene.png'
+    imgUrl: 'main-menu/subcategories/pets/pet_litter.png'
   },
   {
-    categoryId: 76,
-    name: 'Ласощі та іграшки',
+    categoryId: 73,
+    name: 'Аксесуари',
     parentCategoryId: 11,
-    imgUrl: 'main-menu/subcategories/pets/treats_toys.png'
-  },
-  {
-    categoryId: 77,
-    name: 'Товари для інших тварин',
-    parentCategoryId: 11,
-    imgUrl: 'main-menu/subcategories/pets/other_pets.png'
+    imgUrl: 'main-menu/subcategories/pets/pet_accessories.png'
   }
 ];
