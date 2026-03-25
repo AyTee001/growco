@@ -1,0 +1,464 @@
+export const categories = [
+  {
+    categoryId: 1,
+    name: 'М\'ясні продукти',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/meat.svg'
+  },
+  {
+    categoryId: 2,
+    name: 'Молочні продукти',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/dairy.svg'
+  },
+  {
+    categoryId: 3,
+    name: 'Рибні та морепродукти',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/fish.svg'
+  },
+  {
+    categoryId: 4,
+    name: 'Фрукти та овочі',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/fruits-and-veggies.svg'
+  },
+  {
+    categoryId: 5,
+    name: 'Хліб та випічка',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/bakery.svg'
+  },
+  {
+    categoryId: 6,
+    name: 'Бакалія',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/pantry.svg'
+  },
+  {
+    categoryId: 7,
+    name: 'Заморожені продукти',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/frozen.svg'
+  },
+  {
+    categoryId: 8,
+    name: 'Напої',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/drinks.svg'
+  },
+  {
+    categoryId: 9,
+    name: 'Товари для дому',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/home.svg'
+  },
+  {
+    categoryId: 10,
+    name: 'Товари для дітей',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/kids.svg'
+  },
+  {
+    categoryId: 11,
+    name: 'Товари для тварин',
+    parentCategoryId: null,
+    imgUrl: 'main-menu/category-icons/pets.svg'
+  },
+  {
+    categoryId: 12,
+    name: 'Свіже м’ясо',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/fresh.png'
+  },
+  {
+    categoryId: 13,
+    name: 'Птиця',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/poultry.png'
+  },
+  {
+    categoryId: 14,
+    name: 'Субпродукти',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/offal.png'
+  },
+  {
+    categoryId: 15,
+    name: 'Фарш',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/minced.png'
+  },
+  {
+    categoryId: 16,
+    name: 'Мариноване м’ясо',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/marinated.png'
+  },
+  {
+    categoryId: 17,
+    name: 'М’ясні делікатеси',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/delicacies.png'
+  },
+  {
+    categoryId: 18,
+    name: 'М’ясні напівфабрикати',
+    parentCategoryId: 1,
+    imgUrl: 'main-menu/subcategories/meat/semi-finished.png'
+  },
+  {
+    categoryId: 19,
+    name: 'Молоко',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/milk.png'
+  },
+  {
+    categoryId: 20,
+    name: 'Сметана та вершки',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/cream.png'
+  },
+  {
+    categoryId: 21,
+    name: 'Йогурти та десерти',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/yoghurt_dessert.png'
+  },
+  {
+    categoryId: 22,
+    name: 'Сири',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/cheese.png'
+  },
+  {
+    categoryId: 23,
+    name: 'Масло',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/butter.png'
+  },
+  {
+    categoryId: 24,
+    name: 'Кисломолочні продукти',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/fermented_dairy.png'
+  },
+  {
+    categoryId: 25,
+    name: 'Безлактозні товари',
+    parentCategoryId: 2,
+    imgUrl: 'main-menu/subcategories/dairy/lactose_free.png'
+  },
+  {
+    categoryId: 26,
+    name: 'Свіжа риба',
+    parentCategoryId: 3,
+    imgUrl: 'main-menu/subcategories/fish/fresh_fish.png'
+  },
+  {
+    categoryId: 27,
+    name: 'Морепродукти',
+    parentCategoryId: 3,
+    imgUrl: 'main-menu/subcategories/fish/seafood.png'
+  },
+  {
+    categoryId: 28,
+    name: 'Рибні делікатеси',
+    parentCategoryId: 3,
+    imgUrl: 'main-menu/subcategories/fish/fish_delicacies.png'
+  },
+  {
+    categoryId: 29,
+    name: 'Консервована риба',
+    parentCategoryId: 3,
+    imgUrl: 'main-menu/subcategories/fish/canned_fish.png'
+  },
+  {
+    categoryId: 30,
+    name: 'Копчена риба',
+    parentCategoryId: 3,
+    imgUrl: 'main-menu/subcategories/fish/smoked_fish.png'
+  },
+  {
+    categoryId: 31,
+    name: 'Фрукти',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/fruits.png'
+  },
+  {
+    categoryId: 32,
+    name: 'Овочі',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/vegetables.png'
+  },
+  {
+    categoryId: 33,
+    name: 'Зелень',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/herbs.png'
+  },
+  {
+    categoryId: 34,
+    name: 'Ягоди',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/berries.png'
+  },
+  {
+    categoryId: 35,
+    name: 'Гриби',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/mushrooms.png'
+  },
+  {
+    categoryId: 36,
+    name: 'Сухофрукти',
+    parentCategoryId: 4,
+    imgUrl: 'main-menu/subcategories/veg/dried_fruits.png'
+  },
+  {
+    categoryId: 37,
+    name: 'Хліб',
+    parentCategoryId: 5,
+    imgUrl: 'main-menu/subcategories/bakery/bread.png'
+  },
+  {
+    categoryId: 38,
+    name: 'Булочки',
+    parentCategoryId: 5,
+    imgUrl: 'main-menu/subcategories/bakery/buns.png'
+  },
+  {
+    categoryId: 39,
+    name: 'Торти та десерти',
+    parentCategoryId: 5,
+    imgUrl: 'main-menu/subcategories/bakery/cakes_desserts.png'
+  },
+  {
+    categoryId: 40,
+    name: 'Випічка',
+    parentCategoryId: 5,
+    imgUrl: 'main-menu/subcategories/bakery/pastries.png'
+  },
+  {
+    categoryId: 41,
+    name: 'Лаваші, коржі',
+    parentCategoryId: 5,
+    imgUrl: 'main-menu/subcategories/bakery/flatbreads_crusts.png'
+  },
+  {
+    categoryId: 42,
+    name: 'Крупи',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/grains_cereals.png'
+  },
+  {
+    categoryId: 43,
+    name: 'Макарони',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/pasta.png'
+  },
+  {
+    categoryId: 44,
+    name: 'Борошно',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/flour.png'
+  },
+  {
+    categoryId: 45,
+    name: 'Олія',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/oil.png'
+  },
+  {
+    categoryId: 46,
+    name: 'Соуси, спеції',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/sauces_spices.png'
+  },
+  {
+    categoryId: 47,
+    name: 'Консерви',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/canned_goods.png'
+  },
+  {
+    categoryId: 48,
+    name: 'Солодощі',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/confectionary.png'
+  },
+  {
+    categoryId: 49,
+    name: 'Снеки',
+    parentCategoryId: 6,
+    imgUrl: 'main-menu/subcategories/grocery/snacks.png'
+  },
+  {
+    categoryId: 50,
+    name: 'Заморожені овочі та суміші',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/frozen_vegetables.png'
+  },
+  {
+    categoryId: 51,
+    name: 'Заморожені фрукти та ягоди',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/frozen_fruits.png'
+  },
+  {
+    categoryId: 52,
+    name: 'Напівфабрикати',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/semi_finished.png'
+  },
+  {
+    categoryId: 53,
+    name: 'Морозиво',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/ice_cream.png'
+  },
+  {
+    categoryId: 54,
+    name: 'Готові страви',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/ready_meals.png'
+  },
+  {
+    categoryId: 55,
+    name: 'Тісто та основа для піци',
+    parentCategoryId: 7,
+    imgUrl: 'main-menu/subcategories/frozen/dough.png'
+  },
+  {
+    categoryId: 56,
+    name: 'Вода',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/still_water.png'
+  },
+  {
+    categoryId: 57,
+    name: 'Соки та нектари',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/juices.png'
+  },
+  {
+    categoryId: 58,
+    name: 'Солодкі газовані напої',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/sparkling_water.png'
+  },
+  {
+    categoryId: 59,
+    name: 'Чай',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/tea.png'
+  },
+  {
+    categoryId: 60,
+    name: 'Кава',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/coffee.png'
+  },
+  {
+    categoryId: 61,
+    name: 'Енергетичні напої',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/energy_drinks.png'
+  },
+  {
+    categoryId: 62,
+    name: 'Квас та інші напої',
+    parentCategoryId: 8,
+    imgUrl: 'main-menu/subcategories/drinks/kvas_others.png'
+  },
+  {
+    categoryId: 63,
+    name: 'Засоби для прання',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/detergents.png'
+  },
+  {
+    categoryId: 64,
+    name: 'Засоби для миття посуду',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/dishwashing.png'
+  },
+  {
+    categoryId: 65,
+    name: 'Прибирання та догляд',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/cleaning.png'
+  },
+  {
+    categoryId: 66,
+    name: 'Паперова продукція',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/paper_products.png'
+  },
+  {
+    categoryId: 67,
+    name: 'Особиста гігієна',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/personal_care.png'
+  },
+  {
+    categoryId: 68,
+    name: 'Аксесуари для кухні',
+    parentCategoryId: 9,
+    imgUrl: 'main-menu/subcategories/home/kitchen_accessories.png'
+  },
+  {
+    categoryId: 69,
+    name: 'Дитяче харчування',
+    parentCategoryId: 10,
+    imgUrl: 'main-menu/subcategories/kids/baby_food.png'
+  },
+  {
+    categoryId: 70,
+    name: 'Гігієна та догляд',
+    parentCategoryId: 10,
+    imgUrl: 'main-menu/subcategories/kids/hygiene_care.png'
+  },
+  {
+    categoryId: 71,
+    name: 'Підгузки',
+    parentCategoryId: 10,
+    imgUrl: 'main-menu/subcategories/kids/diapers.png'
+  },
+  {
+    categoryId: 72,
+    name: 'Іграшки',
+    parentCategoryId: 10,
+    imgUrl: 'main-menu/subcategories/kids/toys.png'
+  },
+  {
+    categoryId: 73,
+    name: 'Корм для котів',
+    parentCategoryId: 11,
+    imgUrl: 'main-menu/subcategories/pets/cat_food.png'
+  },
+  {
+    categoryId: 74,
+    name: 'Корм для собак',
+    parentCategoryId: 11,
+    imgUrl: 'main-menu/subcategories/pets/dog_food.png'
+  },
+  {
+    categoryId: 75,
+    name: 'Наповнювачі та гігієна',
+    parentCategoryId: 11,
+    imgUrl: 'main-menu/subcategories/pets/litter_hygiene.png'
+  },
+  {
+    categoryId: 76,
+    name: 'Ласощі та іграшки',
+    parentCategoryId: 11,
+    imgUrl: 'main-menu/subcategories/pets/treats_toys.png'
+  },
+  {
+    categoryId: 77,
+    name: 'Товари для інших тварин',
+    parentCategoryId: 11,
+    imgUrl: 'main-menu/subcategories/pets/other_pets.png'
+  }
+];
