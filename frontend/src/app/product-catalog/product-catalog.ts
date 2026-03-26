@@ -1,20 +1,39 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { ProductService } from './products.service';
+import { Component, input, computed, numberAttribute, signal, effect } from '@angular/core';
+import { Products, productsControllerFindAllByCategory } from '../client';
 
 @Component({
   selector: 'app-product-catalog',
-  imports: [],
+  standalone: true,
   templateUrl: './product-catalog.html',
-  styleUrl: './product-catalog.scss',
 })
 export class ProductCatalog {
-  private productService = inject(ProductService);
+  readonly categoryId = input.required({ transform: numberAttribute });
 
-  readonly categoryId = input.required<string>();
+  products = signal<Products[]>([]);
+  isLoading = signal(false);
 
-  readonly categoryData = computed(() => {
-    const id = this.categoryId();
-    //return this.productService.getProductsByCategory(id);
-    return [];
-  });
+  constructor() {
+    effect(async () => {
+      const id = this.categoryId();
+      this.isLoading.set(true);
+
+      const data = await this.getProductsByCategory(id);
+
+      this.products.set(data as []);
+      this.isLoading.set(false);
+    });
+  }
+
+  async getProductsByCategory(id: number): Promise<Products[]> {
+    const { data, error } = await productsControllerFindAllByCategory({
+      path: { categoryId: id }
+    });
+
+    if (error) {
+      console.error('API Error:', error);
+      return [];
+    }
+
+    return data || [];
+  }
 }

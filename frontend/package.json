@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate-api": "openapi-ts"
   },
   "private": true,
   "packageManager": "npm@10.9.2",
@@ -18,6 +19,7 @@
     "@angular/material": "^21.2.1",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "@hey-api/client-fetch": "^0.13.1",
     "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",
     "swiper": "^12.1.2",
@@ -27,6 +29,7 @@
     "@angular/build": "^21.2.1",
     "@angular/cli": "^21.2.1",
     "@angular/compiler-cli": "^21.2.0",
+    "@hey-api/openapi-ts": "^0.94.5",
     "@types/leaflet": "^1.9.21",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
