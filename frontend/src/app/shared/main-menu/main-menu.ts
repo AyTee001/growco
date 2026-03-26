@@ -5,11 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CategoryService } from '../services/category.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
   standalone: true,
-  imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule],
+  imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './main-menu.html',
   styleUrl: './main-menu.scss',
 })

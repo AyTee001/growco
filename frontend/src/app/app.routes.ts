@@ -6,7 +6,7 @@ import { Homepage } from './homepage/homepage';
 
 export const routes: Routes = [
   { path: '', component: Homepage},
-  { path: 'about', component: AboutUs },
+  { path: 'about-us', component: AboutUs },
 
   { path: 'catalog/:categoryId', component: ProductCatalog },
   { path: 'product/:productId', component: ProductPanel },
