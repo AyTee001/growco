@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { Header } from '../shared/header/header';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
-import { Product } from '../shared/product-card/product-card';
+import { Products } from '../client';
 import { ProductSliderComponent } from "../shared/product-slider/product-slider";
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
   imports: [
-    Header,
     BannerSectionComponent,
     CategoryCard,
     ProductSliderComponent
@@ -23,76 +21,66 @@ export class Homepage {
     'assets/banner/banner-2.png'
   ];
 
-  readonly products: Product[] = [
+  readonly products: Partial<Products>[] = [
     {
-      imageUrl: 'assets/products/noodles.png',
+      imgUrl: 'assets/products/noodles.png',
       name: 'Вермішель «Мівіна»',
       description: 'з соусом солодкий чилі',
-      price: 42.0,
-      unit: '75 г'
+      price: '42.0',
     },
     {
-      imageUrl: 'assets/products/reeva.png',
+      imgUrl: 'assets/products/reeva.png',
       name: 'Вермішель Reeva',
       description: 'зі смаком курки',
-      price: 18.69,
-      unit: '60 г'
+      price: '18.69',
     },
     {
-      imageUrl: 'assets/products/pelmeni.png',
+      imgUrl: 'assets/products/pelmeni.png',
       name: 'Пельмені «Три ведмеді»',
       description: 'зі смаком індички',
-      price: 310.0,
-      unit: '800 г'
+      price: '310.0',
     },
     {
-      imageUrl: 'assets/products/varenyky.png',
+      imgUrl: 'assets/products/varenyky.png',
       name: 'Вареники «Три Ведмеді»',
       description: 'з картоплею',
-      price: 70.0,
-      unit: '400 г'
+      price: '70.0',
     },
     {
-      imageUrl: 'assets/products/puree.png',
+      imgUrl: 'assets/products/puree.png',
       name: 'Пюре Reeva',
       description: 'швидкого приготування',
-      price: 38.2,
-      unit: '60 г'
+      price: '38.2',
     },
     {
-      imageUrl: 'assets/products/cordero.png',
+      imgUrl: 'assets/products/cordero.png',
       name: 'Полента Cordero',
       description: 'швидкого приготування',
-      price: 90.0,
-      unit: '250 г'
+      price: '90.0',
     },
     {
-      imageUrl: 'assets/products/glads-wok-soba.png',
+      imgUrl: 'assets/products/glads-wok-soba.png',
       name: 'Локшина Glads Wok Soba',
       description: 'швидкого приготування',
-      price: 75.99,
-      unit: '95 г'
+      price: '75.99',
     },
     {
-      imageUrl: 'assets/products/ekstra-oats.png',
+      imgUrl: 'assets/products/ekstra-oats.png',
       name: 'Пластівці вівсяні',
       description: 'екст. швидкого приготування',
-      price: 17.99,
-      unit: '400 г'
+      price: '17.99',
     },
     {
-      imageUrl: 'assets/products/alive-mushroom-soup.png',
+      imgUrl: 'assets/products/alive-mushroom-soup.png',
       name: 'Крем-суп Alive з грибами',
       description: 'швидкого приготування',
-      price: 33.99,
-      unit: '35 г'
+      price: '33.99',
     },
     {
-      imageUrl: 'assets/products/oat-flakes-mix.png',
+      imgUrl: 'assets/products/oat-flakes-mix.png',
       name: 'Суміш пластівців',
       description: 'злаки швидкого приготування',
-      price: 11.99,
-      unit: '400 г'
+      price: '11.99',
     }
   ];
   readonly extraCategories1 = [
@@ -102,149 +90,129 @@ export class Homepage {
     { title: 'Соки', image: '/images/categories/1.png', bgColor: '#DDE7CF' },
     { title: 'Фрукти', image: '/images/categories/fruits.png', bgColor: '#CFE3E7' }
   ];
-  readonly candyBoxes: Product[] = [
+  readonly candyBoxes: Partial<Products>[] = [
     {
-      imageUrl: 'assets/products/toffifee.png',
+      imgUrl: 'assets/products/toffifee.png',
       name: 'Цукерки Toffifee',
       description: 'Subtitle',
-      price: 190.00,
-      unit: '125 г'
+      price: '190.00',
     },
     {
-      imageUrl: 'assets/products/schoko-gruss.png',
+      imgUrl: 'assets/products/schoko-gruss.png',
       name: 'Набір шоколадних фігур',
       description: 'Шоко-кули',
-      price: 229.00,
-      unit: '176 г'
+      price: '229.00',
     },
     {
-      imageUrl: 'assets/products/pure-chocolate.png',
+      imgUrl: 'assets/products/pure-chocolate.png',
       name: 'Цукерки Pure Chocolate',
       description: 'трюфель асорті',
-      price: 400.00,
-      unit: '135 г'
+      price: '400.00',
     },
     {
-      imageUrl: 'assets/products/merci.png',
+      imgUrl: 'assets/products/merci.png',
       name: 'Шоколад Merci асорті',
       description: 'Subtitle',
-      price: 429.00,
-      unit: '250 г'
+      price: '429.00',
     },
     {
-      imageUrl: 'assets/products/lindt-lindor.png',
+      imgUrl: 'assets/products/lindt-lindor.png',
       name: 'Цукерки Lindt Lindor',
       description: 'Subtitle',
-      price: 95.00,
-      unit: '200 г'
+      price: '95.00',
     },
     {
-      imageUrl: 'assets/products/milka-heart.png',
+      imgUrl: 'assets/products/milka-heart.png',
       name: 'Цукерки Milka в шоколаді',
       description: 'Subtitle',
-      price: 169.00,
-      unit: '110 г'
+      price: '169.00',
     },
     {
-      imageUrl: 'assets/products/lovita.png',
+      imgUrl: 'assets/products/lovita.png',
       name: 'Цукерки у шоколаді',
       description: '«Пташине молоко»',
-      price: 179.00,
-      unit: '225 г'
+      price: '179.00',
     },
     {
-      imageUrl: 'assets/products/raffaello.png',
+      imgUrl: 'assets/products/raffaello.png',
       name: 'Цукерки Raffaello',
       description: 'Subtitle',
-      price: 199.00,
-      unit: '150 г'
+      price: '199.00',
     },
     {
-      imageUrl: 'assets/products/belgidor.png',
+      imgUrl: 'assets/products/belgidor.png',
       name: 'Цукерки BelgidOr',
       description: '«Морські мушлі»',
-      price: 199.00,
-      unit: '250 г'
+      price: '199.00',
     },
     {
-      imageUrl: 'assets/products/millennium.png',
+      imgUrl: 'assets/products/millennium.png',
       name: 'Цукерки Millennium',
       description: 'з арахісом та родзинками',
-      price: 99.99,
-      unit: '140 г'
+      price: '99.99',
     }
   ];
   
-  readonly sweetSpreads: Product[] = [
+  readonly sweetSpreads: Partial<Products>[] = [
     {
-      imageUrl: 'assets/products/nutella-classic.png',
+      imgUrl: 'assets/products/nutella-classic.png',
       name: 'Паста Nutella з какао',
       description: 'з какао',
-      price: 484.00,
-      unit: '825 г'
+      price: '484.00',
     },
     {
-      imageUrl: 'assets/products/milka-spread.png',
+      imgUrl: 'assets/products/milka-spread.png',
       name: 'Паста Milka горіхова',
       description: 'з фундуком та какао',
-      price: 199.00,
-      unit: '350 г'
+      price: '199.00',
     },
     {
-      imageUrl: 'assets/products/peanut-butter.png',
+      imgUrl: 'assets/products/peanut-butter.png',
       name: 'Паста арахісова',
       description: 'класична',
-      price: 199.00,
-      unit: '300 г'
+      price: '199.00',
     },
     {
-      imageUrl: 'assets/products/peanut-crunch.png',
+      imgUrl: 'assets/products/peanut-crunch.png',
       name: 'Паста арахісова',
       description: 'з сіллю і крихтами',
-      price: 149.00,
-      unit: '340 г'
+      price: '149.00',
     },
     {
-      imageUrl: 'assets/products/peanut-tom.png',
+      imgUrl: 'assets/products/peanut-tom.png',
       name: 'Паста арахісова',
       description: 'карнч с/б',
-      price: 199.00,
-      unit: '300 г'
+      price: '199.00',
     },
     {
-      imageUrl: 'assets/products/nutella-alt.png',
+      imgUrl: 'assets/products/nutella-alt.png',
       name: 'Паста горіхова Nutella',
       description: 'Subtitle',
-      price: 149.00,
-      unit: '350 г'
+      price: '149.00',
     },
     {
-      imageUrl: 'assets/products/pralinutta.png',
+      imgUrl: 'assets/products/pralinutta.png',
       name: 'Паста Pralinutta',
       description: 'з горіхами та какао',
-      price: 259.00,
-      unit: '750 г'
+      price: '259.00',
     },
     {
-      imageUrl: 'assets/products/pralinutta-duo.png',
+      imgUrl: 'assets/products/pralinutta-duo.png',
       name: 'Паста Pralinutta Duo',
       description: 'з горіхами та какао',
-      price: 299.00,
-      unit: '750 г'
+      price: '299.00',
     },
     {
-      imageUrl: 'assets/products/coconut-manna.png',
+      imgUrl: 'assets/products/coconut-manna.png',
       name: 'Паста кокосова Aumi',
       description: 'ніжна',
-      price: 174.00,
-      unit: '190 г'
+      price: '174.00',
     },
     {
-      imageUrl: 'assets/products/nutella-small.png',
+      imgUrl: 'assets/products/nutella-small.png',
       name: 'Паста горіхова Nutella',
       description: 'Subtitle',
-      price: 149.00,
-      unit: '350 г'
+      price: '149.00',
     }
   ];
   readonly extraCategories2 = [
@@ -255,66 +223,58 @@ export class Homepage {
     { title: 'Свіже м’ясо', image: '/images/categories/meat.svg', bgColor: '#B7CFB2' }
   ];
   
-  readonly yogurtProducts: Product[] = [
+  readonly yogurtProducts: Partial<Products>[] = [
     {
-      imageUrl: '/images/products/yogurt1.png',
+      imgUrl: '/images/products/yogurt1.png',
       name: 'Десерт сирковий Valio',
       description: 'ваніль-лимон',
-      price: 92.99,
-      unit: '175 г'
+      price: '92.99',
     },
     {
-      imageUrl: '/images/products/yogurt2.png',
+      imgUrl: '/images/products/yogurt2.png',
       name: 'Пудинг Valio PROfeel',
       description: 'ваніль та біле',
-      price: 93.99,
-      unit: '180 г'
+      price: '93.99',
     },
     {
-      imageUrl: '/images/products/yogurt3.png',
+      imgUrl: '/images/products/yogurt3.png',
       name: 'Десерт сирковий',
       description: 'ваніль та манго',
-      price: 88.49,
-      unit: '175 г'
+      price: '88.49',
     },
     {
-      imageUrl: '/images/products/yogurt4.png',
+      imgUrl: '/images/products/yogurt4.png',
       name: 'Йогурт Bakoma MEN',
       description: 'зі смаком ванілі',
-      price: 68.99,
-      unit: '300 г'
+      price: '68.99',
     },
     {
-      imageUrl: '/images/products/yogurt5.png',
+      imgUrl: '/images/products/yogurt5.png',
       name: 'Пудинг Valio PROfeel',
       description: 'з карамеллю',
-      price: 91.99,
-      unit: '180 г'
+      price: '91.99',
     },
     {
-      imageUrl: '/images/products/yogurt6.png',
+      imgUrl: '/images/products/yogurt6.png',
       name: 'Йогурт Bakoma MEN',
       description: 'манго-маракуя',
-      price: 84.99,
-      unit: '300 г'
+      price: '84.99',
     },
     {
-      imageUrl: '/images/products/yogurt7.png',
+      imgUrl: '/images/products/yogurt7.png',
       name: 'Мус Valio',
       description: 'шоколадний',
-      price: 79.99,
-      unit: '150 г'
+      price: '79.99',
     },
     {
-      imageUrl: '/images/products/yogurt8.png',
+      imgUrl: '/images/products/yogurt8.png',
       name: 'Коктейль Valio PROfeel',
       description: 'шоколадний',
-      price: 139.00,
-      unit: '250 мл'
+      price: '139.00',
     }
   ];
 
-  onAddToCart(product: Product): void {
+  onAddToCart(product: Products): void {
     console.log('Added to cart:', product);
   }
 }

@@ -23,7 +23,11 @@ export class Products {
   @Column('character varying', { name: 'name', length: 255 })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+    required: false,
+  })
   @Column('text', { name: 'description', nullable: true })
   description: string | null;
 
@@ -35,7 +39,11 @@ export class Products {
   @Column('integer', { name: 'qty_in_stock', default: () => '0' })
   qtyInStock: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+    required: false,
+  })
   @Column('character varying', { name: 'img_url', nullable: true, length: 500 })
   imgUrl: string | null;
 

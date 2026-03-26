@@ -27,14 +27,10 @@ export type CreateProductDto = {
 export type Products = {
     productId: number;
     name: string;
-    description: {
-        [key: string]: unknown;
-    };
+    description?: string | null;
     price: string;
     qtyInStock: number;
-    imgUrl: {
-        [key: string]: unknown;
-    };
+    imgUrl?: string | null;
     cartItems: Array<string>;
     orderItems: Array<string>;
     categories: Array<string>;

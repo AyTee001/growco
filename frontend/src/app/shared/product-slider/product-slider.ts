@@ -1,8 +1,9 @@
-import { Component, Input, Output, ViewChild, ElementRef, AfterViewInit, OnDestroy, output } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
-import { Product, ProductCardComponent } from '../product-card/product-card';
+import { ProductCardComponent } from '../product-card/product-card';
+import { Products } from '../../client';
 
 @Component({
   selector: 'app-product-slider',
@@ -13,9 +14,9 @@ import { Product, ProductCardComponent } from '../product-card/product-card';
 })
 export class ProductSliderComponent implements AfterViewInit, OnDestroy {
   @Input({ required: true }) title!: string;
-  @Input({ required: true }) items: Product[] = [];
+  @Input({ required: true }) items: Products[] = [];
 
-  addToCart = output<Product>();
+  addToCart = output<Products>();
 
   @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<HTMLDivElement>;
 

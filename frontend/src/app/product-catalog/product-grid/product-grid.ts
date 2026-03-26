@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Product, ProductCardComponent } from '../../shared/product-card/product-card';
+import { ProductCardComponent } from '../../shared/product-card/product-card';
+import { Products } from '../../client';
 
 @Component({
   selector: 'app-product-grid',
@@ -10,10 +11,10 @@ import { Product, ProductCardComponent } from '../../shared/product-card/product
   styleUrls: ['./product-grid.scss']
 })
 export class ProductGridComponent {
-  items = input.required<Product[]>();
-  addToCart = output<Product>();
+  items = input.required<Products[]>();
+  addToCart = output<Products>();
 
-  onCardClick(product: Product): void {
+  onCardClick(product: Products): void {
     this.addToCart.emit(product);
   }
 }

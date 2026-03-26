@@ -1,10 +1,12 @@
 import { Component, input, computed, numberAttribute, signal, effect } from '@angular/core';
 import { Products, productsControllerFindAllByCategory } from '../client';
+import { ProductGridComponent } from "./product-grid/product-grid";
 
 @Component({
   selector: 'app-product-catalog',
   standalone: true,
   templateUrl: './product-catalog.html',
+  imports: [ProductGridComponent],
 })
 export class ProductCatalog {
   readonly categoryId = input.required({ transform: numberAttribute });
