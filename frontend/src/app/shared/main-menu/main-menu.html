@@ -3,12 +3,12 @@
         <app-sidebar-nav [menuData]="categoryTree()" [activeId]="selectedCategoryId()" (selectionChange)="selectedCategoryId.set($event)">
         </app-sidebar-nav>
 
-        <app-subcategory-grid [category]="activeCategory()">
+        <app-subcategory-grid [category]="activeCategory()" (closeMainMenu)="closeMenu()">
         </app-subcategory-grid>
     </div>
 
     <div class="brand-strip">
-        <a mat-icon-button routerLink="/about" class="about-btn" title="Про нас">
+        <a mat-icon-button routerLink="/about-us" class="about-btn" title="Про нас" (click)="closeMenu()">
             <mat-icon>info</mat-icon>
         </a>
 

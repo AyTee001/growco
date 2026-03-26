@@ -1,0 +1,7 @@
+<div class="product-grid">
+  @for (product of items(); track product) {
+    <app-product-card
+      [product]="product"
+      (addToCart)="onCardClick(product)" />
+  }
+</div>

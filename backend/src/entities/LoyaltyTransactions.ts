@@ -46,10 +46,4 @@ export class LoyaltyTransactions {
   })
   @JoinColumn([{ name: 'user id', referencedColumnName: 'userId' }])
   user: Users;
-
-  @ManyToOne(() => Users, (users) => users.loyaltyTransactions2, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn([{ name: 'user id', referencedColumnName: 'userId' }])
-  user_2: Users;
 }

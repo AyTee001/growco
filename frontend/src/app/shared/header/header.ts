@@ -4,9 +4,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenu } from '../main-menu/main-menu';
+import { Delivery } from '../delivery/delivery';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatDialogModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -24,6 +26,21 @@ export class Header {
         left: '0'
       },
       panelClass: 'main-menu-75',
+      enterAnimationDuration: '250ms',
+      exitAnimationDuration: '200ms'
+    });
+  }
+
+  openDelivery() {
+    this.dialog.open(Delivery, {
+      width: '100vw',
+      maxWidth: '100vw',
+      height: '75vh',
+      position: {
+        top: '0',
+        left: '0'
+      },
+      panelClass: 'delivery-dialog-75',
       enterAnimationDuration: '250ms',
       exitAnimationDuration: '200ms'
     });

@@ -16,8 +16,10 @@ import { Orders } from './entities/Orders';
 import { Products } from './entities/Products';
 import { Stores } from './entities/Stores';
 import { Users } from './entities/Users';
+import { ProductsModule } from "./products/products.module";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { appDataSourceOptions } from './config/typeorm';
 
 @Module({
   imports: [
@@ -46,7 +48,7 @@ import { join } from 'path';
         Stores,
         Users,
       ],
-    }),
+    }), TypeOrmModule.forRoot(appDataSourceOptions),
     CategoriesModule,
     CartModule,
     DeliverySlotsModule,

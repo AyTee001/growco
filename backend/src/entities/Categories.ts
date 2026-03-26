@@ -28,6 +28,9 @@ export class Categories {
   @Column('character varying', { name: 'img_url', nullable: true, length: 500 })
   imgUrl: string | null;
 
+  @Column('character varying', { name: 'accent_color', nullable: true, length: 7 })
+  accentColor: string | null;
+
   @ManyToOne(() => Categories, (categories) => categories.categories)
   @JoinColumn([
     { name: 'parent_category_id', referencedColumnName: 'categoryId' },

@@ -1,0 +1,89 @@
+<div class="homepage">
+  <main class="homepage__content">
+    <section class="homepage__hero">
+      <div class="homepage__banner">
+        <app-banner-section [leftImages]="leftImages"></app-banner-section>
+      </div>
+    </section>
+
+    <section class="homepage__products">
+      <app-product-slider
+        [title]="'Швидко та смачно'"
+        [items]="products"
+        (addToCart)="onAddToCart($event)">
+      </app-product-slider>
+    </section>
+
+    <section class="homepage__categories">
+      @for (cat of extraCategories1; track cat.title) {
+        <app-category-card
+          [title]="cat.title"
+          [image]="cat.image"
+          [bgColor]="cat.bgColor">
+        </app-category-card>
+      }
+    </section>
+    <section class="homepage__products">
+      <app-product-slider
+        [title]="'Коробки із цукерками'"
+        [items]="candyBoxes"
+        (addToCart)="onAddToCart($event)">
+      </app-product-slider>
+    </section>
+    
+    <section class="homepage__promo">
+      <img
+        class="homepage__promo-banner"
+        src="/images/promo/pattern-food.svg"
+        alt="Декоративний банер"
+      />
+    
+      <div class="homepage__promo-card">
+        <div class="homepage__promo-content">
+          <h3>Some very good word about quality</h3>
+    
+          <p>
+            Some very good text about quality. Some very good text about quality.
+            Some very good text about quality. Some very good text about quality.
+            Some very good text about quality. Some very good text about quality.
+          </p>
+    
+          <p>
+            Some very good text about quality. Some very good text about quality.
+            Some very good text about quality.
+          </p>
+        </div>
+    
+        <div class="homepage__promo-image">
+          <img src="/grocery-bag.svg" alt="Пакет із продуктами" />
+        </div>
+      </div>
+    </section>
+    
+    <section class="homepage__products">
+      <app-product-slider
+        [title]="'Солодке до хліба'"
+        [items]="sweetSpreads"
+        (addToCart)="onAddToCart($event)">
+      </app-product-slider>
+    </section>
+
+    <section class="homepage__categories">
+      @for (cat of extraCategories2; track cat.title) {
+        <app-category-card
+          [title]="cat.title"
+          [image]="cat.image"
+          [bgColor]="cat.bgColor">
+        </app-category-card>
+      }
+    </section>
+
+    <section class="homepage__products">
+      <app-product-slider
+        [title]="'Протеїнові йогурти'"
+        [items]="yogurtProducts"
+        (addToCart)="onAddToCart($event)">
+      </app-product-slider>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,50 @@
+.category-card {
+  width: 230px;
+  height: 320px;
+  border-radius: 8px;
+  background: #c9cbc3;
+
+  position: relative;
+  overflow: visible; // дозволяє картинці виходити за межі
+  padding: 0;
+
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.category-card__content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 18px 14px;
+  box-sizing: border-box;
+}
+
+.category-card__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #111;
+  z-index: 2;
+  position: relative;
+}
+
+.category-card__image-wrapper {
+  position: absolute;
+
+  right: -8px;  // зміщення за межі картки
+  bottom: -10px;
+
+  width: 176px;
+  height: 177px;
+
+  pointer-events: none;
+}
+
+.category-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
