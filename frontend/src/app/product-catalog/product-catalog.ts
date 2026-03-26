@@ -1,18 +1,29 @@
-import { Component, input, computed, numberAttribute, signal, effect } from '@angular/core';
+import { Component, input, computed, numberAttribute, signal, effect, inject } from '@angular/core';
 import { Products, productsControllerFindAllByCategory } from '../client';
 import { ProductGridComponent } from "./product-grid/product-grid";
+import { SortSelectComponent } from "../shared/sort-select/sort-select";
+import { FilterSidebarComponent } from "../shared/filter-sidebar/filter-sidebar";
+import { MatIcon } from "@angular/material/icon";
+import { CategoryService } from '../shared/services/category.service';
 
 @Component({
   selector: 'app-product-catalog',
   standalone: true,
   templateUrl: './product-catalog.html',
-  imports: [ProductGridComponent],
+  styleUrl: './product-catalog.scss',
+  imports: [ProductGridComponent, SortSelectComponent, FilterSidebarComponent, MatIcon],
 })
 export class ProductCatalog {
+  private categoryService = inject(CategoryService);
+
   readonly categoryId = input.required({ transform: numberAttribute });
 
   products = signal<Products[]>([]);
   isLoading = signal(false);
+
+  breadcrumbs = computed(() =>
+    this.categoryService.getCategoryPath(this.categoryId())
+  );
 
   constructor() {
     effect(async () => {

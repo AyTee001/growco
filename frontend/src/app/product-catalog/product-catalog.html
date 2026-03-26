@@ -1,1 +1,16 @@
+<div class="breadcrumb-container">
+  @for (crumb of breadcrumbs(); track crumb; let isLast = $last) {
+    <span [class.crumb-active]="isLast" class="crumb-text">
+      {{ crumb.name }}
+    </span>
+    
+    @if (!isLast) {
+      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+    }
+  }
+</div>
+<div class="sort-filter-pane">
+    <app-sort-select/>
+    <app-filter-sidebar/>
+</div>
 <app-product-grid [items]="products()"></app-product-grid>

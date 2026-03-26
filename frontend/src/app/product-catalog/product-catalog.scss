@@ -2,3 +2,49 @@
     display: block;
     margin-bottom: 24px
 }
+
+.sort-filter-pane {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 24px;
+}
+
+.breadcrumb-container {
+    padding: 12px 24px 0;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #70757a;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+
+    .crumb-text {
+        white-space: nowrap;
+    }
+
+    .crumb-active {
+        color: #202124;
+        font-weight: 500;
+    }
+
+    .breadcrumb-separator {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin: 0 4px;
+        color: #bdc1c6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.page-title {
+    margin: 0 0 24px 0;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1a1a1a;
+}
