@@ -3,7 +3,7 @@
 
   <div class="grid">
     @for (sub of cat.subCategories; track sub.categoryId) {
-      <div class="category-card" [style.backgroundColor]="cat.accentColor ? cat.accentColor : '#FFE3E3'">
+      <div class="category-card" [style.backgroundColor]="cat.accentColor ? cat.accentColor : '#FFE3E3'" (click)="subcategotyClicked(sub.categoryId)">
         <span class="label">{{ sub.name }}</span>
         <img [src]="'uploads/' + sub.imgUrl" [alt]="sub.name">
       </div>

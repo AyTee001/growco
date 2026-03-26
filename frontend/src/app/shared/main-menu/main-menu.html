@@ -3,7 +3,7 @@
         <app-sidebar-nav [menuData]="categoryTree()" [activeId]="selectedCategoryId()" (selectionChange)="selectedCategoryId.set($event)">
         </app-sidebar-nav>
 
-        <app-subcategory-grid [category]="activeCategory()">
+        <app-subcategory-grid [category]="activeCategory()" (closeMainMenu)="closeMenu()">
         </app-subcategory-grid>
     </div>
 

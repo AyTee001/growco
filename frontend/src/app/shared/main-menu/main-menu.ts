@@ -20,7 +20,7 @@ export class MainMenu implements OnInit {
   private httpClient = inject(HttpClient);
   public categoryTree = signal<Category[]>([]);
 
-  readonly selectedCategoryId = signal<number>(0);
+  readonly selectedCategoryId = signal<number>(1);
 
   activeCategory = computed(() =>
     this.categoryTree().find(c => c.categoryId === this.selectedCategoryId())!

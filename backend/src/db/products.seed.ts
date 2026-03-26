@@ -1,5 +1,5 @@
 // ... imports
-import { PRODUCTS_DATA } from 'src/data/products.seed-data';
+import { PRODUCTS_DATA } from '../data/products.seed-data';
 import dataSource from '../config/typeorm';
 import { Categories } from '../entities/Categories';
 import { Products } from '../entities/Products';
