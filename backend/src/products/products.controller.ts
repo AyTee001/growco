@@ -14,11 +14,16 @@ import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
+  }
+
+  @Get('category/:categoryId')
+  findAllByCategory(@Param('categoryId', ParseIntPipe) categoryId: number) {
+    return this.productsService.findAllByCategory(categoryId);
   }
 
   @Get()

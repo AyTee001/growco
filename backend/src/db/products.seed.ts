@@ -35,3 +35,5 @@ async function seed() {
   console.log('Seeding complete!');
   await dataSource.destroy();
 }
+
+seed().catch((error) => console.log(error));

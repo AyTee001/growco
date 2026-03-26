@@ -14,8 +14,16 @@ export class ProductsService {
   constructor(
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
-  ) {}
+  ) { }
 
+  async findAllByCategory(categoryId: number): Promise<Products[]> {
+    return await this.productsRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('category.categoryId = :categoryId', { categoryId })
+      .getMany();
+  }
+  
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,
