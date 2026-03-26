@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CategoriesModule } from './сategories/сategories.module';
 import { CartModule } from './cart/cart.module';
+import { DeliverySlotsModule } from './delivery-slots/delivery-slots.module';
 import { Addresses } from './entities/Addresses';
 import { Cart } from './entities/Cart';
 import { CartItems } from './entities/CartItems';
@@ -23,7 +24,8 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
-    }), TypeOrmModule.forRoot({
+    }),
+    TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5438,
@@ -47,8 +49,9 @@ import { join } from 'path';
     }),
     CategoriesModule,
     CartModule,
+    DeliverySlotsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
