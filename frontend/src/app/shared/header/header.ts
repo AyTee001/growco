@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenu } from '../main-menu/main-menu';
 import { Delivery } from '../delivery/delivery';
+import { BasketService } from './basket/basket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -58,6 +59,13 @@ export class Header {
     });
   }
 
+  constructor(private basketService: BasketService) {}
+
+  openBasket(): void {
+    console.log('basket click');
+    this.basketService.open();
+  }
+}
   onSearch(eventOrValue: any) {
     const query = typeof eventOrValue === 'string'
       ? eventOrValue

@@ -21,6 +21,7 @@ import { appDataSourceOptions } from './config/typeorm';
     CartModule,
     ProductsModule,
     DeliverySlotsModule,
+    ProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],
