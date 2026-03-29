@@ -6,9 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CategoryCard } from './homepage/category-card/category-card';
 import { Header } from './shared/header/header';
+import { Basket } from './shared/header/basket/basket';
 import { Homepage } from './homepage/homepage';
 import { Footer } from './shared/footer/footer';
 import { RouterOutlet } from "@angular/router";
+
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,7 @@ import { RouterOutlet } from "@angular/router";
     MatCardModule,
     CategoryCard,
     Header,
+    Basket,
     Homepage,
     Footer,
     RouterOutlet

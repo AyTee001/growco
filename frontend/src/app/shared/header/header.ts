@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenu } from '../main-menu/main-menu';
 import { Delivery } from '../delivery/delivery';
+import { BasketService } from './basket/basket.service';
 
 @Component({
   selector: 'app-header',
@@ -44,5 +45,12 @@ export class Header {
       enterAnimationDuration: '250ms',
       exitAnimationDuration: '200ms'
     });
+  }
+
+  constructor(private basketService: BasketService) {}
+
+  openBasket(): void {
+    console.log('basket click');
+    this.basketService.open();
   }
 }
