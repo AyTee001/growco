@@ -17,7 +17,7 @@
 
   <div class="sidebar-content">
     <form [formGroup]="filterForm">
-      @for (category of config; track category; let i = $index) {
+      @for (category of config(); track category; let i = $index) {
       <div class="filter-category">
         @if (expandedState[i]) {
         <div class="category-body">

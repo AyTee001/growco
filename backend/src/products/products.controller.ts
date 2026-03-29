@@ -13,6 +13,7 @@ import { ProductsService } from './products.service';
 import { Products } from '../entities/Products';
 import { Query } from '@nestjs/common';
 import { ProductsQueryDto } from './dto/products-query.dto';
+import { FilterOptionsDto } from './dto/filter-options.dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -39,5 +40,12 @@ export class ProductsController {
   @ApiOkResponse({ type: Products })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
+  }
+
+  @Get('category/:categoryId/filter-options')
+  @ApiOperation({ summary: 'Get available brands and price range for a category' })
+  @ApiOkResponse({ type: FilterOptionsDto })
+  getFilterOptions(@Param('categoryId', ParseIntPipe) categoryId: number) {
+    return this.productsService.getFilterOptions(categoryId);
   }
 }

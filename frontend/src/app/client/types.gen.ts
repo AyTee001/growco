@@ -56,6 +56,12 @@ export type Products = {
     categories: Array<Categories>;
 };
 
+export type FilterOptionsDto = {
+    minPrice: number;
+    maxPrice: number;
+    brands: Array<string>;
+};
+
 export type CreateDeliverySlotDto = {
     [key: string]: unknown;
 };
@@ -267,6 +273,21 @@ export type ProductsControllerFindOneResponses = {
 };
 
 export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
+
+export type ProductsControllerGetFilterOptionsData = {
+    body?: never;
+    path: {
+        categoryId: number;
+    };
+    query?: never;
+    url: '/products/category/{categoryId}/filter-options';
+};
+
+export type ProductsControllerGetFilterOptionsResponses = {
+    200: FilterOptionsDto;
+};
+
+export type ProductsControllerGetFilterOptionsResponse = ProductsControllerGetFilterOptionsResponses[keyof ProductsControllerGetFilterOptionsResponses];
 
 export type DeliverySlotsControllerFindAllData = {
     body?: never;

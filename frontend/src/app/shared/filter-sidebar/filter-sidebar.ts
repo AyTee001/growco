@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,7 +37,7 @@ export interface FilterCategory {
   styleUrls: ['./filter-sidebar.scss']
 })
 export class FilterSidebarComponent implements OnInit {
-  @Input() config: FilterCategory[] = [];
+  readonly config = input.required<FilterCategory[]>();
   @Output() apply = new EventEmitter<any>();
 
   isOpen = false;
@@ -48,12 +48,12 @@ export class FilterSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    this.expandedState = this.config.map(() => true);
+    this.expandedState = this.config().map(() => true);
   }
 
   private buildForm(): void {
     const group: any = {};
-    this.config.forEach(category => {
+    this.config().forEach(category => {
       if (category.type === 'checkbox') {
         const controls = category.options?.map(() => this.fb.control(false)) || [];
         group[category.key] = this.fb.array(controls); // Use key here
@@ -78,7 +78,7 @@ export class FilterSidebarComponent implements OnInit {
 
   onApply(): void {
     const result: any = {};
-    this.config.forEach(category => {
+    this.config().forEach(category => {
       const control = this.filterForm.get(category.key);
       if (category.type === 'checkbox') {
         const selected = category.options?.filter((_, idx) => (control as FormArray).at(idx).value).map(opt => opt.value);

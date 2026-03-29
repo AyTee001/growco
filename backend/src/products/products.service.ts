@@ -9,6 +9,7 @@ import { Products } from '../entities/Products';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsQueryDto } from './dto/products-query.dto';
+import { FilterOptionsDto } from './dto/filter-options.dto';
 
 @Injectable()
 export class ProductsService {
@@ -121,5 +122,30 @@ export class ProductsService {
     }
 
     await this.productsRepository.remove(product);
+  }
+
+  async getFilterOptions(categoryId: number): Promise<FilterOptionsDto> {
+    const priceResult = await this.productsRepository
+      .createQueryBuilder('product')
+      .innerJoin('product.categories', 'category')
+      .select('MIN(product.price)', 'min')
+      .addSelect('MAX(product.price)', 'max')
+      .where('category.categoryId = :categoryId', { categoryId })
+      .getRawOne();
+
+    const brandResult = await this.productsRepository
+      .createQueryBuilder('product')
+      .innerJoin('product.categories', 'category')
+      .select('DISTINCT(product.brand)', 'brand')
+      .where('category.categoryId = :categoryId', { categoryId })
+      .andWhere('product.brand IS NOT NULL')
+      .orderBy('brand', 'ASC')
+      .getRawMany();
+
+    return {
+      minPrice: parseFloat(priceResult?.min || '0'),
+      maxPrice: parseFloat(priceResult?.max || '1000'),
+      brands: brandResult.map(res => res.brand),
+    };
   }
 }

@@ -1,5 +1,5 @@
 import { Component, input, computed, numberAttribute, signal, effect, inject } from '@angular/core';
-import { Products, productsControllerFindAllByCategory } from '../client';
+import { Products, productsControllerFindAllByCategory, productsControllerGetFilterOptions } from '../client';
 import { ProductGridComponent } from "./product-grid/product-grid";
 import { SortSelectComponent } from "../shared/sort-select/sort-select";
 import { FilterCategory, FilterSidebarComponent } from "../shared/filter-sidebar/filter-sidebar";
@@ -19,32 +19,7 @@ export class ProductCatalog {
   readonly categoryId = input.required({ transform: numberAttribute });
   readonly sort = signal('price_asc');
   readonly activeFilters = signal<any>({});
-  readonly filterConfig: FilterCategory[] = [
-    {
-      key: 'price',
-      categoryName: 'Ціна',
-      type: 'range',
-      min: 0,
-      max: 500
-    },
-    {
-      key: 'brands',
-      categoryName: 'Бренд',
-      type: 'checkbox',
-      options: [
-        { label: 'Growco Bakery', value: 'Growco Bakery' },
-        { label: 'Київхліб', value: 'Київхліб' }
-      ]
-    },
-    {
-      key: 'isPromo',
-      categoryName: 'Пропозиції',
-      type: 'checkbox',
-      options: [
-        { label: 'Тільки акційні товари', value: true }
-      ]
-    }
-  ];
+  filterConfig = signal<FilterCategory[]>([]);
   products = signal<Products[]>([]);
   isLoading = signal(false);
 
@@ -54,8 +29,48 @@ export class ProductCatalog {
 
   constructor() {
     effect(async () => {
+      const id = this.categoryId();
       this.getProducts();
+      this.loadFilterOptions(id);
     });
+  }
+
+  private async loadFilterOptions(categoryId: number) {
+    const { data, error } = await productsControllerGetFilterOptions({
+      path: { categoryId }
+    });
+
+    if (error || !data) {
+      console.error('Failed to load filters', error);
+      return;
+    }
+
+    console.log(data);
+    const newConfig: FilterCategory[] = [
+      {
+        key: 'price',
+        categoryName: 'Ціна',
+        type: 'range',
+        min: data.minPrice,
+        max: data.maxPrice
+      },
+      {
+        key: 'isPromo',
+        categoryName: 'Пропозиції',
+        type: 'checkbox',
+        options: [
+          { label: 'Тільки акційні товари', value: true }
+        ]
+      },
+      {
+        key: 'brands',
+        categoryName: 'Бренд',
+        type: 'checkbox',
+        options: data.brands.map((brand: any) => ({ label: brand, value: brand }))
+      },
+    ];
+
+    this.filterConfig.set(newConfig);
   }
 
   public onSortChanged(newSortValue: string) {

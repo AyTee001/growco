@@ -10,7 +10,11 @@
   }
 </div>
 <div class="sort-filter-pane">
-    <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)"/>
-    <app-filter-sidebar [config]="filterConfig" (apply)="onFiltersApplied($event)"/>
+  <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)" />
+  
+  @if (filterConfig().length > 0) {
+    <app-filter-sidebar [config]="filterConfig()" (apply)="onFiltersApplied($event)">
+    </app-filter-sidebar>
+  }
 </div>
 <app-product-grid [items]="products()"></app-product-grid>
