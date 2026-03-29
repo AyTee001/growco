@@ -12,21 +12,34 @@ import { Stores } from '../entities/Stores';
 import { Users } from '../entities/Users';
 
 export const appDataSourceOptions: DataSourceOptions = {
-    type: 'postgres',
-    host: 'localhost',
-    port: 5438,
-    username: 'postgres',
-    password: '12345',
-    database: 'growco_db',
-    entities: [Categories, Products, Addresses, Cart, CartItems, DeliverySlots, LoyaltyTransactions, OrderItems, Orders, Stores, Users],
-    synchronize: false,
-    ssl: false,
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'root',
+  database: 'growco_db',
+  entities: [
+    Categories,
+    Products,
+    Addresses,
+    Cart,
+    CartItems,
+    DeliverySlots,
+    LoyaltyTransactions,
+    OrderItems,
+    Orders,
+    Stores,
+    Users,
+  ],
+  synchronize: false,
+  ssl: false,
+  logging: true,
 };
 
 export const fullDataSourceOptions: DataSourceOptions = {
-    ...appDataSourceOptions,
-    migrations: ['src/migrations/*.ts']
-}
+  ...appDataSourceOptions,
+  migrations: ['src/migrations/*.ts'],
+};
 
 const dataSource = new DataSource(fullDataSourceOptions);
 export default dataSource;

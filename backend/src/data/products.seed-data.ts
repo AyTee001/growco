@@ -738,7 +738,7 @@ export const PRODUCTS_DATA = [
     description: 'Дієтичне м’ясо птиці без шкіри.',
     price: '185.00',
     qtyInStock: 50,
-    imgUrl: 'products/cat1_meat/chicken-fillet.png',
+    imgUrl: 'products/meat/chicken-fillet.png',
     categoryIds: [1],
   },
   {
@@ -747,7 +747,7 @@ export const PRODUCTS_DATA = [
     description: 'Преміальна яловичина сухого визрівання.',
     price: '450.00',
     qtyInStock: 15,
-    imgUrl: 'products/cat1_meat/ribeye.jpg',
+    imgUrl: 'products/meat/ribeye.jpg',
     categoryIds: [1],
   },
   {
@@ -756,7 +756,7 @@ export const PRODUCTS_DATA = [
     description: 'Домашній фарш, 70% яловичини, 30% свинини.',
     price: '95.00',
     qtyInStock: 40,
-    imgUrl: 'products/cat1_meat/minced.png',
+    imgUrl: 'products/meat/minced.png',
     categoryIds: [1],
   },
   {
@@ -765,7 +765,7 @@ export const PRODUCTS_DATA = [
     description: 'Класична варена ковбаса за ДСТУ.',
     price: '120.00',
     qtyInStock: 60,
-    imgUrl: 'products/cat1_meat/sausage-boiled.png',
+    imgUrl: 'products/meat/sausage-boiled.png',
     categoryIds: [1],
   },
   {
@@ -774,7 +774,7 @@ export const PRODUCTS_DATA = [
     description: 'Сирокопчений балик з відбірної свинини.',
     price: '380.00',
     qtyInStock: 25,
-    imgUrl: 'products/cat1_meat/balyk.png',
+    imgUrl: 'products/meat/balyk.png',
     categoryIds: [1],
   },
   {
@@ -783,7 +783,7 @@ export const PRODUCTS_DATA = [
     description: 'Ідеально для запікання або гриля.',
     price: '210.00',
     qtyInStock: 30,
-    imgUrl: 'products/cat1_meat/ribs.png',
+    imgUrl: 'products/meat/ribs.png',
     categoryIds: [1],
   },
   {
@@ -792,7 +792,7 @@ export const PRODUCTS_DATA = [
     description: 'Соковита шинка зі шматочків м’яса.',
     price: '165.00',
     qtyInStock: 45,
-    imgUrl: 'products/cat1_meat/ham.png',
+    imgUrl: 'products/meat/ham.png',
     categoryIds: [1],
   },
   {
@@ -801,7 +801,7 @@ export const PRODUCTS_DATA = [
     description: 'Ніжний паштет з вершковим маслом.',
     price: '45.00',
     qtyInStock: 100,
-    imgUrl: 'products/cat1_meat/pate.png',
+    imgUrl: 'products/meat/pate.png',
     categoryIds: [1],
   },
   {
@@ -810,7 +810,7 @@ export const PRODUCTS_DATA = [
     description: 'Тонкі слайси сирокопченого бекону.',
     price: '78.00',
     qtyInStock: 80,
-    imgUrl: 'products/cat1_meat/bacon.png',
+    imgUrl: 'products/meat/bacon.png',
     categoryIds: [1],
   },
   {
@@ -819,7 +819,7 @@ export const PRODUCTS_DATA = [
     description: 'Традиційна італійська рецептура.',
     price: '195.00',
     qtyInStock: 35,
-    imgUrl: 'products/cat1_meat/salami.png',
+    imgUrl: 'products/meat/salami.png',
     categoryIds: [1],
   },
   {
@@ -828,7 +828,7 @@ export const PRODUCTS_DATA = [
     description: 'Свіжа гомілка великої птиці.',
     price: '140.00',
     qtyInStock: 25,
-    imgUrl: 'products/cat1_meat/turkey.png',
+    imgUrl: 'products/meat/turkey.png',
     categoryIds: [1],
   },
   {
@@ -837,7 +837,7 @@ export const PRODUCTS_DATA = [
     description: 'Екологічно чисте фермерське м’ясо.',
     price: '420.00',
     qtyInStock: 10,
-    imgUrl: 'products/cat1_meat/rabbit.png',
+    imgUrl: 'products/meat/rabbit.png',
     categoryIds: [1],
   },
   {
@@ -846,7 +846,7 @@ export const PRODUCTS_DATA = [
     description: 'Копчене на вільховій трісці.',
     price: '280.00',
     qtyInStock: 15,
-    imgUrl: 'products/cat1_meat/lard.png',
+    imgUrl: 'products/meat/lard.png',
     categoryIds: [1],
   },
   {
@@ -855,7 +855,7 @@ export const PRODUCTS_DATA = [
     description: 'Вищий сорт, без консервантів.',
     price: '85.00',
     qtyInStock: 120,
-    imgUrl: 'products/cat1_meat/hotdogs.png',
+    imgUrl: 'products/meat/hotdogs.png',
     categoryIds: [1],
   },
   {
@@ -864,7 +864,7 @@ export const PRODUCTS_DATA = [
     description: 'Охолоджена грудка з жировим шаром.',
     price: '360.00',
     qtyInStock: 12,
-    imgUrl: 'products/cat1_meat/duck.png',
+    imgUrl: 'products/meat/duck.png',
     categoryIds: [1],
   },
   {
@@ -873,7 +873,7 @@ export const PRODUCTS_DATA = [
     description: 'Свіжа печінка, багата на залізо.',
     price: '115.00',
     qtyInStock: 40,
-    imgUrl: 'products/cat1_meat/liver.png',
+    imgUrl: 'products/meat/liver.png',
     categoryIds: [1],
   },
   {
@@ -882,7 +882,7 @@ export const PRODUCTS_DATA = [
     description: 'Найніжніша частина свинини.',
     price: '230.00',
     qtyInStock: 20,
-    imgUrl: 'products/cat1_meat/pork-tenderloin.png',
+    imgUrl: 'products/meat/pork-tenderloin.png',
     categoryIds: [1],
   },
   {
@@ -891,7 +891,7 @@ export const PRODUCTS_DATA = [
     description: 'Напівфабрикат у хрусткій паніровці.',
     price: '110.00',
     qtyInStock: 70,
-    imgUrl: 'products/cat1_meat/nuggets.png',
+    imgUrl: 'products/meat/nuggets.png',
     categoryIds: [1],
   },
   {
@@ -900,7 +900,7 @@ export const PRODUCTS_DATA = [
     description: 'М’ясо на кістці для наваристого борщу.',
     price: '85.00',
     qtyInStock: 30,
-    imgUrl: 'products/cat1_meat/soup-set.png',
+    imgUrl: 'products/meat/soup-set.png',
     categoryIds: [1],
   },
 
@@ -911,7 +911,7 @@ export const PRODUCTS_DATA = [
     description: 'Ультрапастеризоване фермерське молоко.',
     price: '38.00',
     qtyInStock: 200,
-    imgUrl: 'products/cat2_milkProd/milk.png',
+    imgUrl: 'products/milkProducts/milk.png',
     categoryIds: [2],
   },
   {
@@ -920,7 +920,7 @@ export const PRODUCTS_DATA = [
     description: 'Легкий кисломолочний напій.',
     price: '36.00',
     qtyInStock: 150,
-    imgUrl: 'products/cat2_milkProd/kefir.png',
+    imgUrl: 'products/milkProducts/kefir.png',
     categoryIds: [2],
   },
   {
@@ -929,7 +929,7 @@ export const PRODUCTS_DATA = [
     description: 'Густа сметана з натуральних вершків.',
     price: '48.00',
     qtyInStock: 120,
-    imgUrl: 'products/cat2_milkProd/sour-cream.png',
+    imgUrl: 'products/milkProducts/sour-cream.png',
     categoryIds: [2],
   },
   {
@@ -938,7 +938,7 @@ export const PRODUCTS_DATA = [
     description: 'Зернистий домашній сир.',
     price: '65.00',
     qtyInStock: 80,
-    imgUrl: 'products/cat2_milkProd/cottage-cheese.png',
+    imgUrl: 'products/milkProducts/cottage-cheese.png',
     categoryIds: [2],
   },
   {
@@ -947,7 +947,7 @@ export const PRODUCTS_DATA = [
     description: 'Густий йогурт без домішок.',
     price: '24.00',
     qtyInStock: 100,
-    imgUrl: 'products/cat2_milkProd/greek-yogurt.png',
+    imgUrl: 'products/milkProducts/greek-yogurt.png',
     categoryIds: [2],
   },
   {
@@ -956,7 +956,7 @@ export const PRODUCTS_DATA = [
     description: 'Натуральне солодковершкове масло.',
     price: '82.00',
     qtyInStock: 90,
-    imgUrl: 'products/cat2_milkProd/butter.png',
+    imgUrl: 'products/milkProducts/butter.png',
     categoryIds: [2],
   },
   {
@@ -965,7 +965,7 @@ export const PRODUCTS_DATA = [
     description: 'Класичний смак, витримка 3 місяці.',
     price: '75.00',
     qtyInStock: 70,
-    imgUrl: 'products/cat2_milkProd/cheese-yellow.png',
+    imgUrl: 'products/milkProducts/cheese-yellow.png',
     categoryIds: [2],
   },
   {
@@ -974,7 +974,7 @@ export const PRODUCTS_DATA = [
     description: 'М’який італійський сир.',
     price: '52.00',
     qtyInStock: 50,
-    imgUrl: 'products/cat2_milkProd/mozzarella.png',
+    imgUrl: 'products/milkProducts/mozzarella.png',
     categoryIds: [2],
   },
   {
@@ -983,7 +983,7 @@ export const PRODUCTS_DATA = [
     description: 'Ідеально для кави та соусів.',
     price: '32.00',
     qtyInStock: 110,
-    imgUrl: 'products/cat2_milkProd/cream.png',
+    imgUrl: 'products/milkProducts/cream.png',
     categoryIds: [2],
   },
   {
@@ -992,7 +992,7 @@ export const PRODUCTS_DATA = [
     description: 'Класичний плавлений сирок.',
     price: '18.00',
     qtyInStock: 250,
-    imgUrl: 'products/cat2_milkProd/processed-cheese.png',
+    imgUrl: 'products/milkProducts/processed-cheese.png',
     categoryIds: [2],
   },
   {
@@ -1001,7 +1001,7 @@ export const PRODUCTS_DATA = [
     description: 'Пряжене молоко з ніжною пінкою.',
     price: '34.00',
     qtyInStock: 60,
-    imgUrl: 'products/cat2_milkProd/ryazhenka.png',
+    imgUrl: 'products/milkProducts/ryazhenka.png',
     categoryIds: [2],
   },
   {
@@ -1010,7 +1010,7 @@ export const PRODUCTS_DATA = [
     description: 'Зі шматочками натуральних ягід.',
     price: '36.00',
     qtyInStock: 90,
-    imgUrl: 'products/cat2_milkProd/drinkable-yogurt.png',
+    imgUrl: 'products/milkProducts/drinkable-yogurt.png',
     categoryIds: [2],
   },
   {
@@ -1019,7 +1019,7 @@ export const PRODUCTS_DATA = [
     description: 'З білою пліснявою та горіховим смаком.',
     price: '115.00',
     qtyInStock: 30,
-    imgUrl: 'products/cat2_milkProd/brie.png',
+    imgUrl: 'products/milkProducts/brie.png',
     categoryIds: [2],
   },
   {
@@ -1028,7 +1028,7 @@ export const PRODUCTS_DATA = [
     description: 'Цільне молоко з цукром у жерстяній банці.',
     price: '58.00',
     qtyInStock: 150,
-    imgUrl: 'products/cat2_milkProd/condensed-milk.png',
+    imgUrl: 'products/milkProducts/condensed-milk.png',
     categoryIds: [2],
   },
   {
@@ -1037,7 +1037,7 @@ export const PRODUCTS_DATA = [
     description: 'Витриманий твердий сир.',
     price: '85.00',
     qtyInStock: 40,
-    imgUrl: 'products/cat2_milkProd/parmesan.png',
+    imgUrl: 'products/milkProducts/parmesan.png',
     categoryIds: [2],
   },
   {
@@ -1046,7 +1046,7 @@ export const PRODUCTS_DATA = [
     description: 'З ваніллю та шоколадною крихтою.',
     price: '28.00',
     qtyInStock: 130,
-    imgUrl: 'products/cat2_milkProd/curd-dessert.png',
+    imgUrl: 'products/milkProducts/curd-dessert.png',
     categoryIds: [2],
   },
   {
@@ -1055,7 +1055,7 @@ export const PRODUCTS_DATA = [
     description: 'Для хачапурі та салатів.',
     price: '92.00',
     qtyInStock: 45,
-    imgUrl: 'products/cat2_milkProd/suluguni.png',
+    imgUrl: 'products/milkProducts/suluguni.png',
     categoryIds: [2],
   },
   {
@@ -1064,7 +1064,7 @@ export const PRODUCTS_DATA = [
     description: 'Для випічки та приготування страв.',
     price: '22.00',
     qtyInStock: 100,
-    imgUrl: 'products/cat2_milkProd/margarine.png',
+    imgUrl: 'products/milkProducts/margarine.png',
     categoryIds: [2],
   },
   {
@@ -1073,7 +1073,7 @@ export const PRODUCTS_DATA = [
     description: 'Вершковий сир для суші та бутербродів.',
     price: '125.00',
     qtyInStock: 35,
-    imgUrl: 'products/cat2_milkProd/cream-cheese.png',
+    imgUrl: 'products/milkProducts/cream-cheese.png',
     categoryIds: [2],
   },
 
