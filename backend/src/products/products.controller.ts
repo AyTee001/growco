@@ -14,38 +14,30 @@ import { Products } from '../entities/Products';
 import { Query } from '@nestjs/common';
 import { ProductsQueryDto } from './dto/products-query.dto';
 import { FilterOptionsDto } from './dto/filter-options.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
 
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-  @Get('category/:categoryId')
-  @ApiOperation({ summary: 'Get products by category with filters and sorting' })
+  @Get()
+  @ApiOperation({ summary: 'Find products with optional category, search, and filters' })
   @ApiOkResponse({ type: [Products] })
-  findAllByCategory(
-    @Param('categoryId', ParseIntPipe) categoryId: number,
-    @Query() query: ProductsQueryDto
-  ) {
-    return this.productsService.findAllByCategory(categoryId, query);
+  findAll(@Query() query: ProductsQueryDto) {
+    return this.productsService.findAll(query);
   }
 
-  @Get()
-  @ApiOkResponse({ type: [Products] })
-  findAll() {
-    return this.productsService.findAll();
+  @Get('filter-options')
+  @ApiOperation({ summary: 'Get dynamic filter options based on search or category' })
+  @ApiOkResponse({ type: FilterOptionsDto })
+  findAllOptions(@Query() query: FilterQueryDto) {
+    return this.productsService.getFilterOptions(query);
   }
 
   @Get(':id')
   @ApiOkResponse({ type: Products })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
-  }
-
-  @Get('category/:categoryId/filter-options')
-  @ApiOperation({ summary: 'Get available brands and price range for a category' })
-  @ApiOkResponse({ type: FilterOptionsDto })
-  getFilterOptions(@Param('categoryId', ParseIntPipe) categoryId: number) {
-    return this.productsService.getFilterOptions(categoryId);
   }
 }

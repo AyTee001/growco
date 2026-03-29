@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenu } from '../main-menu/main-menu';
 import { Delivery } from '../delivery/delivery';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +17,16 @@ import { Delivery } from '../delivery/delivery';
 })
 export class Header {
   private dialog = inject(MatDialog);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  searchQuery = signal<string>('');
+
+  constructor() {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
+      this.searchQuery.set(params['q'] || '');
+    });
+  }
 
   openMenu() {
     this.dialog.open(MainMenu, {
@@ -45,4 +57,17 @@ export class Header {
       exitAnimationDuration: '200ms'
     });
   }
+
+  onSearch(eventOrValue: any) {
+    const query = typeof eventOrValue === 'string'
+      ? eventOrValue
+      : (eventOrValue.target as HTMLInputElement).value;
+
+    if (query?.trim()) {
+      this.router.navigate(['/catalog'], {
+        queryParams: { q: query.trim() }
+      });
+    }
+  }
 }
+

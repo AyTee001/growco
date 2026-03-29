@@ -7,6 +7,16 @@ export class ProductsQueryDto {
     @IsOptional()
     @IsString()
     sort?: string = 'price_asc';
+    
+    @ApiPropertyOptional()
+    @IsOptional()
+    @Transform(({ value }) => (value ? parseInt(value, 10) : undefined))
+    categoryId?: number;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
+    search?: string;
 
     @ApiPropertyOptional()
     @IsOptional()

@@ -19,9 +19,7 @@ import { RouterOutlet } from "@angular/router";
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    CategoryCard,
     Header,
-    Homepage,
     Footer,
     RouterOutlet
 ],

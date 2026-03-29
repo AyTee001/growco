@@ -225,31 +225,18 @@ export type CartControllerUpdateResponses = {
     200: unknown;
 };
 
-export type ProductsControllerFindAllByCategoryData = {
+export type ProductsControllerFindAllData = {
     body?: never;
-    path: {
-        categoryId: number;
-    };
+    path?: never;
     query?: {
         sort?: string;
+        categoryId?: number;
+        search?: string;
         minPrice?: number;
         maxPrice?: number;
         brands?: Array<string>;
         isPromo?: boolean;
     };
-    url: '/products/category/{categoryId}';
-};
-
-export type ProductsControllerFindAllByCategoryResponses = {
-    200: Array<Products>;
-};
-
-export type ProductsControllerFindAllByCategoryResponse = ProductsControllerFindAllByCategoryResponses[keyof ProductsControllerFindAllByCategoryResponses];
-
-export type ProductsControllerFindAllData = {
-    body?: never;
-    path?: never;
-    query?: never;
     url: '/products';
 };
 
@@ -274,20 +261,21 @@ export type ProductsControllerFindOneResponses = {
 
 export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
 
-export type ProductsControllerGetFilterOptionsData = {
+export type ProductsControllerFindAllOptionsData = {
     body?: never;
-    path: {
-        categoryId: number;
+    path?: never;
+    query?: {
+        categoryId?: number;
+        search?: string;
     };
-    query?: never;
-    url: '/products/category/{categoryId}/filter-options';
+    url: '/products/filter-options';
 };
 
-export type ProductsControllerGetFilterOptionsResponses = {
+export type ProductsControllerFindAllOptionsResponses = {
     200: FilterOptionsDto;
 };
 
-export type ProductsControllerGetFilterOptionsResponse = ProductsControllerGetFilterOptionsResponses[keyof ProductsControllerGetFilterOptionsResponses];
+export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
 
 export type DeliverySlotsControllerFindAllData = {
     body?: never;

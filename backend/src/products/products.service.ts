@@ -10,6 +10,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsQueryDto } from './dto/products-query.dto';
 import { FilterOptionsDto } from './dto/filter-options.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -18,13 +19,19 @@ export class ProductsService {
     private readonly productsRepository: Repository<Products>,
   ) { }
 
-  async findAllByCategory(categoryId: number, queryDto: ProductsQueryDto): Promise<Products[]> {
-    const { sort, minPrice, maxPrice, brands, isPromo } = queryDto;
+  async findAll(queryDto: ProductsQueryDto): Promise<Products[]> {
+    const { categoryId, search, brands, minPrice, maxPrice, isPromo, sort } = queryDto;
 
-    const query = this.productsRepository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.categories', 'category')
-      .where('category.categoryId = :categoryId', { categoryId });
+    const query = this.productsRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category');
+
+    if (categoryId && categoryId !== 0) {
+      query.where('category.categoryId = :categoryId', { categoryId });
+    }
+
+    if (search) {
+      query.andWhere('product.name ilike :search', { search: `%${search}%` });
+    }
 
     if (minPrice !== undefined) {
       query.andWhere('product.price >= :minPrice', { minPrice });
@@ -70,12 +77,6 @@ export class ProductsService {
       price: createProductDto.price.toString(),
     });
     return await this.productsRepository.save(product);
-  }
-
-  async findAll(): Promise<Products[]> {
-    return await this.productsRepository.find({
-      order: { productId: 'ASC' },
-    });
   }
 
   async findOne(id: number): Promise<Products> {
@@ -124,28 +125,35 @@ export class ProductsService {
     await this.productsRepository.remove(product);
   }
 
-  async getFilterOptions(categoryId: number): Promise<FilterOptionsDto> {
-    const priceResult = await this.productsRepository
-      .createQueryBuilder('product')
-      .innerJoin('product.categories', 'category')
+  async getFilterOptions(queryDto: FilterQueryDto): Promise<FilterOptionsDto> {
+    const { categoryId, search } = queryDto;
+
+    // Create the base "Scope" (Where are we looking?)
+    const baseQuery = this.productsRepository.createQueryBuilder('product')
+      .leftJoin('product.categories', 'category');
+
+    if (categoryId) {
+      baseQuery.andWhere('category.categoryId = :categoryId', { categoryId });
+    }
+    if (search) {
+      baseQuery.andWhere('product.name ilike :search', { search: `%${search}%` });
+    }
+
+    const stats = await baseQuery.clone()
       .select('MIN(product.price)', 'min')
       .addSelect('MAX(product.price)', 'max')
-      .where('category.categoryId = :categoryId', { categoryId })
       .getRawOne();
 
-    const brandResult = await this.productsRepository
-      .createQueryBuilder('product')
-      .innerJoin('product.categories', 'category')
+    const brands = await baseQuery.clone()
       .select('DISTINCT(product.brand)', 'brand')
-      .where('category.categoryId = :categoryId', { categoryId })
       .andWhere('product.brand IS NOT NULL')
       .orderBy('brand', 'ASC')
       .getRawMany();
 
     return {
-      minPrice: parseFloat(priceResult?.min || '0'),
-      maxPrice: parseFloat(priceResult?.max || '1000'),
-      brands: brandResult.map(res => res.brand),
+      minPrice: parseFloat(stats?.min || '0'),
+      maxPrice: parseFloat(stats?.max || '1000'),
+      brands: brands.map(b => b.brand),
     };
   }
 }

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerFindAllData, CartControllerFindAllResponses, CartControllerFindOneData, CartControllerFindOneResponses, CartControllerRemoveData, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllByCategoryData, ProductsControllerFindAllByCategoryResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerGetFilterOptionsData, ProductsControllerGetFilterOptionsResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerFindAllData, CartControllerFindAllResponses, CartControllerFindOneData, CartControllerFindOneResponses, CartControllerRemoveData, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -73,18 +73,16 @@ export const cartControllerUpdate = <ThrowOnError extends boolean = false>(optio
 });
 
 /**
- * Get products by category with filters and sorting
+ * Find products with optional category, search, and filters
  */
-export const productsControllerFindAllByCategory = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindAllByCategoryData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindAllByCategoryResponses, unknown, ThrowOnError>({ url: '/products/category/{categoryId}', ...options });
-
 export const productsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/products', ...options });
 
 export const productsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/products/{id}', ...options });
 
 /**
- * Get available brands and price range for a category
+ * Get dynamic filter options based on search or category
  */
-export const productsControllerGetFilterOptions = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerGetFilterOptionsData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerGetFilterOptionsResponses, unknown, ThrowOnError>({ url: '/products/category/{categoryId}/filter-options', ...options });
+export const productsControllerFindAllOptions = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllOptionsData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllOptionsResponses, unknown, ThrowOnError>({ url: '/products/filter-options', ...options });
 
 export const deliverySlotsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<DeliverySlotsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<DeliverySlotsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
 
