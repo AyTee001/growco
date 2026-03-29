@@ -11,6 +11,6 @@
 </div>
 <div class="sort-filter-pane">
     <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)"/>
-    <app-filter-sidebar/>
+    <app-filter-sidebar [config]="filterConfig" (apply)="onFiltersApplied($event)"/>
 </div>
 <app-product-grid [items]="products()"></app-product-grid>

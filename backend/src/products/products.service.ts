@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { Products } from '../entities/Products';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductsQueryDto } from './dto/products-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -16,25 +17,43 @@ export class ProductsService {
     private readonly productsRepository: Repository<Products>,
   ) { }
 
-  async findAllByCategory(categoryId: number, sort: string): Promise<Products[]> {
+  async findAllByCategory(categoryId: number, queryDto: ProductsQueryDto): Promise<Products[]> {
+    const { sort, minPrice, maxPrice, brands, isPromo } = queryDto;
+
     const query = this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
       .where('category.categoryId = :categoryId', { categoryId });
 
+    if (minPrice !== undefined) {
+      query.andWhere('product.price >= :minPrice', { minPrice });
+    }
+
+    if (maxPrice !== undefined) {
+      query.andWhere('product.price <= :maxPrice', { maxPrice });
+    }
+
+    if (brands && brands.length > 0) {
+      query.andWhere('product.brand IN (:...brands)', { brands });
+    }
+
+    if (isPromo) {
+      query.andWhere('product.isPromo = :isPromo', { isPromo: true });
+    }
+
     switch (sort) {
       case 'price_desc':
         query.orderBy('product.price', 'DESC');
         break;
-
       case 'name_asc':
         query.orderBy('product.name', 'ASC');
         break;
-
       case 'name_desc':
         query.orderBy('product.name', 'DESC');
         break;
-
+      case 'promo':
+        query.orderBy('product.isPromo', 'DESC').addOrderBy('product.price', 'ASC');
+        break;
       case 'price_asc':
       default:
         query.orderBy('product.price', 'ASC');
@@ -43,6 +62,7 @@ export class ProductsService {
 
     return await query.getMany();
   }
+
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,

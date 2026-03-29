@@ -20,7 +20,15 @@ export type UpdateCartDto = {
     [key: string]: unknown;
 };
 
-export type CreateProductDto = {
+export type CartItems = {
+    [key: string]: unknown;
+};
+
+export type OrderItems = {
+    [key: string]: unknown;
+};
+
+export type Categories = {
     [key: string]: unknown;
 };
 
@@ -28,16 +36,24 @@ export type Products = {
     productId: number;
     name: string;
     description?: string | null;
+    /**
+     * Current product price
+     */
     price: string;
     qtyInStock: number;
     imgUrl?: string | null;
-    cartItems: Array<string>;
-    orderItems: Array<string>;
-    categories: Array<string>;
-};
-
-export type UpdateProductDto = {
-    [key: string]: unknown;
+    brand?: string | null;
+    originCountry?: string | null;
+    isPromo: boolean;
+    /**
+     * Price before discount
+     */
+    oldPrice?: string | null;
+    netContent?: string | null;
+    unit?: string | null;
+    cartItems: Array<CartItems>;
+    orderItems: Array<OrderItems>;
+    categories: Array<Categories>;
 };
 
 export type CreateDeliverySlotDto = {
@@ -203,6 +219,27 @@ export type CartControllerUpdateResponses = {
     200: unknown;
 };
 
+export type ProductsControllerFindAllByCategoryData = {
+    body?: never;
+    path: {
+        categoryId: number;
+    };
+    query?: {
+        sort?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        brands?: Array<string>;
+        isPromo?: boolean;
+    };
+    url: '/products/category/{categoryId}';
+};
+
+export type ProductsControllerFindAllByCategoryResponses = {
+    200: Array<Products>;
+};
+
+export type ProductsControllerFindAllByCategoryResponse = ProductsControllerFindAllByCategoryResponses[keyof ProductsControllerFindAllByCategoryResponses];
+
 export type ProductsControllerFindAllData = {
     body?: never;
     path?: never;
@@ -215,52 +252,6 @@ export type ProductsControllerFindAllResponses = {
 };
 
 export type ProductsControllerFindAllResponse = ProductsControllerFindAllResponses[keyof ProductsControllerFindAllResponses];
-
-export type ProductsControllerCreateData = {
-    body: CreateProductDto;
-    path?: never;
-    query?: never;
-    url: '/products';
-};
-
-export type ProductsControllerCreateResponses = {
-    201: Products;
-};
-
-export type ProductsControllerCreateResponse = ProductsControllerCreateResponses[keyof ProductsControllerCreateResponses];
-
-export type ProductsControllerFindAllByCategoryData = {
-    body?: never;
-    path: {
-        categoryId: number;
-    };
-    query: {
-        sort: string;
-    };
-    url: '/products/category/{categoryId}';
-};
-
-export type ProductsControllerFindAllByCategoryResponses = {
-    200: Array<Products>;
-};
-
-export type ProductsControllerFindAllByCategoryResponse = ProductsControllerFindAllByCategoryResponses[keyof ProductsControllerFindAllByCategoryResponses];
-
-export type ProductsControllerRemoveData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/products/{id}';
-};
-
-export type ProductsControllerRemoveResponses = {
-    /**
-     * Product deleted successfully
-     */
-    200: unknown;
-};
 
 export type ProductsControllerFindOneData = {
     body?: never;
@@ -276,21 +267,6 @@ export type ProductsControllerFindOneResponses = {
 };
 
 export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
-
-export type ProductsControllerUpdateData = {
-    body: UpdateProductDto;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/products/{id}';
-};
-
-export type ProductsControllerUpdateResponses = {
-    200: Products;
-};
-
-export type ProductsControllerUpdateResponse = ProductsControllerUpdateResponses[keyof ProductsControllerUpdateResponses];
 
 export type DeliverySlotsControllerFindAllData = {
     body?: never;

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerFindAllData, CartControllerFindAllResponses, CartControllerFindOneData, CartControllerFindOneResponses, CartControllerRemoveData, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerCreateData, ProductsControllerCreateResponses, ProductsControllerFindAllByCategoryData, ProductsControllerFindAllByCategoryResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerRemoveData, ProductsControllerRemoveResponses, ProductsControllerUpdateData, ProductsControllerUpdateResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerFindAllData, CartControllerFindAllResponses, CartControllerFindOneData, CartControllerFindOneResponses, CartControllerRemoveData, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllByCategoryData, ProductsControllerFindAllByCategoryResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -72,37 +72,14 @@ export const cartControllerUpdate = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const productsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/products', ...options });
-
 /**
- * Create a new product
- */
-export const productsControllerCreate = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerCreateData, ThrowOnError>) => (options.client ?? client).post<ProductsControllerCreateResponses, unknown, ThrowOnError>({
-    url: '/products',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-/**
- * Get all products by category ID with sorting
+ * Get products by category with filters and sorting
  */
 export const productsControllerFindAllByCategory = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindAllByCategoryData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindAllByCategoryResponses, unknown, ThrowOnError>({ url: '/products/category/{categoryId}', ...options });
 
-export const productsControllerRemove = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<ProductsControllerRemoveResponses, unknown, ThrowOnError>({ url: '/products/{id}', ...options });
+export const productsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/products', ...options });
 
 export const productsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/products/{id}', ...options });
-
-export const productsControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<ProductsControllerUpdateResponses, unknown, ThrowOnError>({
-    url: '/products/{id}',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
 
 export const deliverySlotsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<DeliverySlotsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<DeliverySlotsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
 

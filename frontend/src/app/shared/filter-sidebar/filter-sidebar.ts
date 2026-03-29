@@ -13,6 +13,7 @@ export interface FilterOption {
 }
 
 export interface FilterCategory {
+  key: string;
   categoryName: string;
   type: 'checkbox' | 'radio' | 'range';
   options?: FilterOption[];
@@ -43,7 +44,7 @@ export class FilterSidebarComponent implements OnInit {
   filterForm!: FormGroup;
   expandedState: boolean[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -55,11 +56,11 @@ export class FilterSidebarComponent implements OnInit {
     this.config.forEach(category => {
       if (category.type === 'checkbox') {
         const controls = category.options?.map(() => this.fb.control(false)) || [];
-        group[category.categoryName] = this.fb.array(controls);
+        group[category.key] = this.fb.array(controls); // Use key here
       } else if (category.type === 'radio') {
-        group[category.categoryName] = this.fb.control(null);
+        group[category.key] = this.fb.control(null);
       } else if (category.type === 'range') {
-        group[category.categoryName] = this.fb.group({
+        group[category.key] = this.fb.group({
           min: [category.min || 0],
           max: [category.max || 1000]
         });
@@ -67,7 +68,6 @@ export class FilterSidebarComponent implements OnInit {
     });
     this.filterForm = this.fb.group(group);
   }
-
   toggleCategory(index: number): void {
     this.expandedState[index] = !this.expandedState[index];
   }
@@ -77,28 +77,19 @@ export class FilterSidebarComponent implements OnInit {
   }
 
   onApply(): void {
-    const rawValue = this.filterForm.getRawValue();
     const result: any = {};
     this.config.forEach(category => {
+      const control = this.filterForm.get(category.key);
       if (category.type === 'checkbox') {
-        const selected: any[] = [];
-        const formArray = this.filterForm.get(category.categoryName) as FormArray;
-        category.options?.forEach((opt, idx) => {
-          if (formArray.at(idx).value) {
-            selected.push(opt.value);
-          }
-        });
-        result[category.categoryName] = selected;
-      } else if (category.type === 'radio') {
-        result[category.categoryName] = this.filterForm.get(category.categoryName)?.value;
-      } else if (category.type === 'range') {
-        result[category.categoryName] = this.filterForm.get(category.categoryName)?.value;
+        const selected = category.options?.filter((_, idx) => (control as FormArray).at(idx).value).map(opt => opt.value);
+        result[category.key] = selected;
+      } else {
+        result[category.key] = control?.value;
       }
     });
     this.apply.emit(result);
     this.closePanel();
   }
-
   openPanel(): void {
     this.isOpen = true;
   }
