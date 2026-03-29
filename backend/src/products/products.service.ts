@@ -16,14 +16,33 @@ export class ProductsService {
     private readonly productsRepository: Repository<Products>,
   ) { }
 
-  async findAllByCategory(categoryId: number): Promise<Products[]> {
-    return await this.productsRepository
+  async findAllByCategory(categoryId: number, sort: string): Promise<Products[]> {
+    const query = this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
-      .where('category.categoryId = :categoryId', { categoryId })
-      .getMany();
+      .where('category.categoryId = :categoryId', { categoryId });
+
+    switch (sort) {
+      case 'price_desc':
+        query.orderBy('product.price', 'DESC');
+        break;
+
+      case 'name_asc':
+        query.orderBy('product.name', 'ASC');
+        break;
+
+      case 'name_desc':
+        query.orderBy('product.name', 'DESC');
+        break;
+
+      case 'price_asc':
+      default:
+        query.orderBy('product.price', 'ASC');
+        break;
+    }
+
+    return await query.getMany();
   }
-  
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,

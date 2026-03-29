@@ -8,16 +8,17 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { 
-  ApiTags, 
-  ApiOkResponse, 
-  ApiCreatedResponse, 
-  ApiOperation 
-} from '@nestjs/swagger'; // 👈 Import these
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiOperation
+} from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Products } from '../entities/Products'; // 👈 Import your entity
+import { Products } from '../entities/Products';
+import { Query } from '@nestjs/common';
 
 @ApiTags('products')
 @Controller('products')
@@ -32,10 +33,13 @@ export class ProductsController {
   }
 
   @Get('category/:categoryId')
-  @ApiOperation({ summary: 'Get all products by category ID' })
+  @ApiOperation({ summary: 'Get all products by category ID with sorting' })
   @ApiOkResponse({ type: [Products] })
-  findAllByCategory(@Param('categoryId', ParseIntPipe) categoryId: number) {
-    return this.productsService.findAllByCategory(categoryId);
+  findAllByCategory(
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+    @Query('sort') sort: string = 'price_asc'
+  ) {
+    return this.productsService.findAllByCategory(categoryId, sort);
   }
 
   @Get()

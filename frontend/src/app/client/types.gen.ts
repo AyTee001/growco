@@ -40,6 +40,14 @@ export type UpdateProductDto = {
     [key: string]: unknown;
 };
 
+export type CreateDeliverySlotDto = {
+    [key: string]: unknown;
+};
+
+export type UpdateDeliverySlotDto = {
+    [key: string]: unknown;
+};
+
 export type AppControllerGetHelloData = {
     body?: never;
     path?: never;
@@ -226,7 +234,9 @@ export type ProductsControllerFindAllByCategoryData = {
     path: {
         categoryId: number;
     };
-    query?: never;
+    query: {
+        sort: string;
+    };
     url: '/products/category/{categoryId}';
 };
 
@@ -281,3 +291,64 @@ export type ProductsControllerUpdateResponses = {
 };
 
 export type ProductsControllerUpdateResponse = ProductsControllerUpdateResponses[keyof ProductsControllerUpdateResponses];
+
+export type DeliverySlotsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/delivery-slots';
+};
+
+export type DeliverySlotsControllerFindAllResponses = {
+    200: unknown;
+};
+
+export type DeliverySlotsControllerCreateData = {
+    body: CreateDeliverySlotDto;
+    path?: never;
+    query?: never;
+    url: '/delivery-slots';
+};
+
+export type DeliverySlotsControllerCreateResponses = {
+    201: unknown;
+};
+
+export type DeliverySlotsControllerRemoveData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/delivery-slots/{id}';
+};
+
+export type DeliverySlotsControllerRemoveResponses = {
+    200: unknown;
+};
+
+export type DeliverySlotsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/delivery-slots/{id}';
+};
+
+export type DeliverySlotsControllerFindOneResponses = {
+    200: unknown;
+};
+
+export type DeliverySlotsControllerUpdateData = {
+    body: UpdateDeliverySlotDto;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/delivery-slots/{id}';
+};
+
+export type DeliverySlotsControllerUpdateResponses = {
+    200: unknown;
+};
