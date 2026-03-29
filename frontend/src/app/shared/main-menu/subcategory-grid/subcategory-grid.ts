@@ -14,7 +14,9 @@ export class SubcategoryGrid {
   readonly closeMainMenu = output<void>();
 
   public subcategotyClicked(categoryId: number): void {
-    this.router.navigate(['/catalog', categoryId]);
+      this.router.navigate(['/catalog'], { 
+        queryParams: { categoryId: categoryId }
+      });
     this.closeMainMenu.emit();
   }
 }

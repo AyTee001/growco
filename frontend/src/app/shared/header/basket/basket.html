@@ -1,0 +1,73 @@
+@if (basketService.isOpen$ | async) {
+    <div class="basket-backdrop" (click)="close()"></div>
+  }
+  
+  <aside class="basket" [class.basket--open]="basketService.isOpen$ | async">
+    <div class="basket__header">
+      <h2 class="basket__title">Кошик</h2>
+  
+      <div class="basket__header-actions">
+        <button class="basket__clear" type="button" (click)="clear()">
+          Очистити
+        </button>
+  
+        <button class="basket__close" type="button" (click)="close()">
+          ✕
+        </button>
+      </div>
+    </div>
+  
+    <div class="basket__body">
+      @if (basketService.items$ | async; as items) {
+        @if (items.length > 0) {
+          <div class="basket__list">
+            @for (item of items; track trackById($index, item)) {
+              <app-basket-item [item]="item"></app-basket-item>
+            }
+          </div>
+        } @else {
+          <div class="basket__empty">
+            У кошику поки немає товарів
+          </div>
+        }
+      }
+    </div>
+  
+    <div class="basket__footer">
+      <div class="basket__line">
+        <span>Товари:</span>
+        <span>{{ basketService.getItemsTotal() | number:'1.2-2' }} грн</span>
+      </div>
+  
+      <div class="basket__line">
+        <span>Сервісний збір:</span>
+        <span>{{ basketService.getServiceFee() | number:'1.2-2' }} грн</span>
+      </div>
+  
+      <div class="basket__line">
+        <span>Доставка:</span>
+        <span>{{ basketService.getDeliveryFee() | number:'1.2-2' }} грн</span>
+      </div>
+  
+      <div class="basket__divider"></div>
+  
+      <div class="basket__line">
+        <span>Загальна вага:</span>
+        <span>{{ basketService.getTotalWeight() | number:'1.1-2' }} кг</span>
+      </div>
+  
+      <div class="basket__line basket__line--discount">
+        <span>Сума знижки:</span>
+        <span>{{ basketService.getDiscountTotal() | number:'1.2-2' }} грн</span>
+      </div>
+  
+      <div class="basket__line basket__line--total">
+        <span>До оплати:</span>
+        <span>{{ basketService.getTotalToPay() | number:'1.2-2' }} грн</span>
+      </div>
+  
+      <button class="basket__continue" type="button">
+        Продовжити
+      </button>
+    </div>
+  </aside>

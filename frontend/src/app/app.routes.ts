@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: '', component: Homepage},
   { path: 'about-us', component: AboutUs },
 
-  { path: 'catalog/:categoryId', component: ProductCatalog },
+  { path: 'catalog', component: ProductCatalog },
   { path: 'product/:productId', component: ProductPanel },
 
   { path: '**', redirectTo: '' }

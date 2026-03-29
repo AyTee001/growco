@@ -13,7 +13,11 @@
 
 .mat-mdc-card-image {
   width: 218px;
-  height: 230px;
+  height: 218px;
+  max-width: 218px;
+  max-height: 218px;
+  min-width: 218px;
+  min-height: 218px;
   object-fit: cover;
   margin: 0;
 }
@@ -24,6 +28,8 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 h3 {
@@ -36,7 +42,7 @@ h3 {
 }
 
 p {
-  margin: 0 0 0 0;
+  margin: 0;
   font-size: 14px;
   color: var(--mat-sys-on-surface-variant);
   display: -webkit-box;
@@ -45,7 +51,7 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.3;
-  height: 36px;
+  max-height: 36px;
 }
 
 .price-row {

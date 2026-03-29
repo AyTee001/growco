@@ -8,6 +8,9 @@ import { Repository } from 'typeorm';
 import { Products } from '../entities/Products';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductsQueryDto } from './dto/products-query.dto';
+import { FilterOptionsDto } from './dto/filter-options.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -16,26 +19,64 @@ export class ProductsService {
     private readonly productsRepository: Repository<Products>,
   ) { }
 
-  async findAllByCategory(categoryId: number): Promise<Products[]> {
-    return await this.productsRepository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.categories', 'category')
-      .where('category.categoryId = :categoryId', { categoryId })
-      .getMany();
+  async findAll(queryDto: ProductsQueryDto): Promise<Products[]> {
+    const { categoryId, search, brands, minPrice, maxPrice, isPromo, sort } = queryDto;
+
+    const query = this.productsRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category');
+
+    if (categoryId && categoryId !== 0) {
+      query.where('category.categoryId = :categoryId', { categoryId });
+    }
+
+    if (search) {
+      query.andWhere('product.name ilike :search', { search: `%${search}%` });
+    }
+
+    if (minPrice !== undefined) {
+      query.andWhere('product.price >= :minPrice', { minPrice });
+    }
+
+    if (maxPrice !== undefined) {
+      query.andWhere('product.price <= :maxPrice', { maxPrice });
+    }
+
+    if (brands && brands.length > 0) {
+      query.andWhere('product.brand IN (:...brands)', { brands });
+    }
+
+    if (isPromo) {
+      query.andWhere('product.isPromo = :isPromo', { isPromo: true });
+    }
+
+    switch (sort) {
+      case 'price_desc':
+        query.orderBy('product.price', 'DESC');
+        break;
+      case 'name_asc':
+        query.orderBy('product.name', 'ASC');
+        break;
+      case 'name_desc':
+        query.orderBy('product.name', 'DESC');
+        break;
+      case 'promo':
+        query.orderBy('product.isPromo', 'DESC').addOrderBy('product.price', 'ASC');
+        break;
+      case 'price_asc':
+      default:
+        query.orderBy('product.price', 'ASC');
+        break;
+    }
+
+    return await query.getMany();
   }
-  
+
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,
       price: createProductDto.price.toString(),
     });
     return await this.productsRepository.save(product);
-  }
-
-  async findAll(): Promise<Products[]> {
-    return await this.productsRepository.find({
-      order: { productId: 'ASC' },
-    });
   }
 
   async findOne(id: number): Promise<Products> {
@@ -82,5 +123,37 @@ export class ProductsService {
     }
 
     await this.productsRepository.remove(product);
+  }
+
+  async getFilterOptions(queryDto: FilterQueryDto): Promise<FilterOptionsDto> {
+    const { categoryId, search } = queryDto;
+
+    // Create the base "Scope" (Where are we looking?)
+    const baseQuery = this.productsRepository.createQueryBuilder('product')
+      .leftJoin('product.categories', 'category');
+
+    if (categoryId) {
+      baseQuery.andWhere('category.categoryId = :categoryId', { categoryId });
+    }
+    if (search) {
+      baseQuery.andWhere('product.name ilike :search', { search: `%${search}%` });
+    }
+
+    const stats = await baseQuery.clone()
+      .select('MIN(product.price)', 'min')
+      .addSelect('MAX(product.price)', 'max')
+      .getRawOne();
+
+    const brands = await baseQuery.clone()
+      .select('DISTINCT(product.brand)', 'brand')
+      .andWhere('product.brand IS NOT NULL')
+      .orderBy('brand', 'ASC')
+      .getRawMany();
+
+    return {
+      minPrice: parseFloat(stats?.min || '0'),
+      maxPrice: parseFloat(stats?.max || '1000'),
+      brands: brands.map(b => b.brand),
+    };
   }
 }
