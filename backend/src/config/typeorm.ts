@@ -14,7 +14,7 @@ import { Users } from '../entities/Users';
 export const appDataSourceOptions: DataSourceOptions = {
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres',
     password: 'root',
     database: 'growco_db',
