@@ -7,82 +7,54 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider
-        [title]="'Швидко та смачно'"
-        [items]="[]"
-        (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Швидко та смачно'" [items]="[]" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
     <section class="homepage__categories">
       @for (cat of extraCategories1; track cat.title) {
-        <app-category-card
-          [title]="cat.title"
-          [image]="cat.image"
-          [bgColor]="cat.bgColor">
-        </app-category-card>
+      <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
+      </app-category-card>
       }
     </section>
     <section class="homepage__products">
-      <app-product-slider
-        [title]="'Коробки із цукерками'"
-        [items]="[]"
-        (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Коробки із цукерками'" [items]="[]" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
-    
+
     <section class="homepage__promo">
-      <img
-        class="homepage__promo-banner"
-        src="/images/promo/pattern-food.svg"
-        alt="Декоративний банер"
-      />
-    
       <div class="homepage__promo-card">
         <div class="homepage__promo-content">
-          <h3>Some very good word about quality</h3>
-    
+          <h3>Свіжість, якій можна довіряти</h3>
           <p>
-            Some very good text about quality. Some very good text about quality.
-            Some very good text about quality. Some very good text about quality.
-            Some very good text about quality. Some very good text about quality.
+            Ми ретельно відбираємо кожен продукт, щоб ви отримували лише найсвіжіші овочі та фрукти прямо з фермерських
+            господарств...
           </p>
-    
           <p>
-            Some very good text about quality. Some very good text about quality.
-            Some very good text about quality.
+            Здорове харчування починається з правильного вибору.
           </p>
         </div>
-    
+
         <div class="homepage__promo-image">
           <img src="/grocery-bag.svg" alt="Пакет із продуктами" />
         </div>
       </div>
     </section>
-    
+
     <section class="homepage__products">
-      <app-product-slider
-        [title]="'Солодке до хліба'"
-        [items]="[]"
-        (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Солодке до хліба'" [items]="[]" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
     <section class="homepage__categories">
       @for (cat of extraCategories2; track cat.title) {
-        <app-category-card
-          [title]="cat.title"
-          [image]="cat.image"
-          [bgColor]="cat.bgColor">
-        </app-category-card>
+      <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
+      </app-category-card>
       }
     </section>
 
     <section class="homepage__products">
-      <app-product-slider
-        [title]="'Протеїнові йогурти'"
-        [items]="[]"
-        (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Протеїнові йогурти'" [items]="[]" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
   </main>

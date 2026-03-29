@@ -18,42 +18,49 @@
     min-width: 220px;
   }
 
-  .link-item {
+  .info-item {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: inherit;
-    font-size: 14px;
-    transition: opacity 0.2s;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px; // Spacing between the three blocks
 
     mat-icon {
-        color: #43483F; // цвет иконок
+      color: #43483F;
       font-size: 20px;
       opacity: 0.7;
     }
 
-    &:hover {
-      opacity: 0.7;
+    .text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+
+      .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 600;
+        opacity: 0.5;
+        margin-bottom: 2px;
+      }
+
+      .value {
+        font-size: 14px;
+        color: #43483F;
+        font-weight: 500;
+      }
+
+      .link-action {
+        text-decoration: none;
+        border-bottom: 1px solid rgba(67, 72, 63, 0.3);
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: #617a55;
+          border-bottom-color: #617a55;
+        }
+      }
     }
-  }
-
-  .logo-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      max-width: 220px;
-      height: auto;
-    }
-  }
-
-  .footer-bottom {
-    margin-top: 30px;
-    text-align: right;
-    font-size: 12px;
-    color: #777;
   }
 }
 

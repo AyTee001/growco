@@ -13,11 +13,11 @@
 
 .mat-mdc-card-image {
   width: 218px;
-  height: 228px;
+  height: 218px;
   max-width: 218px;
-  max-height: 228px;
+  max-height: 218px;
   min-width: 218px;
-  min-height: 228px;
+  min-height: 218px;
   object-fit: cover;
   margin: 0;
 }
@@ -28,6 +28,8 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 h3 {
