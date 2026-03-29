@@ -25,9 +25,9 @@ export const appDataSourceOptions: DataSourceOptions = {
 };
 
 export const fullDataSourceOptions: DataSourceOptions = {
-    ...appDataSourceOptions,
-    migrations: ['src/migrations/*.ts']
-}
+  ...appDataSourceOptions,
+  migrations: ['src/migrations/*.ts'],
+};
 
 const dataSource = new DataSource(fullDataSourceOptions);
 export default dataSource;
