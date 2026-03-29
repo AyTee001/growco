@@ -4,6 +4,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
+export type SortValue = 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
+
 export interface SortOption {
   value: string;
   label: string;
@@ -18,13 +20,11 @@ export interface SortOption {
 })
 export class SortSelectComponent {
   @Input() options: SortOption[] = [
-    { value: 'price_asc', label: 'Спочатку дешевші' },
-    { value: 'price_desc', label: 'Спочатку дорожчі' },
-    { value: 'promo', label: 'Спочатку акційні' },
+    { value: 'price_asc', label: 'Найдешевші' },
+    { value: 'price_desc', label: 'Найдорожчі' },
     { value: 'name_asc', label: 'Від А до Я' },
     { value: 'name_desc', label: 'Від Я до А' },
   ];
-
   @Input() selectedOption: string = 'price_asc';
 
   @Output() sortChange = new EventEmitter<string>();

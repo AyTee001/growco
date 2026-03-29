@@ -1,20 +1,28 @@
 <mat-toolbar class="header-toolbar header-content">
-    <div class="left-section">
-      <button mat-icon-button aria-label="Toggle menu" class="menu-button" (click)="openMenu()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <img src="logo-no-bg.png" alt="Grow Co." class="brand-logo">
-    </div>
+  <div class="left-section">
+    <button mat-icon-button aria-label="Toggle menu" class="menu-button" (click)="openMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img src="logo-no-bg.png" alt="Grow Co." class="brand-logo">
+  </div>
 
-    <div class="center-section">
-      <div class="delivery-pill" (click)="openDelivery()">
-        <mat-icon class="pill-icon">map</mat-icon>
-        <div class="pill-text">
-          <span class="pill-label">Доставка</span>
-          <span class="pill-subtext">Вкажіть адресу доставки</span>
-        </div>
+  <div class="search-section">
+    <div class="search-pill">
+      <input type="text" placeholder="Пошук" [value]="searchQuery()" (keyup.enter)="onSearch($event)" #searchInput>
+
+      <mat-icon role="button" class="search-icon-right" (click)="onSearch(searchInput.value)">search</mat-icon>
+    </div>
+  </div>
+  
+  <div class="center-section">
+    <div class="delivery-pill" (click)="openDelivery()">
+      <mat-icon class="pill-icon">map</mat-icon>
+      <div class="pill-text">
+        <span class="pill-label">Доставка</span>
+        <span class="pill-subtext">Вкажіть адресу доставки</span>
       </div>
     </div>
+  </div>
 
     <div class="right-section">
       <button mat-flat-button class="cart-pill" (click)="openBasket()">

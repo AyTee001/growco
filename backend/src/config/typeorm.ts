@@ -21,6 +21,7 @@ export const appDataSourceOptions: DataSourceOptions = {
     entities: [Categories, Products, Addresses, Cart, CartItems, DeliverySlots, LoyaltyTransactions, OrderItems, Orders, Stores, Users],
     synchronize: false,
     ssl: false,
+    logging: true
 };
 
 export const fullDataSourceOptions: DataSourceOptions = {

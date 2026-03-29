@@ -1,10 +1,10 @@
 <button class="filter-button" (click)="openPanel()">
-  <mat-icon>filter_list</mat-icon>
+  <mat-icon>filter_alt</mat-icon>
   Фільтри
 </button>
 
 @if (isOpen) {
-  <div class="backdrop" (click)="onBackdropClick()"></div>
+<div class="backdrop" (click)="onBackdropClick()"></div>
 }
 
 <div class="filter-sidebar" [class.open]="isOpen">
@@ -17,53 +17,51 @@
 
   <div class="sidebar-content">
     <form [formGroup]="filterForm">
-      @for (category of config; track category; let i = $index) {
-        <div class="filter-category">
-          <div class="category-header" (click)="toggleCategory(i)">
-            <span>{{ category.categoryName }}</span>
-            <mat-icon class="expand-icon">
-              {{ expandedState[i] ? 'expand_less' : 'expand_more' }}
-            </mat-icon>
-          </div>
+      @for (category of config(); track category; let i = $index) {
+      <div class="filter-category">
+        @if (expandedState[i]) {
+        <div class="category-body">
+          @switch (category.type) {
 
-          @if (expandedState[i]) {
-            <div class="category-body">
-              @switch (category.type) {
-                @case ('checkbox') {
-                  <div [formArrayName]="category.categoryName">
-                    @for (option of category.options; track option; let j = $index) {
-                      <mat-checkbox [formControlName]="j">
-                        {{ option.label }}
-                      </mat-checkbox>
-                    }
-                  </div>
-                }
-                @case ('radio') {
-                  <mat-radio-group [formControlName]="category.categoryName">
-                    @for (option of category.options; track option) {
-                      <mat-radio-button [value]="option.value">
-                        {{ option.label }}
-                      </mat-radio-button>
-                    }
-                  </mat-radio-group>
-                }
-                @case ('range') {
-                  <div class="range-group" [formGroupName]="category.categoryName">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Мін</mat-label>
-                      <input matInput type="number" formControlName="min">
-                    </mat-form-field>
-                    <span class="range-separator">—</span>
-                    <mat-form-field appearance="outline">
-                      <mat-label>Макс</mat-label>
-                      <input matInput type="number" formControlName="max">
-                    </mat-form-field>
-                  </div>
-                }
-              }
-            </div>
+          @case ('checkbox') {
+          <div [formArrayName]="category.key">
+            @for (option of category.options; track option; let j = $index) {
+            <mat-checkbox [formControlName]="j">
+              {{ option.label }}
+            </mat-checkbox>
+            }
+          </div>
+          }
+
+          @case ('radio') {
+          <mat-radio-group [formControlName]="category.key">
+            @for (option of category.options; track option) {
+            <mat-radio-button [value]="option.value">
+              {{ option.label }}
+            </mat-radio-button>
+            }
+          </mat-radio-group>
+          }
+
+          @case ('range') {
+          <div class="range-group" [formGroupName]="category.key">
+            <mat-form-field appearance="outline">
+              <mat-label>Мін</mat-label>
+              <input matInput type="number" formControlName="min">
+            </mat-form-field>
+
+            <span class="range-separator">—</span>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Макс</mat-label>
+              <input matInput type="number" formControlName="max">
+            </mat-form-field>
+          </div>
+          }
           }
         </div>
+        }
+      </div>
       }
     </form>
   </div>

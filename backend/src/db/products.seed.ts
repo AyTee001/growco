@@ -24,7 +24,13 @@ async function seed() {
       price: data.price,
       qtyInStock: data.qtyInStock,
       imgUrl: data.imgUrl,
-      categories: categories
+      categories: categories,
+      isPromo: data.isPromo,
+      unit: data.unit,
+      originCountry: data.originCountry,
+      netContent: data.netContent,
+      brand: data.brand,
+      oldPrice: data.oldPrice
     });
 
     await productRepo.save(product);

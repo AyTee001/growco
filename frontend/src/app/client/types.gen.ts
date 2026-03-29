@@ -20,7 +20,15 @@ export type UpdateCartDto = {
     [key: string]: unknown;
 };
 
-export type CreateProductDto = {
+export type CartItems = {
+    [key: string]: unknown;
+};
+
+export type OrderItems = {
+    [key: string]: unknown;
+};
+
+export type Categories = {
     [key: string]: unknown;
 };
 
@@ -28,15 +36,37 @@ export type Products = {
     productId: number;
     name: string;
     description?: string | null;
+    /**
+     * Current product price
+     */
     price: string;
     qtyInStock: number;
     imgUrl?: string | null;
-    cartItems: Array<string>;
-    orderItems: Array<string>;
-    categories: Array<string>;
+    brand?: string | null;
+    originCountry?: string | null;
+    isPromo: boolean;
+    /**
+     * Price before discount
+     */
+    oldPrice?: string | null;
+    netContent?: string | null;
+    unit?: string | null;
+    cartItems: Array<CartItems>;
+    orderItems: Array<OrderItems>;
+    categories: Array<Categories>;
 };
 
-export type UpdateProductDto = {
+export type FilterOptionsDto = {
+    minPrice: number;
+    maxPrice: number;
+    brands: Array<string>;
+};
+
+export type CreateDeliverySlotDto = {
+    [key: string]: unknown;
+};
+
+export type UpdateDeliverySlotDto = {
     [key: string]: unknown;
 };
 
@@ -198,7 +228,15 @@ export type CartControllerUpdateResponses = {
 export type ProductsControllerFindAllData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        sort?: string;
+        categoryId?: number;
+        search?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        brands?: Array<string>;
+        isPromo?: boolean;
+    };
     url: '/products';
 };
 
@@ -207,50 +245,6 @@ export type ProductsControllerFindAllResponses = {
 };
 
 export type ProductsControllerFindAllResponse = ProductsControllerFindAllResponses[keyof ProductsControllerFindAllResponses];
-
-export type ProductsControllerCreateData = {
-    body: CreateProductDto;
-    path?: never;
-    query?: never;
-    url: '/products';
-};
-
-export type ProductsControllerCreateResponses = {
-    201: Products;
-};
-
-export type ProductsControllerCreateResponse = ProductsControllerCreateResponses[keyof ProductsControllerCreateResponses];
-
-export type ProductsControllerFindAllByCategoryData = {
-    body?: never;
-    path: {
-        categoryId: number;
-    };
-    query?: never;
-    url: '/products/category/{categoryId}';
-};
-
-export type ProductsControllerFindAllByCategoryResponses = {
-    200: Array<Products>;
-};
-
-export type ProductsControllerFindAllByCategoryResponse = ProductsControllerFindAllByCategoryResponses[keyof ProductsControllerFindAllByCategoryResponses];
-
-export type ProductsControllerRemoveData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/products/{id}';
-};
-
-export type ProductsControllerRemoveResponses = {
-    /**
-     * Product deleted successfully
-     */
-    200: unknown;
-};
 
 export type ProductsControllerFindOneData = {
     body?: never;
@@ -267,17 +261,79 @@ export type ProductsControllerFindOneResponses = {
 
 export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
 
-export type ProductsControllerUpdateData = {
-    body: UpdateProductDto;
+export type ProductsControllerFindAllOptionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        categoryId?: number;
+        search?: string;
+    };
+    url: '/products/filter-options';
+};
+
+export type ProductsControllerFindAllOptionsResponses = {
+    200: FilterOptionsDto;
+};
+
+export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
+
+export type DeliverySlotsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/delivery-slots';
+};
+
+export type DeliverySlotsControllerFindAllResponses = {
+    200: unknown;
+};
+
+export type DeliverySlotsControllerCreateData = {
+    body: CreateDeliverySlotDto;
+    path?: never;
+    query?: never;
+    url: '/delivery-slots';
+};
+
+export type DeliverySlotsControllerCreateResponses = {
+    201: unknown;
+};
+
+export type DeliverySlotsControllerRemoveData = {
+    body?: never;
     path: {
         id: number;
     };
     query?: never;
-    url: '/products/{id}';
+    url: '/delivery-slots/{id}';
 };
 
-export type ProductsControllerUpdateResponses = {
-    200: Products;
+export type DeliverySlotsControllerRemoveResponses = {
+    200: unknown;
 };
 
-export type ProductsControllerUpdateResponse = ProductsControllerUpdateResponses[keyof ProductsControllerUpdateResponses];
+export type DeliverySlotsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/delivery-slots/{id}';
+};
+
+export type DeliverySlotsControllerFindOneResponses = {
+    200: unknown;
+};
+
+export type DeliverySlotsControllerUpdateData = {
+    body: UpdateDeliverySlotDto;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/delivery-slots/{id}';
+};
+
+export type DeliverySlotsControllerUpdateResponses = {
+    200: unknown;
+};
