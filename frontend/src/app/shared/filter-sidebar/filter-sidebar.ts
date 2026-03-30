@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, input, effect, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, input, effect, inject, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +21,14 @@ export interface FilterCategory {
   max?: number;
 }
 
+export type RangeFilterValue = { min: number | null; max: number | null };
+export type CheckboxFilterValue = (string | number | boolean)[];
+export type RadioFilterValue = string | number | boolean | null;
+
+export interface FilterState {
+  [categoryKey: string]: RangeFilterValue | CheckboxFilterValue | RadioFilterValue | undefined;
+}
+
 @Component({
   selector: 'app-filter-sidebar',
   standalone: true,
@@ -39,37 +47,49 @@ export interface FilterCategory {
 export class FilterSidebarComponent {
   private fb = inject(FormBuilder);
   readonly config = input.required<FilterCategory[]>();
+  readonly activeFilters = model<FilterState>({});
   @Output() apply = new EventEmitter<any>();
 
   isOpen = false;
-  filterForm: FormGroup = this.fb.group({}); 
+  filterForm: FormGroup = this.fb.group({});
   expandedState: boolean[] = [];
 
   constructor() {
     effect(() => {
       const currentConfig = this.config();
-      this.buildForm(currentConfig);
+      this.buildForm(currentConfig, this.activeFilters());
       this.expandedState = currentConfig.map(() => true);
     });
   }
 
-  private buildForm(configData: FilterCategory[]): void {
+  private buildForm(configData: FilterCategory[], savedState: FilterState): void {
     const group: any = {};
-    
+
     configData.forEach(category => {
+      const savedValue = savedState[category.key];
+
       if (category.type === 'checkbox') {
-        const controls = category.options?.map(() => this.fb.control(false)) || [];
-        group[category.key] = this.fb.array(controls); // Use key here
+        const selectedValues = (savedValue as CheckboxFilterValue) || [];
+
+        const controls = category.options?.map(opt => {
+          const isChecked = selectedValues.includes(opt.value);
+          return this.fb.control(isChecked);
+        }) || [];
+
+        group[category.key] = this.fb.array(controls);
+
       } else if (category.type === 'radio') {
-        group[category.key] = this.fb.control(null);
+        group[category.key] = this.fb.control(savedValue ?? null);
+
       } else if (category.type === 'range') {
+        const rangeState = (savedValue as RangeFilterValue) || {};
         group[category.key] = this.fb.group({
-          min: [category.min || 0],
-          max: [category.max || 1000]
+          min: [rangeState.min ?? category.min ?? 0],
+          max: [rangeState.max ?? category.max ?? 1000]
         });
       }
     });
-    
+
     this.filterForm = this.fb.group(group);
   }
 
@@ -82,17 +102,20 @@ export class FilterSidebarComponent {
   }
 
   onApply(): void {
-    const result: any = {};
+    const result: FilterState = {};
+
     this.config().forEach(category => {
       const control = this.filterForm.get(category.key);
+
       if (category.type === 'checkbox') {
         const selected = category.options?.filter((_, idx) => (control as FormArray).at(idx).value).map(opt => opt.value);
-        result[category.key] = selected;
+        result[category.key] = selected as CheckboxFilterValue;
       } else {
         result[category.key] = control?.value;
       }
     });
-    this.apply.emit(result);
+
+    this.activeFilters.set(result);
     this.closePanel();
   }
 

@@ -13,7 +13,7 @@
   <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)" />
   
   @if (filterConfig().length > 0) {
-    <app-filter-sidebar [config]="filterConfig()" (apply)="onFiltersApplied($event)">
+    <app-filter-sidebar [config]="filterConfig()" [(activeFilters)]="activeFilters" (apply)="onFiltersApplied($event)">
     </app-filter-sidebar>
   }
 </div>
