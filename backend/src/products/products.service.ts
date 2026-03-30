@@ -156,4 +156,20 @@ export class ProductsService {
       brands: brands.map(b => b.brand),
     };
   }
+
+  async findSimilar(id: number): Promise<Products[]> {
+    const product = await this.findOne(id);
+    const categoryIds = product.categories.map((cat) => cat.categoryId);
+
+    if (categoryIds.length === 0) return [];
+
+    return await this.productsRepository.createQueryBuilder('product')
+      .innerJoin('product.categories', 'category')
+      .where('category.categoryId IN (:...categoryIds)', { categoryIds })
+      .andWhere('product.productId != :id', { id })
+      .groupBy('product.productId')
+      .orderBy('RANDOM()')
+      .limit(15)
+      .getMany();
+  }
 }

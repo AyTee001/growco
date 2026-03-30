@@ -246,21 +246,6 @@ export type ProductsControllerFindAllResponses = {
 
 export type ProductsControllerFindAllResponse = ProductsControllerFindAllResponses[keyof ProductsControllerFindAllResponses];
 
-export type ProductsControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/products/{id}';
-};
-
-export type ProductsControllerFindOneResponses = {
-    200: Products;
-};
-
-export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
-
 export type ProductsControllerFindAllOptionsData = {
     body?: never;
     path?: never;
@@ -276,6 +261,36 @@ export type ProductsControllerFindAllOptionsResponses = {
 };
 
 export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
+
+export type ProductsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/products/{id}';
+};
+
+export type ProductsControllerFindOneResponses = {
+    200: Products;
+};
+
+export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
+
+export type ProductsControllerFindSimilarData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/products/{id}/similar';
+};
+
+export type ProductsControllerFindSimilarResponses = {
+    200: Array<Products>;
+};
+
+export type ProductsControllerFindSimilarResponse = ProductsControllerFindSimilarResponses[keyof ProductsControllerFindSimilarResponses];
 
 export type DeliverySlotsControllerFindAllData = {
     body?: never;

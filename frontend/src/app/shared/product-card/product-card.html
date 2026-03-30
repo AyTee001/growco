@@ -3,7 +3,7 @@
   
   <mat-card-content>
     <div class="header-section">
-      <h3>{{ product().name }}</h3>
+      <h3 (click)="navigateToProduct()">{{ product().name }}</h3>
       @if (product().netContent) {
         <span class="net-content">{{ product().netContent }} {{ product().unit }}</span>
       }

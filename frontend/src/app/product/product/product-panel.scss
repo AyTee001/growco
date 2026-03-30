@@ -79,3 +79,34 @@
 .product-slider {
     padding: 12px 24px;
 }
+
+.unit-text {
+    font-size: 18px;
+    color: var(--mat-sys-on-surface-variant);
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.price-stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.old-price {
+    font-size: 16px;
+    text-decoration: line-through;
+    color: #757575;
+    margin: 0;
+}
+
+.price-text.promo {
+    color: #ff5252;
+    margin-top: -4px;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
