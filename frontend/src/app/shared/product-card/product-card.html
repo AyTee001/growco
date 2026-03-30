@@ -1,11 +1,26 @@
-<mat-card class="product-card">
-  <img mat-card-image [src]=" 'uploads/' + product().imgUrl" [alt]="product().name">
+<mat-card class="product-card" [class.promo]="product().isPromo">
+  <img mat-card-image [src]="'uploads/' + product().imgUrl" [alt]="product().name">
+  
   <mat-card-content>
-    <h3>{{ product().name }}</h3>
-    <p>{{ product().description }}</p>
+    <div class="header-section">
+      <h3>{{ product().name }}</h3>
+      @if (product().netContent) {
+        <span class="net-content">{{ product().netContent }} {{ product().unit }}</span>
+      }
+    </div>
+
+    <p class="description">{{ product().description }}</p>
+
     <div class="price-row">
-      <span class="price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
-      <!--<span class="unit">/ {{ product().unit }}</span>-->
+      <div class="price-container">
+        @if (product().isPromo && product().oldPrice) {
+          <span class="old-price">{{ product().oldPrice | currency:'UAH':'symbol':'':'uk' }}</span>
+          <span class="price promo-price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
+        } @else {
+          <span class="price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
+        }
+      </div>
+      
       <button mat-icon-button class="add-button" (click)="addToCart.emit()">
         <mat-icon>add</mat-icon>
       </button>
