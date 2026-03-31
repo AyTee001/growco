@@ -1,0 +1,8 @@
+<div class="slot-grid">
+  <div *ngFor="let slot of slots" 
+       class="slot-item" 
+       [class.selected]="selectedSlotId === slot.id"
+       (click)="selectSlot(slot)">
+    {{ slot.time }}
+  </div>
+</div>
