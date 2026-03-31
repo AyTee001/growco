@@ -1,29 +1,47 @@
 <div class="basket-item">
-    <div class="basket-item__image">
-      <img [src]="'uploads/' + item.product.imgUrl" [alt]="item.product.name" />
+  <div class="basket-item__image">
+    <img [src]="'uploads/' + item.product.imgUrl" [alt]="item.product.name" />
+  </div>
+
+  <div class="basket-item__content">
+    <div class="basket-item__top">
+      <div class="basket-item__title">
+        {{ item.product.name }}
+      </div>
+
+      <button class="basket-item__remove" type="button" (click)="remove()">
+        🗑
+      </button>
     </div>
-  
-    <div class="basket-item__content">
-      <div class="basket-item__top">
-        <div class="basket-item__title">
-          {{ item.product.name }}
-        </div>
-  
-        <button class="basket-item__remove" type="button" (click)="remove()">
-          🗑
+
+    <div class="basket-item__bottom">
+      <div class="basket-item__price">
+        {{ item.product.price | number:'1.2-2' }} грн
+      </div>
+
+      <div class="basket-item__controls">
+        <button 
+          type="button" 
+          (click)="decrease()" 
+          [disabled]="item.quantity <= 1"
+          [class.disabled]="item.quantity <= 1">
+          −
+        </button>
+        
+        <span>{{ item.quantity }} шт</span>
+        
+        <button 
+          type="button" 
+          (click)="increase()" 
+          [disabled]="item.quantity >= item.product.qtyInStock"
+          [class.disabled]="item.quantity >= item.product.qtyInStock">
+          +
         </button>
       </div>
-  
-      <div class="basket-item__bottom">
-        <div class="basket-item__price">
-          {{ item.product.price| number:'1.2-2' }} грн
-        </div>
-  
-        <div class="basket-item__controls">
-          <button type="button" (click)="decrease()">−</button>
-          <span>{{ item.quantity }} шт</span>
-          <button type="button" (click)="increase()">+</button>
-        </div>
-      </div>
+      
+      @if (item.quantity >= item.product.qtyInStock) {
+        <small class="stock-warning">Макс. кількість в наявності</small>
+      }
     </div>
   </div>
+</div>

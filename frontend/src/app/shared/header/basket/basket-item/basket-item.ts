@@ -16,11 +16,15 @@ export class BasketItem {
   constructor(private basketService: BasketService) {}
 
   increase(): void {
-    this.basketService.addItem(this.item.productId, 1);
+    if (this.item.quantity < this.item.product.qtyInStock) {
+      this.basketService.updateQuantity(this.item.productId, 1);
+    }
   }
 
   decrease(): void {
-    this.basketService.decreaseQuantity(this.item.productId);
+    if (this.item.quantity > 1) {
+      this.basketService.updateQuantity(this.item.productId, -1);
+    }
   }
 
   remove(): void {

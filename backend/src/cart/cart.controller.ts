@@ -59,7 +59,7 @@ export class CartController {
       });
     }
 
-    return this.cartService.addItem(sessionId, body.productId, body.quantity);
+    return this.cartService.updateItemQuantity(sessionId, body.productId, body.quantity);
   }
   @Delete('item/:itemId')
   @ApiOperation({ summary: 'Remove specific item from cart' })

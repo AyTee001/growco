@@ -79,17 +79,17 @@ export class CartService {
   }
 
   async findOne(cartId: number) {
-  const cart = await this.cartRepository.findOne({
-    where: { cartId },
-    relations: ['user', 'cartItems', 'cartItems.product'],
-  });
+    const cart = await this.cartRepository.findOne({
+      where: { cartId },
+      relations: ['user', 'cartItems', 'cartItems.product'],
+    });
 
-  if (!cart) {
-    throw new NotFoundException(`Cart with id ${cartId} not found`);
+    if (!cart) {
+      throw new NotFoundException(`Cart with id ${cartId} not found`);
+    }
+
+    return cart;
   }
-
-  return cart;
-}
 
   private normalizeGuestSessionId(value?: string | null): string | null {
     if (value === undefined || value === null) {
@@ -195,6 +195,32 @@ export class CartService {
 
       throw error;
     }
+  }
+
+  async updateItemQuantity(sessionId: string, productId: number, targetQuantity: number) {
+    let cart = await this.findOrCreateBySession(sessionId);
+
+    let item = await this.cartItemsRepository.findOne({
+      where: { cartId: cart.cartId, productId: productId }
+    });
+
+    if (targetQuantity <= 0) {
+      if (item) await this.cartItemsRepository.remove(item);
+    } else {
+      if (item) {
+        item.quantity = targetQuantity;
+        await this.cartItemsRepository.save(item);
+      } else {
+        item = this.cartItemsRepository.create({
+          cartId: cart.cartId,
+          productId: productId,
+          quantity: targetQuantity
+        });
+        await this.cartItemsRepository.save(item);
+      }
+    }
+
+    return this.findOne(cart.cartId);
   }
 
   async update(cartId: number, updateCartDto: UpdateCartDto) {
