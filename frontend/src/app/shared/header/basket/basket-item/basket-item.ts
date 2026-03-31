@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { CartItems } from '../../../../client';
 import { BasketService } from '../basket.service';
 import { CommonModule } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-basket-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIcon],
   templateUrl: './basket-item.html',
   styleUrls: ['./basket-item.scss']
 })

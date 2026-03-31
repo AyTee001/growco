@@ -73,4 +73,14 @@ export class CartController {
 
     return this.cartService.removeCartItem(sessionId, itemId);
   }
+
+  @Delete('clear')
+  @ApiOperation({ summary: 'Remove all items from the current cart' })
+  @ApiOkResponse({ type: Cart })
+  async clear(@Req() request: express.Request) {
+    const sessionId = request.cookies['guest_cart_id'];
+    if (!sessionId) return { cartItems: [] };
+
+    return this.cartService.clearCart(sessionId);
+  }
 }

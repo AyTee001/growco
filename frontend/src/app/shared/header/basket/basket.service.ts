@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, debounce, debounceTime, groupBy, mergeMap, scan, Subject, timer } from 'rxjs';
-import { Cart, cartControllerAddToCart, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
+import { BehaviorSubject, debounce, debounceTime, groupBy, mergeMap, scan, Subject, switchMap, timer } from 'rxjs';
+import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,7 @@ export class BasketService {
   private readonly cartSubject = new BehaviorSubject<Cart | null>(null);
   readonly cart$ = this.cartSubject.asObservable();
 
-  private readonly quantityUpdate$ = new Subject<{ productId: number; delta: number }>();
-
+  private readonly quantityUpdate$ = new Subject<{ productId: number; targetQuantity: number }>();
   constructor() {
     this.initCart();
     this.setupDebouncedUpdates();
@@ -23,61 +22,38 @@ export class BasketService {
     this.quantityUpdate$.pipe(
       groupBy(update => update.productId),
       mergeMap(group => group.pipe(
-        scan((acc, curr) => ({
-          productId: curr.productId,
-          delta: acc.delta + curr.delta
-        }), { productId: 0, delta: 0 }),
-        debounceTime(500),
+        debounceTime(400),
+        switchMap(({ productId, targetQuantity }) =>
+          cartControllerAddToCart({
+            body: { productId, quantity: targetQuantity }
+          })
+        )
       ))
-    ).subscribe(async (finalUpdate) => {
-      if (finalUpdate.delta === 0) return;
-
-      const { data, error } = await cartControllerAddToCart({
-        body: {
-          productId: finalUpdate.productId,
-          quantity: finalUpdate.delta
-        }
-      });
-
+    ).subscribe(({ data, error }) => {
       if (!error && data) {
         this.cartSubject.next(data);
       }
-
     });
   }
 
-  // Inside BasketService (Angular)
-  async updateQuantity(productId: number, delta: number) {
+  updateQuantity(productId: number, delta: number) {
     const currentCart = this.cartSubject.value;
     if (!currentCart) return;
 
-    const item = currentCart.cartItems.find(i => i.productId === productId);
+    const items = [...currentCart.cartItems];
+    const itemIndex = items.findIndex(i => i.productId === productId);
 
-    const currentQty = item ? item.quantity : 0;
-    const targetQuantity = currentQty + delta;
+    if (itemIndex === -1) return;
 
-    if (targetQuantity < 0) return; // Guard
+    const targetQuantity = items[itemIndex].quantity + delta;
+    if (targetQuantity < 1) return; // Guard against negative/zero
 
-    const updatedItems = currentCart.cartItems.map(i => {
-      if (i.productId === productId) {
-        return { ...i, quantity: targetQuantity };
-      }
-      return i;
-    });
+    items[itemIndex] = { ...items[itemIndex], quantity: targetQuantity };
+    this.cartSubject.next({ ...currentCart, cartItems: items });
 
-    this.cartSubject.next({ ...currentCart, cartItems: updatedItems });
-
-    const { data, error } = await cartControllerAddToCart({
-      body: {
-        productId,
-        quantity: targetQuantity
-      }
-    });
-
-    if (!error && data) {
-      this.cartSubject.next(data);
-    }
+    this.quantityUpdate$.next({ productId, targetQuantity });
   }
+
   open(): void {
     this.isOpenSubject.next(true);
   }
@@ -102,19 +78,19 @@ export class BasketService {
   getItemsTotal(): number {
     const items = this.cartSubject.value?.cartItems || [];
     return items.reduce((sum, item) => {
-      const price = item.product?.price || 0;
-      return sum + (price * item.quantity);
+      const basePrice = item.product?.oldPrice || item.product?.price || 0;
+      return sum + (basePrice * item.quantity);
     }, 0);
   }
 
   getDiscountTotal(): number {
     const items = this.cartSubject.value?.cartItems || [];
     return items.reduce((sum, item) => {
-      const price = item.product?.price || 0;
-      const oldPrice = item.product?.oldPrice || price;
+      const currentPrice = item.product?.price || 0;
+      const oldPrice = item.product?.oldPrice || currentPrice;
 
-      const savingsPerItem = oldPrice > price ? oldPrice - price : 0;
-      return sum + (savingsPerItem * item.quantity);
+      const savings = oldPrice > currentPrice ? oldPrice - currentPrice : 0;
+      return sum + (savings * item.quantity);
     }, 0);
   }
 
@@ -127,9 +103,13 @@ export class BasketService {
   }
 
   getTotalToPay(): number {
-    const itemsTotal = this.cartSubject.value?.cartItems?.reduce((sum, item) =>
-      sum + (item.product?.price || 0) * item.quantity, 0) || 0;
-    return itemsTotal > 0 ? itemsTotal + 8 : 0;
+    const subtotal = this.getItemsTotal();
+    const fees = this.getServiceFee() + this.getDeliveryFee();
+    const savings = this.getDiscountTotal();
+
+    const total = subtotal + fees - savings;
+
+    return total > 0 ? total : 0;
   }
 
   async addItem(productId: number, quantity: number = 1) {
@@ -146,5 +126,21 @@ export class BasketService {
   async removeItem(itemId: number) {
     const { data, error } = await cartControllerRemoveItem({ path: { itemId } });
     if (!error && data) this.cartSubject.next(data);
+  }
+
+  async clear() {
+    const currentCart = this.cartSubject.value;
+    if (currentCart) {
+      this.cartSubject.next({ ...currentCart, cartItems: [] });
+    }
+
+    const { data, error } = await cartControllerClear();
+
+    if (!error && data) {
+      this.cartSubject.next(data);
+    } else if (error) {
+      this.initCart();
+      console.error('Failed to clear cart', error);
+    }
   }
 }

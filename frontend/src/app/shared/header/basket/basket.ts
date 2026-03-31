@@ -18,5 +18,8 @@ export class Basket {
   }
 
   clear(): void {
+    if (confirm('Ви впевнені, що хочете очистити кошик?')) {
+      this.basketService.clear();
+    }
   }
 }

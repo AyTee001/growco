@@ -197,6 +197,14 @@ export class CartService {
     }
   }
 
+  async clearCart(sessionId: string) {
+    const cart = await this.findOrCreateBySession(sessionId);
+
+    await this.cartItemsRepository.delete({ cartId: cart.cartId });
+
+    return this.findOne(cart.cartId);
+  }
+
   async updateItemQuantity(sessionId: string, productId: number, targetQuantity: number) {
     let cart = await this.findOrCreateBySession(sessionId);
 

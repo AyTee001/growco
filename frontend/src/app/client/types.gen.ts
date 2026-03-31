@@ -86,10 +86,6 @@ export type AddToCartDto = {
     quantity: number;
 };
 
-export type UpdateCartDto = {
-    [key: string]: unknown;
-};
-
 export type CreateCartItemDto = {
     [key: string]: unknown;
 };
@@ -258,31 +254,18 @@ export type CartControllerRemoveItemResponses = {
 
 export type CartControllerRemoveItemResponse = CartControllerRemoveItemResponses[keyof CartControllerRemoveItemResponses];
 
-export type CartControllerRemoveData = {
+export type CartControllerClearData = {
     body?: never;
-    path: {
-        id: number;
-    };
+    path?: never;
     query?: never;
-    url: '/cart/{id}';
+    url: '/cart/clear';
 };
 
-export type CartControllerRemoveResponses = {
-    200: unknown;
+export type CartControllerClearResponses = {
+    200: Cart;
 };
 
-export type CartControllerUpdateData = {
-    body: UpdateCartDto;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/cart/{id}';
-};
-
-export type CartControllerUpdateResponses = {
-    200: unknown;
-};
+export type CartControllerClearResponse = CartControllerClearResponses[keyof CartControllerClearResponses];
 
 export type CartItemsControllerFindAllData = {
     body?: never;
