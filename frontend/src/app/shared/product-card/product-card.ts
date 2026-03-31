@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Products } from '../../client';
 import { Router } from '@angular/router';
+import { BasketService } from '../header/basket/basket.service';
 
 @Component({
   selector: 'app-product-card',
@@ -15,11 +16,15 @@ import { Router } from '@angular/router';
 })
 export class ProductCardComponent {
   private router = inject(Router);
+  private basketService = inject(BasketService);
 
   product = input.required<Products>();
-  addToCart = output<void>();
 
   public navigateToProduct(): void {
     this.router.navigateByUrl(`/product/${this.product().productId}`)
+  }
+
+  public addToCart() {
+    this.basketService.addItem(this.product().productId, 1)
   }
 }

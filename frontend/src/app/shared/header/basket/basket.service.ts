@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { BasketItemModel } from './basket-item.model';
+import { Cart, cartControllerAddToCart, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
-  private readonly itemsSubject = new BehaviorSubject<BasketItemModel[]>([]);
-  readonly items$ = this.itemsSubject.asObservable();
+  private readonly cartSubject = new BehaviorSubject<Cart | null>(null);
+  readonly cart$ = this.cartSubject.asObservable();
+
+  constructor() {
+    this.initCart();
+  }
 
   private readonly isOpenSubject = new BehaviorSubject<boolean>(false);
   readonly isOpen$ = this.isOpenSubject.asObservable();
@@ -24,64 +28,33 @@ export class BasketService {
     this.isOpenSubject.next(!this.isOpenSubject.value);
   }
 
-  getItems(): BasketItemModel[] {
-    return this.itemsSubject.value;
-  }
-
-  setItems(items: BasketItemModel[]): void {
-    this.itemsSubject.next(items);
-  }
-
-  addItem(item: BasketItemModel): void {
-    const items = [...this.itemsSubject.value];
-    const existingItem = items.find(existing => existing.id === item.id);
-
-    if (existingItem) {
-      existingItem.quantity += item.quantity || 1;
-    } else {
-      items.push({
-        ...item,
-        quantity: item.quantity || 1
-      });
+  private async initCart() {
+    const { data, error } = await cartControllerGetCurrent();
+    if (!error && data) {
+      this.cartSubject.next(data);
     }
-
-    this.itemsSubject.next(items);
   }
 
-  removeItem(itemId: number | string): void {
-    const updatedItems = this.itemsSubject.value.filter(item => item.id !== itemId);
-    this.itemsSubject.next(updatedItems);
-  }
-
-  increaseQuantity(itemId: number | string): void {
-    const updatedItems = this.itemsSubject.value.map(item =>
-      item.id === itemId
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
-    );
-
-    this.itemsSubject.next(updatedItems);
-  }
-
-  decreaseQuantity(itemId: number | string): void {
-    const updatedItems = this.itemsSubject.value
-      .map(item =>
-        item.id === itemId
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-      .filter(item => item.quantity > 0);
-
-    this.itemsSubject.next(updatedItems);
-  }
-
-  clear(): void {
-    this.itemsSubject.next([]);
+  getItemsCount(): number {
+    return this.cartSubject.value?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) || 0;
   }
 
   getItemsTotal(): number {
-    return this.itemsSubject.value.reduce((sum, item) => {
-      return sum + item.price * item.quantity;
+    const items = this.cartSubject.value?.cartItems || [];
+    return items.reduce((sum, item) => {
+      const price = item.product?.price || 0;
+      return sum + (price * item.quantity);
+    }, 0);
+  }
+
+  getDiscountTotal(): number {
+    const items = this.cartSubject.value?.cartItems || [];
+    return items.reduce((sum, item) => {
+      const price = item.product?.price || 0;
+      const oldPrice = item.product?.oldPrice || price;
+
+      const savingsPerItem = oldPrice > price ? oldPrice - price : 0;
+      return sum + (savingsPerItem * item.quantity);
     }, 0);
   }
 
@@ -90,26 +63,28 @@ export class BasketService {
   }
 
   getDeliveryFee(): number {
-    return this.getItemsTotal() > 0 ? 0 : 0;
-  }
-
-  getTotalWeight(): number {
-    return this.itemsSubject.value.reduce((sum, item) => {
-      return sum + item.weight * item.quantity;
-    }, 0);
-  }
-
-  getDiscountTotal(): number {
-    return this.itemsSubject.value.reduce((sum, item) => {
-      return sum + (item.discount || 0) * item.quantity;
-    }, 0);
+    return 0;
   }
 
   getTotalToPay(): number {
-    return this.getItemsTotal() + this.getServiceFee() + this.getDeliveryFee() - this.getDiscountTotal();
+    return this.getItemsTotal() + this.getServiceFee() + this.getDeliveryFee();
   }
 
-  getItemsCount(): number {
-    return this.itemsSubject.value.reduce((sum, item) => sum + item.quantity, 0);
+  async addItem(productId: number, quantity: number = 1) {
+    const { data, error } = await cartControllerAddToCart({
+      body: { productId, quantity }
+    });
+    if (!error && data) this.cartSubject.next(data);
+  }
+
+  async decreaseQuantity(productId: number) {
+    await this.addItem(productId, -1);
+  }
+
+  async removeItem(itemId: number) {
+    const { data, error } = await cartControllerRemoveItem({
+      path: { itemId }
+    });
+    if (!error && data) this.cartSubject.next(data);
   }
 }

@@ -16,12 +16,22 @@ export type CreateCartDto = {
     [key: string]: unknown;
 };
 
-export type UpdateCartDto = {
+export type Users = {
     [key: string]: unknown;
 };
 
-export type CartItems = {
-    [key: string]: unknown;
+export type Cart = {
+    /**
+     * Unique identifier for the cart
+     */
+    cartId: number;
+    userId?: number | null;
+    guestSessionId?: string | null;
+    user: Users | null;
+    /**
+     * List of items in the cart
+     */
+    cartItems: Array<CartItems>;
 };
 
 export type OrderItems = {
@@ -39,7 +49,7 @@ export type Products = {
     /**
      * Current product price
      */
-    price: string;
+    price: number;
     qtyInStock: number;
     imgUrl?: string | null;
     brand?: string | null;
@@ -48,12 +58,44 @@ export type Products = {
     /**
      * Price before discount
      */
-    oldPrice?: string | null;
-    netContent?: string | null;
+    oldPrice?: number | null;
+    netContent?: number | null;
     unit?: string | null;
     cartItems: Array<CartItems>;
     orderItems: Array<OrderItems>;
     categories: Array<Categories>;
+};
+
+export type CartItems = {
+    itemId: number;
+    cartId: number;
+    productId: number;
+    quantity: number;
+    cart: Cart;
+    product: Products;
+};
+
+export type AddToCartDto = {
+    /**
+     * The ID of the product to add
+     */
+    productId: number;
+    /**
+     * Quantity of the product
+     */
+    quantity: number;
+};
+
+export type UpdateCartDto = {
+    [key: string]: unknown;
+};
+
+export type CreateCartItemDto = {
+    [key: string]: unknown;
+};
+
+export type UpdateCartItemDto = {
+    [key: string]: unknown;
 };
 
 export type FilterOptionsDto = {
@@ -164,17 +206,6 @@ export type CategoriesControllerUpdateResponses = {
     200: unknown;
 };
 
-export type CartControllerFindAllData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/cart';
-};
-
-export type CartControllerFindAllResponses = {
-    200: unknown;
-};
-
 export type CartControllerCreateData = {
     body: CreateCartDto;
     path?: never;
@@ -185,6 +216,47 @@ export type CartControllerCreateData = {
 export type CartControllerCreateResponses = {
     201: unknown;
 };
+
+export type CartControllerGetCurrentData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/cart/current';
+};
+
+export type CartControllerGetCurrentResponses = {
+    200: Cart;
+};
+
+export type CartControllerGetCurrentResponse = CartControllerGetCurrentResponses[keyof CartControllerGetCurrentResponses];
+
+export type CartControllerAddToCartData = {
+    body: AddToCartDto;
+    path?: never;
+    query?: never;
+    url: '/cart/add-item';
+};
+
+export type CartControllerAddToCartResponses = {
+    200: Cart;
+};
+
+export type CartControllerAddToCartResponse = CartControllerAddToCartResponses[keyof CartControllerAddToCartResponses];
+
+export type CartControllerRemoveItemData = {
+    body?: never;
+    path: {
+        itemId: number;
+    };
+    query?: never;
+    url: '/cart/item/{itemId}';
+};
+
+export type CartControllerRemoveItemResponses = {
+    200: Cart;
+};
+
+export type CartControllerRemoveItemResponse = CartControllerRemoveItemResponses[keyof CartControllerRemoveItemResponses];
 
 export type CartControllerRemoveData = {
     body?: never;
@@ -199,19 +271,6 @@ export type CartControllerRemoveResponses = {
     200: unknown;
 };
 
-export type CartControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/cart/{id}';
-};
-
-export type CartControllerFindOneResponses = {
-    200: unknown;
-};
-
 export type CartControllerUpdateData = {
     body: UpdateCartDto;
     path: {
@@ -222,6 +281,67 @@ export type CartControllerUpdateData = {
 };
 
 export type CartControllerUpdateResponses = {
+    200: unknown;
+};
+
+export type CartItemsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/cart-items';
+};
+
+export type CartItemsControllerFindAllResponses = {
+    200: unknown;
+};
+
+export type CartItemsControllerCreateData = {
+    body: CreateCartItemDto;
+    path?: never;
+    query?: never;
+    url: '/cart-items';
+};
+
+export type CartItemsControllerCreateResponses = {
+    201: unknown;
+};
+
+export type CartItemsControllerRemoveData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/cart-items/{id}';
+};
+
+export type CartItemsControllerRemoveResponses = {
+    200: unknown;
+};
+
+export type CartItemsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/cart-items/{id}';
+};
+
+export type CartItemsControllerFindOneResponses = {
+    200: unknown;
+};
+
+export type CartItemsControllerUpdateData = {
+    body: UpdateCartItemDto;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/cart-items/{id}';
+};
+
+export type CartItemsControllerUpdateResponses = {
     200: unknown;
 };
 

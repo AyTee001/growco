@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BasketService } from './basket.service';
 import { BasketItem } from './basket-item/basket-item';
 
@@ -11,17 +11,12 @@ import { BasketItem } from './basket-item/basket-item';
   styleUrls: ['./basket.scss']
 })
 export class Basket {
-  constructor(public basketService: BasketService) {}
+  public basketService = inject(BasketService);
 
   close(): void {
     this.basketService.close();
   }
 
   clear(): void {
-    this.basketService.clear();
-  }
-
-  trackById(index: number, item: any): number | string {
-    return item.id;
   }
 }

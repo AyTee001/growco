@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { BasketItemModel } from '../basket-item.model';
+import { CartItems } from '../../../../client';
 import { BasketService } from '../basket.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-basket-item',
@@ -11,19 +11,19 @@ import { BasketService } from '../basket.service';
   styleUrls: ['./basket-item.scss']
 })
 export class BasketItem {
-  @Input({ required: true }) item!: BasketItemModel;
+  @Input({ required: true }) item!: CartItems; 
 
   constructor(private basketService: BasketService) {}
 
   increase(): void {
-    this.basketService.increaseQuantity(this.item.id);
+    this.basketService.addItem(this.item.productId, 1);
   }
 
   decrease(): void {
-    this.basketService.decreaseQuantity(this.item.id);
+    this.basketService.decreaseQuantity(this.item.productId);
   }
 
   remove(): void {
-    this.basketService.removeItem(this.item.id);
+    this.basketService.removeItem(this.item.itemId);
   }
 }

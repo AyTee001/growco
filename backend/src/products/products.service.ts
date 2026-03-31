@@ -74,7 +74,7 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,
-      price: createProductDto.price.toString(),
+      price: createProductDto.price,
     });
     return await this.productsRepository.save(product);
   }

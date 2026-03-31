@@ -1,12 +1,12 @@
 <div class="basket-item">
     <div class="basket-item__image">
-      <img [src]="item.image" [alt]="item.name" />
+      <img [src]="'uploads/' + item.product.imgUrl" [alt]="item.product.name" />
     </div>
   
     <div class="basket-item__content">
       <div class="basket-item__top">
         <div class="basket-item__title">
-          {{ item.name }}
+          {{ item.product.name }}
         </div>
   
         <button class="basket-item__remove" type="button" (click)="remove()">
@@ -16,7 +16,7 @@
   
       <div class="basket-item__bottom">
         <div class="basket-item__price">
-          {{ item.price | number:'1.2-2' }} грн
+          {{ item.product.price| number:'1.2-2' }} грн
         </div>
   
         <div class="basket-item__controls">

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerFindAllData, CartControllerFindAllResponses, CartControllerFindOneData, CartControllerFindOneResponses, CartControllerRemoveData, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveData, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CartControllerRemoveResponses, CartControllerUpdateData, CartControllerUpdateResponses, CartItemsControllerCreateData, CartItemsControllerCreateResponses, CartItemsControllerFindAllData, CartItemsControllerFindAllResponses, CartItemsControllerFindOneData, CartItemsControllerFindOneResponses, CartItemsControllerRemoveData, CartItemsControllerRemoveResponses, CartItemsControllerUpdateData, CartItemsControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -48,8 +48,6 @@ export const categoriesControllerUpdate = <ThrowOnError extends boolean = false>
     }
 });
 
-export const cartControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<CartControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<CartControllerFindAllResponses, unknown, ThrowOnError>({ url: '/cart', ...options });
-
 export const cartControllerCreate = <ThrowOnError extends boolean = false>(options: Options<CartControllerCreateData, ThrowOnError>) => (options.client ?? client).post<CartControllerCreateResponses, unknown, ThrowOnError>({
     url: '/cart',
     ...options,
@@ -59,12 +57,47 @@ export const cartControllerCreate = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const cartControllerRemove = <ThrowOnError extends boolean = false>(options: Options<CartControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<CartControllerRemoveResponses, unknown, ThrowOnError>({ url: '/cart/{id}', ...options });
+export const cartControllerGetCurrent = <ThrowOnError extends boolean = false>(options?: Options<CartControllerGetCurrentData, ThrowOnError>) => (options?.client ?? client).get<CartControllerGetCurrentResponses, unknown, ThrowOnError>({ url: '/cart/current', ...options });
 
-export const cartControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<CartControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<CartControllerFindOneResponses, unknown, ThrowOnError>({ url: '/cart/{id}', ...options });
+export const cartControllerAddToCart = <ThrowOnError extends boolean = false>(options: Options<CartControllerAddToCartData, ThrowOnError>) => (options.client ?? client).post<CartControllerAddToCartResponses, unknown, ThrowOnError>({
+    url: '/cart/add-item',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const cartControllerRemoveItem = <ThrowOnError extends boolean = false>(options: Options<CartControllerRemoveItemData, ThrowOnError>) => (options.client ?? client).delete<CartControllerRemoveItemResponses, unknown, ThrowOnError>({ url: '/cart/item/{itemId}', ...options });
+
+export const cartControllerRemove = <ThrowOnError extends boolean = false>(options: Options<CartControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<CartControllerRemoveResponses, unknown, ThrowOnError>({ url: '/cart/{id}', ...options });
 
 export const cartControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<CartControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<CartControllerUpdateResponses, unknown, ThrowOnError>({
     url: '/cart/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const cartItemsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<CartItemsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<CartItemsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/cart-items', ...options });
+
+export const cartItemsControllerCreate = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerCreateData, ThrowOnError>) => (options.client ?? client).post<CartItemsControllerCreateResponses, unknown, ThrowOnError>({
+    url: '/cart-items',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const cartItemsControllerRemove = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<CartItemsControllerRemoveResponses, unknown, ThrowOnError>({ url: '/cart-items/{id}', ...options });
+
+export const cartItemsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<CartItemsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/cart-items/{id}', ...options });
+
+export const cartItemsControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<CartItemsControllerUpdateResponses, unknown, ThrowOnError>({
+    url: '/cart-items/{id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
