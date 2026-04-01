@@ -7,6 +7,7 @@ import { TimeSlotPickerComponent, TimeSlot } from './time-slot-picker/time-slot-
 import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-checkout-page',
@@ -25,10 +26,9 @@ import { BasketService } from '../shared/header/basket/basket.service';
 export class CheckoutPageComponent {
   public basketService = inject(BasketService);
   private router = inject(Router);
-
-  selectedAddress: string | null = null;
-  selectedTimeSlot: TimeSlot | null = null;
-  selectedPayment = 'cash_on_pickup';
+  
+  userName = 'Іван Петренко';
+  userPhone = '+380 99 123 45 67';
   orderComment = '';
   noPaperReceipt = false;
 
@@ -41,24 +41,17 @@ export class CheckoutPageComponent {
     { id: 6, time: '14:00 - 15:00' },
   ];
 
-  userName = 'Іван Петренко';
-  userPhone = '+380 99 123 45 67';
-
   paymentMethods: PaymentMethod[] = [
-    {
-      id: 'cash_on_pickup',
-      label: 'Оплата на касі',
-      icon: 'point_of_sale',
-      value: 'cash_on_pickup'
-    }
+    { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
   ];
 
   addresses = [
-    'вул. Головна, 123',
-    'вул. Садова, 45',
-    'просп. Лесі Українки, 7',
-    'площа Ринок, 1'
+    'вул. Головна, 123', 'вул. Садова, 45', 'просп. Лесі Українки, 7', 'площа Ринок, 1'
   ];
+
+  selectedAddress: string = this.addresses[0];
+  selectedTimeSlot: TimeSlot | null = null;
+  selectedPayment = 'cash_on_pickup';
 
   goBack() {
     this.router.navigate(['/']);
@@ -92,11 +85,22 @@ export class CheckoutPageComponent {
       return;
     }
 
+    const currentCart = await firstValueFrom(this.basketService.cart$);
+
+    if (!currentCart || currentCart.cartItems.length === 0) {
+      alert('Ваш кошик порожній');
+      return;
+    }
+
     const orderPayload = {
-      items: this.basketService.cartSubject?.value?.cartItems ?? [],
+      guestSessionId: currentCart.guestSessionId,
+      items: currentCart.cartItems.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        priceAtOrder: item.product.price
+      })),
       totalAmount: this.basketService.getTotalToPay(),
 
-      // From Checkout Context
       deliveryAddress: this.selectedAddress,
       deliveryTime: this.selectedTimeSlot.time,
       customerName: this.userName,
@@ -106,6 +110,11 @@ export class CheckoutPageComponent {
       isPaperless: this.noPaperReceipt,
     };
 
-    console.log('Final Order Payload ready for Backend:', orderPayload);
+    console.log('Order Ready for Backend:', orderPayload);
+    
+    // Future integration point:
+    // await this.orderService.create(orderPayload);
+    // this.basketService.clear();
+    // this.router.navigate(['/success']);
   }
 }

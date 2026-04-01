@@ -10,6 +10,7 @@
     <h2>Де зручно забирати?</h2>
     <app-address-selector 
       [addresses]="addresses"
+      [selectedAddress]="selectedAddress" 
       (addressSelected)="onAddressSelected($event)"
     />
   </div>
@@ -18,6 +19,7 @@
     <h2>Виберіть час отримання</h2>
     <app-time-slot-picker 
       [slots]="timeSlots" 
+      [selectedSlot]="selectedTimeSlot"
       (slotSelected)="onTimeSlotSelected($event)" 
     />
   </div>
@@ -37,7 +39,6 @@
     <app-payment-method
       [methods]="paymentMethods"
       [(selectedValue)]="selectedPayment"
-      (selectedValueChange)="onPaymentChange($event)"
     />
   </div>
 
