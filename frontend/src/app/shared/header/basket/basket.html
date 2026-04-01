@@ -60,9 +60,8 @@
       <span>До оплати:</span>
       <span>{{ basketService.getTotalToPay() | number:'1.2-2' }} грн</span>
     </div>
-
-    <button class="basket__continue" type="button">
-      Продовжити
-    </button>
-  </div>
+      <button class="basket__continue" type="button" routerLink="checkout" (click)="close()">
+        Продовжити
+      </button>
+    </div>
 </aside>
