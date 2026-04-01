@@ -8,7 +8,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
 import { Res, Req } from '@nestjs/common';
 import express from 'express';
 import { Cart } from 'src/entities/Cart';
@@ -18,11 +17,6 @@ import { AddToCartDto } from './dto/add-to-cart.dto';
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) { }
-
-  @Post()
-  async create(@Body() createDto: CreateCartDto) {
-    return this.cartService.create(createDto);
-  }
 
   @Get('current')
   @ApiOperation({ summary: 'Get current user cart based on session cookie' })
@@ -61,6 +55,7 @@ export class CartController {
 
     return this.cartService.updateItemQuantity(sessionId, body.productId, body.quantity);
   }
+
   @Delete('item/:itemId')
   @ApiOperation({ summary: 'Remove specific item from cart' })
   @ApiOkResponse({ type: Cart })
