@@ -8,6 +8,7 @@ import { MatCardModule } from "@angular/material/card";
 import { Products, productsControllerFindOne, productsControllerFindSimilar } from '../../client';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { filter, switchMap } from 'rxjs';
+import { BasketService } from '../../shared/header/basket/basket.service';
 
 @Component({
   selector: 'app-product',
@@ -23,6 +24,8 @@ import { filter, switchMap } from 'rxjs';
   styleUrl: './product-panel.scss',
 })
 export class ProductPanel {
+  private basketService = inject(BasketService);
+  
   productId = input.required({
     transform: (value: unknown) => numberAttribute(value, 0)
   });
@@ -59,5 +62,7 @@ export class ProductPanel {
   data = computed(() => this.productResource());
   similarProducts = computed(() => this.similarProductsResource());
 
-  addToCart = output<Products>();
+  public addToCart() {
+    this.basketService.increment(this.productId())
+  }
 }

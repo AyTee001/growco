@@ -143,4 +143,15 @@ export class BasketService {
       console.error('Failed to clear cart', error);
     }
   }
+
+  async increment(productId: number) {
+    const currentCart = this.cartSubject.value;
+    const item = currentCart?.cartItems.find(i => i.productId === productId);
+
+    if (item) {
+      this.updateQuantity(productId, 1);
+    } else {
+      await this.addItem(productId, 1);
+    }
+  }
 }

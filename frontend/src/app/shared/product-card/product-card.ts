@@ -25,6 +25,6 @@ export class ProductCardComponent {
   }
 
   public addToCart() {
-    this.basketService.addItem(this.product().productId, 1)
+    this.basketService.increment(this.product().productId)
   }
 }

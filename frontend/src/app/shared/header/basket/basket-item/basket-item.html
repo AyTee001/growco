@@ -5,8 +5,13 @@
 
   <div class="basket-item__content">
     <div class="basket-item__top">
-      <div class="basket-item__title">
-        {{ item.product.name }}
+      <div class="basket-item__title-group">
+        <div class="basket-item__title">{{ item.product.name }}</div>
+        @if (item.product.netContent) {
+        <span class="basket-item__net-content">
+          {{ item.product.netContent }} {{ item.product.unit }}
+        </span>
+        }
       </div>
 
       <button class="basket-item__remove" type="button" (click)="remove()">
@@ -15,33 +20,32 @@
     </div>
 
     <div class="basket-item__bottom">
-      <div class="basket-item__price">
-        {{ item.product.price | number:'1.2-2' }} грн
+      <div class="basket-item__price-container">
+        @if (item.product.isPromo && item.product.oldPrice) {
+        <span class="basket-item__old-price">
+          {{ item.product.oldPrice | currency:'UAH':'symbol':'':'uk' }}
+        </span>
+        <span class="basket-item__price basket-item__price--promo">
+          {{ item.product.price | currency:'UAH':'symbol':'':'uk' }}
+        </span>
+        } @else {
+        <span class="basket-item__price">
+          {{ item.product.price | currency:'UAH':'symbol':'':'uk' }}
+        </span>
+        }
       </div>
 
-      <div class="basket-item__controls">
-        <button 
-          type="button" 
-          (click)="decrease()" 
-          [disabled]="item.quantity <= 1"
-          [class.disabled]="item.quantity <= 1">
-          −
-        </button>
-        
-        <span>{{ item.quantity }} шт</span>
-        
-        <button 
-          type="button" 
-          (click)="increase()" 
-          [disabled]="item.quantity >= item.product.qtyInStock"
-          [class.disabled]="item.quantity >= item.product.qtyInStock">
-          +
-        </button>
+      <div class="basket-item__actions">
+        @if (item.quantity >= item.product.qtyInStock) {
+        <small class="stock-warning">макс. кількість</small>
+        }
+
+        <div class="basket-item__controls">
+          <button type="button" (click)="decrease()" [disabled]="item.quantity <= 1">−</button>
+          <span class="basket-item__quantity">{{ item.quantity }} шт</span>
+          <button type="button" (click)="increase()" [disabled]="item.quantity >= item.product.qtyInStock">+</button>
+        </div>
       </div>
-      
-      @if (item.quantity >= item.product.qtyInStock) {
-        <small class="stock-warning">Макс. кількість в наявності</small>
-      }
     </div>
   </div>
 </div>
