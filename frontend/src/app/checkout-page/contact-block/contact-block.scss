@@ -1,0 +1,149 @@
+.contact-card {
+  position: relative;
+  background-color: transparent;
+  border-radius: 24px;
+  margin-top: 24px;
+}
+
+.contact-content {
+  padding: 32px 24px 24px;
+}
+
+.user-profile {
+  margin-bottom: 24px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+
+  .label {
+    font-weight: 500;
+    min-width: 80px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+
+    .text {
+      font-size: 16px;
+    }
+
+    .edit-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: var(--mat-sys-primary);
+      padding: 4px;
+      border-radius: 50%;
+      transition: background 0.2s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+.edit-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  input {
+    padding: 4px 8px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: var(--mat-sys-corner-small);
+    font-size: 14px;
+  }
+
+  button {
+    background-color: var(--mat-sys-primary);
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: var(--mat-sys-corner-small);
+    cursor: pointer;
+    font-size: 12px;
+
+    &:hover {
+      background-color: var(--mat-sys-primary-fixed-dim);
+    }
+  }
+}
+
+.comment-field {
+  margin-bottom: 24px;
+
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: var(--mat-sys-corner-small);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    background-color: var(--mat-sys-surface-container-lowest);
+    box-sizing: border-box;
+  }
+
+  .counter {
+    text-align: right;
+    font-size: 12px;
+    color: var(--mat-sys-on-surface-variant);
+    margin-top: 4px;
+  }
+}
+
+.toggle-wrapper {
+  position: relative;
+  background-color: #e6f0ff;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-top: 24px;
+  padding: 16px 24px;
+}
+
+.wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23ffffff' opacity='.7'%3E%3C/path%3E%3C/svg%3E");
+  background-size: cover;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.switch-row {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
+}
+
+::ng-deep .toggle-wrapper mat-slide-toggle {
+  overflow: hidden;
+  border-radius: 24px;
+}

@@ -1,0 +1,39 @@
+<div class="checkout-container">
+  <div class="header">
+    <button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Оформлення замовлення</h1>
+  </div>
+
+  <div class="section">
+    <h2>Де зручно забирати?</h2>
+    <app-address-selector 
+      [addresses]="addresses"
+      (addressSelected)="onAddressSelected($event)"
+    />
+  </div>
+
+  <div class="section">
+    <h2>Виберіть час отримання</h2>
+    <app-time-slot-picker [slots]="timeSlots" (slotSelected)="onTimeSlotSelected($event)" />
+  </div>
+
+  <div class="section">
+    <h2>Для зв’язку та уточнень</h2>
+    <app-contact-block
+      [userName]="userName"
+      [userPhone]="userPhone"
+      (profileChanged)="onProfileChanged($event)"
+      (formDataChanged)="onFormDataChanged($event)"
+    />
+  </div>
+
+  <div class="section">
+    <app-payment-method
+      [methods]="paymentMethods"
+      [(selectedValue)]="selectedPayment"
+      (selectedValueChange)="onPaymentChange($event)"
+    />
+  </div>
+</div>

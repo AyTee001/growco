@@ -1,0 +1,26 @@
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.slot-item {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--mat-sys-corner-small);
+  cursor: pointer;
+  background-color: var(--mat-sys-surface-container-lowest);
+  transition: all 0.2s;
+
+  &.selected {
+    border-color: var(--mat-sys-primary);
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &:hover {
+    background-color: var(--mat-sys-surface-container-high);
+  }
+}

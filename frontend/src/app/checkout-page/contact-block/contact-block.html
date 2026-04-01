@@ -1,0 +1,54 @@
+<div class="contact-card">
+  <div class="contact-content" [formGroup]="contactForm">
+    <!-- Профіль користувача -->
+    <div class="user-profile">
+      <div class="user-info">
+        <div class="info-row">
+          <span class="label">Ім'я</span>
+          <div class="value">
+            <ng-container *ngIf="!isEditing; else nameEdit">
+              <span class="text">{{ userName }}</span>
+              <button class="edit-icon" (click)="enableEditing()">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #nameEdit>
+              <div class="edit-form">
+                <input #newName [value]="userName" placeholder="Ім'я">
+                <input #newPhone [value]="userPhone" placeholder="Телефон">
+                <button (click)="saveUserData(newName.value, newPhone.value)">Зберегти</button>
+                <button (click)="cancelEditing()">Скасувати</button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="label">Телефон</span>
+          <div class="value">
+            <span class="text">{{ userPhone }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Коментар для збиральника -->
+    <div class="comment-field">
+      <textarea
+        formControlName="comment"
+        placeholder="Коментар для збиральника"
+        rows="3"
+      ></textarea>
+      <div class="counter">{{ commentLength }}/500</div>
+    </div>
+
+    <!-- Блок перемикача з синім фоном та хвилею -->
+    <div class="toggle-wrapper">
+      <div class="wave"></div>
+      <div class="switch-row">
+        <mat-slide-toggle formControlName="noPaperReceipt">
+          Без паперового чека
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+</div>
