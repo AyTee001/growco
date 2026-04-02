@@ -4,11 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CategoryCard } from './homepage/category-card/category-card';
-import { Header } from './shared/header/header';
-import { Basket } from './shared/header/basket/basket';
-import { Homepage } from './homepage/homepage';
-import { Footer } from './shared/footer/footer';
 import { RouterOutlet } from "@angular/router";
 
 
@@ -21,9 +16,6 @@ import { RouterOutlet } from "@angular/router";
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    Header,
-    Basket,
-    Footer,
     RouterOutlet
 ],
   templateUrl: './app.html',
