@@ -1,0 +1,19 @@
+<aside class="account-sidebar">
+    <nav class="account-sidebar__nav">
+      <a
+        *ngFor="let item of items"
+        class="account-sidebar__link"
+        [routerLink]="item.route"
+        routerLinkActive="account-sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="material-symbols-outlined account-sidebar__icon">
+          {{ item.icon }}
+        </span>
+  
+        <span class="account-sidebar__text">
+          {{ item.label }}
+        </span>
+      </a>
+    </nav>
+  </aside>
