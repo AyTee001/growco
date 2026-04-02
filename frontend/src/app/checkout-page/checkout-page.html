@@ -18,7 +18,7 @@
   <div class="section">
     <h2>Виберіть час отримання</h2>
     <app-time-slot-picker 
-      [slots]="timeSlots" 
+      [slots]="timeSlots()" 
       [selectedSlot]="selectedTimeSlot"
       (slotSelected)="onTimeSlotSelected($event)" 
     />

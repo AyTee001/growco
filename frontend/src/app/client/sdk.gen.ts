@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerCreateData, CartControllerCreateResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CartItemsControllerCreateData, CartItemsControllerCreateResponses, CartItemsControllerFindAllData, CartItemsControllerFindAllResponses, CartItemsControllerFindOneData, CartItemsControllerFindOneResponses, CartItemsControllerRemoveData, CartItemsControllerRemoveResponses, CartItemsControllerUpdateData, CartItemsControllerUpdateResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerCreateData, DeliverySlotsControllerCreateResponses, DeliverySlotsControllerFindAllData, DeliverySlotsControllerFindAllResponses, DeliverySlotsControllerFindOneData, DeliverySlotsControllerFindOneResponses, DeliverySlotsControllerRemoveData, DeliverySlotsControllerRemoveResponses, DeliverySlotsControllerUpdateData, DeliverySlotsControllerUpdateResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindTodayData, DeliverySlotsControllerFindTodayResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -48,15 +48,6 @@ export const categoriesControllerUpdate = <ThrowOnError extends boolean = false>
     }
 });
 
-export const cartControllerCreate = <ThrowOnError extends boolean = false>(options: Options<CartControllerCreateData, ThrowOnError>) => (options.client ?? client).post<CartControllerCreateResponses, unknown, ThrowOnError>({
-    url: '/cart',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
 /**
  * Get current user cart based on session cookie
  */
@@ -84,30 +75,6 @@ export const cartControllerRemoveItem = <ThrowOnError extends boolean = false>(o
  */
 export const cartControllerClear = <ThrowOnError extends boolean = false>(options?: Options<CartControllerClearData, ThrowOnError>) => (options?.client ?? client).delete<CartControllerClearResponses, unknown, ThrowOnError>({ url: '/cart/clear', ...options });
 
-export const cartItemsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<CartItemsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<CartItemsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/cart-items', ...options });
-
-export const cartItemsControllerCreate = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerCreateData, ThrowOnError>) => (options.client ?? client).post<CartItemsControllerCreateResponses, unknown, ThrowOnError>({
-    url: '/cart-items',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-export const cartItemsControllerRemove = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<CartItemsControllerRemoveResponses, unknown, ThrowOnError>({ url: '/cart-items/{id}', ...options });
-
-export const cartItemsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<CartItemsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/cart-items/{id}', ...options });
-
-export const cartItemsControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<CartItemsControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<CartItemsControllerUpdateResponses, unknown, ThrowOnError>({
-    url: '/cart-items/{id}',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
 /**
  * Find products with optional category, search, and filters
  */
@@ -125,26 +92,7 @@ export const productsControllerFindOne = <ThrowOnError extends boolean = false>(
  */
 export const productsControllerFindSimilar = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindSimilarData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindSimilarResponses, unknown, ThrowOnError>({ url: '/products/{id}/similar', ...options });
 
-export const deliverySlotsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<DeliverySlotsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<DeliverySlotsControllerFindAllResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
-
-export const deliverySlotsControllerCreate = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerCreateData, ThrowOnError>) => (options.client ?? client).post<DeliverySlotsControllerCreateResponses, unknown, ThrowOnError>({
-    url: '/delivery-slots',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-export const deliverySlotsControllerRemove = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<DeliverySlotsControllerRemoveResponses, unknown, ThrowOnError>({ url: '/delivery-slots/{id}', ...options });
-
-export const deliverySlotsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<DeliverySlotsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/delivery-slots/{id}', ...options });
-
-export const deliverySlotsControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<DeliverySlotsControllerUpdateResponses, unknown, ThrowOnError>({
-    url: '/delivery-slots/{id}',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
+/**
+ * Get available delivery slots for today
+ */
+export const deliverySlotsControllerFindToday = <ThrowOnError extends boolean = false>(options?: Options<DeliverySlotsControllerFindTodayData, ThrowOnError>) => (options?.client ?? client).get<DeliverySlotsControllerFindTodayResponses, unknown, ThrowOnError>({ url: '/delivery-slots/today', ...options });

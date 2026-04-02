@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Between, QueryFailedError, Repository } from 'typeorm';
 import { DeliverySlots } from '../entities/DeliverySlots';
 import { Orders } from '../entities/Orders';
 import { CreateDeliverySlotDto } from './dto/create-delivery-slot.dto';
@@ -14,10 +14,25 @@ import { UpdateDeliverySlotDto } from './dto/update-delivery-slot.dto';
 export class DeliverySlotsService {
   constructor(
     @InjectRepository(DeliverySlots)
-    private readonly deliverySlotsRepository: Repository<DeliverySlots>,
-    @InjectRepository(Orders)
-    private readonly ordersRepository: Repository<Orders>,
-  ) {}
+    private readonly deliverySlotsRepository: Repository<DeliverySlots>
+  ) { }
+
+  async findToday() {
+    const now = new Date();
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    return await this.deliverySlotsRepository.find({
+      where: {
+        startTime: Between(now, endOfDay),
+        isAvailable: true,
+      },
+      order: {
+        startTime: 'ASC',
+      },
+    });
+  }
 
   private assertValidRange(startTime: Date, endTime: Date) {
     if (endTime.getTime() <= startTime.getTime()) {

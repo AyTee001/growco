@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,6 +8,7 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
+import { DeliverySlots, deliverySlotsControllerFindToday } from '../client';
 
 @Component({
   selector: 'app-checkout-page',
@@ -23,7 +24,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './checkout-page.html',
   styleUrls: ['./checkout-page.scss']
 })
-export class CheckoutPageComponent {
+export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
   
@@ -32,14 +33,8 @@ export class CheckoutPageComponent {
   orderComment = '';
   noPaperReceipt = false;
 
-  timeSlots: TimeSlot[] = [
-    { id: 1, time: '09:00 - 10:00' },
-    { id: 2, time: '10:00 - 11:00' },
-    { id: 3, time: '11:00 - 12:00' },
-    { id: 4, time: '12:00 - 13:00' },
-    { id: 5, time: '13:00 - 14:00' },
-    { id: 6, time: '14:00 - 15:00' },
-  ];
+  timeSlots = signal<TimeSlot[]>([]);
+  isLoadingSlots = signal(false);
 
   paymentMethods: PaymentMethod[] = [
     { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
@@ -52,6 +47,39 @@ export class CheckoutPageComponent {
   selectedAddress: string = this.addresses[0];
   selectedTimeSlot: TimeSlot | null = null;
   selectedPayment = 'cash_on_pickup';
+
+  async ngOnInit() {
+    await this.loadDeliverySlots();
+  }
+
+  private async loadDeliverySlots() {
+    this.isLoadingSlots.set(true);
+    
+    const { data, error } = await deliverySlotsControllerFindToday();
+
+    if (error || !data) {
+      console.error('Failed to load slots:', error);
+      this.isLoadingSlots.set(false);
+      return;
+    }
+
+    const mappedSlots: TimeSlot[] = data.map((slot: DeliverySlots) => ({
+      id: slot.slotId,
+      time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`
+    }));
+
+    this.timeSlots.set(mappedSlots);
+    this.isLoadingSlots.set(false);
+  }
+
+  private formatTime(dateSource: string | Date): string {
+    const d = new Date(dateSource);
+    return d.toLocaleTimeString('uk-UA', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
+  }
 
   goBack() {
     this.router.navigate(['/']);
@@ -102,12 +130,13 @@ export class CheckoutPageComponent {
       totalAmount: this.basketService.getTotalToPay(),
 
       deliveryAddress: this.selectedAddress,
-      deliveryTime: this.selectedTimeSlot.time,
+      deliverySlotId: this.selectedTimeSlot.id,
+      deliveryTimeLabel: this.selectedTimeSlot.time, 
       customerName: this.userName,
       customerPhone: this.userPhone,
       paymentMethod: this.selectedPayment,
       comment: this.orderComment,
-      isPaperless: this.noPaperReceipt,
+      isPaperless: this.noPaperReceipt,    
     };
 
     console.log('Order Ready for Backend:', orderPayload);
