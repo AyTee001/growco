@@ -8,7 +8,12 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
-import { DeliverySlots, deliverySlotsControllerFindToday } from '../client';
+import { DeliverySlots, deliverySlotsControllerFindByDate,  } from '../client';
+
+interface DateOption {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-checkout-page',
@@ -36,6 +41,9 @@ export class CheckoutPageComponent implements OnInit {
   timeSlots = signal<TimeSlot[]>([]);
   isLoadingSlots = signal(false);
 
+  dateOptions: DateOption[] = [];
+  selectedDate = signal<string>(new Date().toISOString().split('T')[0]);
+
   paymentMethods: PaymentMethod[] = [
     { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
   ];
@@ -49,13 +57,40 @@ export class CheckoutPageComponent implements OnInit {
   selectedPayment = 'cash_on_pickup';
 
   async ngOnInit() {
+    this.generateDateOptions();
+    await this.loadDeliverySlots();
+  }
+
+  private generateDateOptions() {
+    const options: DateOption[] = [];
+    for (let i = 0; i < 5; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      
+      let label = d.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
+      if (i === 0) label = 'Сьогодні';
+      if (i === 1) label = 'Завтра';
+
+      options.push({
+        label,
+        value: d.toISOString().split('T')[0]
+      });
+    }
+    this.dateOptions = options;
+  }
+
+  async onDateChange(dateValue: string) {
+    this.selectedDate.set(dateValue);
+    this.selectedTimeSlot = null;
     await this.loadDeliverySlots();
   }
 
   private async loadDeliverySlots() {
     this.isLoadingSlots.set(true);
     
-    const { data, error } = await deliverySlotsControllerFindToday();
+    const { data, error } = await deliverySlotsControllerFindByDate({ 
+      query: { date: this.selectedDate() } 
+    });
 
     if (error || !data) {
       console.error('Failed to load slots:', error);
@@ -131,7 +166,7 @@ export class CheckoutPageComponent implements OnInit {
 
       deliveryAddress: this.selectedAddress,
       deliverySlotId: this.selectedTimeSlot.id,
-      deliveryTimeLabel: this.selectedTimeSlot.time, 
+      deliveryDate: this.selectedDate, 
       customerName: this.userName,
       customerPhone: this.userPhone,
       paymentMethod: this.selectedPayment,

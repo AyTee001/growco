@@ -327,15 +327,17 @@ export type ProductsControllerFindSimilarResponses = {
 
 export type ProductsControllerFindSimilarResponse = ProductsControllerFindSimilarResponses[keyof ProductsControllerFindSimilarResponses];
 
-export type DeliverySlotsControllerFindTodayData = {
+export type DeliverySlotsControllerFindByDateData = {
     body?: never;
     path?: never;
-    query?: never;
-    url: '/delivery-slots/today';
+    query: {
+        date: string;
+    };
+    url: '/delivery-slots';
 };
 
-export type DeliverySlotsControllerFindTodayResponses = {
+export type DeliverySlotsControllerFindByDateResponses = {
     200: Array<DeliverySlots>;
 };
 
-export type DeliverySlotsControllerFindTodayResponse = DeliverySlotsControllerFindTodayResponses[keyof DeliverySlotsControllerFindTodayResponses];
+export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];

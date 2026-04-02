@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Query,
 } from '@nestjs/common';
 import { DeliverySlotsService } from './delivery-slots.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -11,10 +12,10 @@ import { DeliverySlots } from 'src/entities/DeliverySlots';
 export class DeliverySlotsController {
   constructor(private readonly deliverySlotsService: DeliverySlotsService) { }
 
-  @Get('today')
-  @ApiOperation({ summary: 'Get available delivery slots for today' })
+  @Get()
+  @ApiOperation({ summary: 'Get available delivery slots by date' })
   @ApiResponse({ status: 200, type: [DeliverySlots] })
-  findToday(): Promise<DeliverySlots[]> {
-    return this.deliverySlotsService.findToday();
+  async findByDate(@Query('date') date: string) {
+    return this.deliverySlotsService.findByDate(date);
   }
 }

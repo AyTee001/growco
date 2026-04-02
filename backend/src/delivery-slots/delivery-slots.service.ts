@@ -17,23 +17,24 @@ export class DeliverySlotsService {
     private readonly deliverySlotsRepository: Repository<DeliverySlots>
   ) { }
 
-  async findToday() {
-    const now = new Date();
+  async findByDate(dateStr: string) {
+    const startOfDay = new Date(dateStr);
+    startOfDay.setHours(0, 0, 0, 0);
 
-    const endOfDay = new Date();
+    const endOfDay = new Date(dateStr);
     endOfDay.setHours(23, 59, 59, 999);
+
+    const now = new Date();
+    const searchStart = startOfDay > now ? startOfDay : now;
 
     return await this.deliverySlotsRepository.find({
       where: {
-        startTime: Between(now, endOfDay),
+        startTime: Between(searchStart, endOfDay),
         isAvailable: true,
       },
-      order: {
-        startTime: 'ASC',
-      },
+      order: { startTime: 'ASC' },
     });
   }
-
   private assertValidRange(startTime: Date, endTime: Date) {
     if (endTime.getTime() <= startTime.getTime()) {
       throw new BadRequestException('endTime must be later than startTime');
