@@ -8,32 +8,84 @@
 
   <div class="section">
     <h2>Де зручно забирати?</h2>
-    <app-address-selector 
-      [addresses]="addresses"
-      (addressSelected)="onAddressSelected($event)"
-    />
+    <app-address-selector [addresses]="addresses" [selectedAddress]="selectedAddress"
+      (addressSelected)="onAddressSelected($event)" />
+  </div>
+
+  <div class="section">
+    <h2>Дата</h2>
+    <div class="date-selector">
+      <button *ngFor="let opt of dateOptions" [class.active]="selectedDate() === opt.value"
+        (click)="onDateChange(opt.value)">
+        {{ opt.label }}
+      </button>
+    </div>
+
   </div>
 
   <div class="section">
     <h2>Виберіть час отримання</h2>
-    <app-time-slot-picker [slots]="timeSlots" (slotSelected)="onTimeSlotSelected($event)" />
+    <app-time-slot-picker [slots]="timeSlots()" [selectedSlot]="selectedTimeSlot"
+      (slotSelected)="onTimeSlotSelected($event)" />
   </div>
 
   <div class="section">
     <h2>Для зв’язку та уточнень</h2>
-    <app-contact-block
-      [userName]="userName"
-      [userPhone]="userPhone"
-      (profileChanged)="onProfileChanged($event)"
-      (formDataChanged)="onFormDataChanged($event)"
-    />
+    <app-contact-block [userName]="userName" [userPhone]="userPhone" (profileChanged)="onProfileChanged($event)"
+      (formDataChanged)="onFormDataChanged($event)" />
   </div>
 
   <div class="section">
-    <app-payment-method
-      [methods]="paymentMethods"
-      [(selectedValue)]="selectedPayment"
-      (selectedValueChange)="onPaymentChange($event)"
-    />
+    <h2>Спосіб оплати</h2>
+    <app-payment-method [methods]="paymentMethods" [(selectedValue)]="selectedPayment" />
   </div>
+
+  <div class="section summary-section">
+    <h2>Ваше замовлення</h2>
+
+    <div class="summary-card">
+      <div class="summary-line">
+        <span>Товари:</span>
+        <span class="value">{{ basketService.getItemsTotal() | currency:'UAH':'symbol':'1.2-2':'uk' }}</span>
+      </div>
+
+      <div class="summary-line">
+        <span>Сервісний збір:</span>
+        <span class="value">{{ basketService.getServiceFee() | currency:'UAH':'symbol':'1.2-2':'uk' }}</span>
+      </div>
+
+      <div class="summary-line" *ngIf="basketService.getDeliveryFee() > 0">
+        <span>Доставка:</span>
+        <span class="value">{{ basketService.getDeliveryFee() | currency:'UAH':'symbol':'1.2-2':'uk' }}</span>
+      </div>
+
+      @if (basketService.getDiscountTotal() > 0) {
+      <div class="summary-line discount">
+        <span>Знижка:</span>
+        <span class="value">-{{ basketService.getDiscountTotal() | currency:'UAH':'symbol':'1.2-2':'uk' }}</span>
+      </div>
+      }
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-line total">
+        <span>До оплати:</span>
+        <span class="value">{{ basketService.getTotalToPay() | currency:'UAH':'symbol':'1.2-2':'uk' }}</span>
+      </div>
+
+      <button class="submit-button" type="button" [disabled]="!selectedAddress || !selectedTimeSlot"
+        (click)="confirmOrder()">
+        Підтвердити замовлення
+      </button>
+
+      @if (!selectedDate || !selectedAddress || !selectedTimeSlot) {
+      <div class="validation-error">
+        <mat-icon>info_outline</mat-icon>
+        <span>Адресу та час мають бути встановлені</span>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="checkout-footer-spacer"></div>
 </div>

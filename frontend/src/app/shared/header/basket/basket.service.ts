@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, debounce, debounceTime, groupBy, mergeMap, scan, Subject, switchMap, timer } from 'rxjs';
+import { BehaviorSubject, debounceTime, groupBy, mergeMap, Subject, switchMap } from 'rxjs';
 import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
-  private readonly cartSubject = new BehaviorSubject<Cart | null>(null);
+  public readonly cartSubject = new BehaviorSubject<Cart | null>(null);
   readonly cart$ = this.cartSubject.asObservable();
 
   private readonly quantityUpdate$ = new Subject<{ productId: number; targetQuantity: number }>();

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatFormField, MatLabel } from "@angular/material/select";
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-contact-block',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatSlideToggleModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatSlideToggleModule, MatFormField, MatLabel, MatInputModule],
   templateUrl: './contact-block.html',
   styleUrls: ['./contact-block.scss']
 })

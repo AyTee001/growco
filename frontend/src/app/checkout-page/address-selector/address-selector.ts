@@ -12,10 +12,10 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AddressSelectorComponent {
   @Input() addresses: string[] = [];
+  @Input() selectedAddress: string = '';
   @Output() addressSelected = new EventEmitter<string>();
 
   isOpen = false;
-  currentAddress = 'вул. Головна, 123';
 
   openModal() {
     this.isOpen = true;
@@ -26,7 +26,6 @@ export class AddressSelectorComponent {
   }
 
   selectAddress(address: string) {
-    this.currentAddress = address;
     this.addressSelected.emit(address);
     this.closeModal();
   }

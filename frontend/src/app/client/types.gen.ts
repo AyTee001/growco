@@ -12,10 +12,6 @@ export type UpdateCategoryDto = {
     [key: string]: unknown;
 };
 
-export type CreateCartDto = {
-    [key: string]: unknown;
-};
-
 export type Users = {
     [key: string]: unknown;
 };
@@ -86,26 +82,34 @@ export type AddToCartDto = {
     quantity: number;
 };
 
-export type CreateCartItemDto = {
-    [key: string]: unknown;
-};
-
-export type UpdateCartItemDto = {
-    [key: string]: unknown;
-};
-
 export type FilterOptionsDto = {
     minPrice: number;
     maxPrice: number;
     brands: Array<string>;
 };
 
-export type CreateDeliverySlotDto = {
+export type Orders = {
     [key: string]: unknown;
 };
 
-export type UpdateDeliverySlotDto = {
-    [key: string]: unknown;
+export type DeliverySlots = {
+    /**
+     * Unique identifier for the delivery slot
+     */
+    slotId: number;
+    /**
+     * The beginning of the delivery window
+     */
+    startTime: string;
+    /**
+     * The end of the delivery window
+     */
+    endTime: string;
+    /**
+     * Whether this slot is still open for booking
+     */
+    isAvailable: boolean;
+    orders?: Array<Orders>;
 };
 
 export type AppControllerGetHelloData = {
@@ -202,17 +206,6 @@ export type CategoriesControllerUpdateResponses = {
     200: unknown;
 };
 
-export type CartControllerCreateData = {
-    body: CreateCartDto;
-    path?: never;
-    query?: never;
-    url: '/cart';
-};
-
-export type CartControllerCreateResponses = {
-    201: unknown;
-};
-
 export type CartControllerGetCurrentData = {
     body?: never;
     path?: never;
@@ -266,67 +259,6 @@ export type CartControllerClearResponses = {
 };
 
 export type CartControllerClearResponse = CartControllerClearResponses[keyof CartControllerClearResponses];
-
-export type CartItemsControllerFindAllData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/cart-items';
-};
-
-export type CartItemsControllerFindAllResponses = {
-    200: unknown;
-};
-
-export type CartItemsControllerCreateData = {
-    body: CreateCartItemDto;
-    path?: never;
-    query?: never;
-    url: '/cart-items';
-};
-
-export type CartItemsControllerCreateResponses = {
-    201: unknown;
-};
-
-export type CartItemsControllerRemoveData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/cart-items/{id}';
-};
-
-export type CartItemsControllerRemoveResponses = {
-    200: unknown;
-};
-
-export type CartItemsControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/cart-items/{id}';
-};
-
-export type CartItemsControllerFindOneResponses = {
-    200: unknown;
-};
-
-export type CartItemsControllerUpdateData = {
-    body: UpdateCartItemDto;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/cart-items/{id}';
-};
-
-export type CartItemsControllerUpdateResponses = {
-    200: unknown;
-};
 
 export type ProductsControllerFindAllData = {
     body?: never;
@@ -395,63 +327,17 @@ export type ProductsControllerFindSimilarResponses = {
 
 export type ProductsControllerFindSimilarResponse = ProductsControllerFindSimilarResponses[keyof ProductsControllerFindSimilarResponses];
 
-export type DeliverySlotsControllerFindAllData = {
+export type DeliverySlotsControllerFindByDateData = {
     body?: never;
     path?: never;
-    query?: never;
+    query: {
+        date: string;
+    };
     url: '/delivery-slots';
 };
 
-export type DeliverySlotsControllerFindAllResponses = {
-    200: unknown;
+export type DeliverySlotsControllerFindByDateResponses = {
+    200: Array<DeliverySlots>;
 };
 
-export type DeliverySlotsControllerCreateData = {
-    body: CreateDeliverySlotDto;
-    path?: never;
-    query?: never;
-    url: '/delivery-slots';
-};
-
-export type DeliverySlotsControllerCreateResponses = {
-    201: unknown;
-};
-
-export type DeliverySlotsControllerRemoveData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/delivery-slots/{id}';
-};
-
-export type DeliverySlotsControllerRemoveResponses = {
-    200: unknown;
-};
-
-export type DeliverySlotsControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/delivery-slots/{id}';
-};
-
-export type DeliverySlotsControllerFindOneResponses = {
-    200: unknown;
-};
-
-export type DeliverySlotsControllerUpdateData = {
-    body: UpdateDeliverySlotDto;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/delivery-slots/{id}';
-};
-
-export type DeliverySlotsControllerUpdateResponses = {
-    200: unknown;
-};
+export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];

@@ -1,18 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AddressSelectorComponent } from './address-selector/address-selector';
 import { TimeSlotPickerComponent, TimeSlot } from './time-slot-picker/time-slot-picker';
 import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
+import { BasketService } from '../shared/header/basket/basket.service';
+import { firstValueFrom } from 'rxjs';
+import { DeliverySlots, deliverySlotsControllerFindByDate,  } from '../client';
+
+interface DateOption {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-checkout-page',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     MatIconModule,
     AddressSelectorComponent,
     TimeSlotPickerComponent,
@@ -22,64 +29,156 @@ import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-
   templateUrl: './checkout-page.html',
   styleUrls: ['./checkout-page.scss']
 })
-export class CheckoutPageComponent {
-  timeSlots: TimeSlot[] = [
-    { id: 1, time: '09:00 - 10:00' },
-    { id: 2, time: '10:00 - 11:00' },
-    { id: 3, time: '11:00 - 12:00' },
-    { id: 4, time: '12:00 - 13:00' },
-    { id: 5, time: '13:00 - 14:00' },
-    { id: 6, time: '14:00 - 15:00' },
-  ];
-
-  selectedTimeSlot: TimeSlot | null = null;
-
+export class CheckoutPageComponent implements OnInit {
+  public basketService = inject(BasketService);
+  private router = inject(Router);
+  
   userName = 'Іван Петренко';
   userPhone = '+380 99 123 45 67';
+  orderComment = '';
+  noPaperReceipt = false;
+
+  timeSlots = signal<TimeSlot[]>([]);
+  isLoadingSlots = signal(false);
+
+  dateOptions: DateOption[] = [];
+  selectedDate = signal<string>(new Date().toISOString().split('T')[0]);
 
   paymentMethods: PaymentMethod[] = [
-    {
-      id: 'cash_on_pickup',
-      label: 'Оплата на касі',
-      icon: 'point_of_sale',
-      value: 'cash_on_pickup'
-    }
+    { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
   ];
-  selectedPayment = 'cash_on_pickup';
 
   addresses = [
-    'вул. Головна, 123',
-    'вул. Садова, 45',
-    'просп. Лесі Українки, 7',
-    'площа Ринок, 1'
+    'вул. Головна, 123', 'вул. Садова, 45', 'просп. Лесі Українки, 7', 'площа Ринок, 1'
   ];
 
-  constructor(private router: Router) {}
+  selectedAddress: string = this.addresses[0];
+  selectedTimeSlot: TimeSlot | null = null;
+  selectedPayment = 'cash_on_pickup';
+
+  async ngOnInit() {
+    this.generateDateOptions();
+    await this.loadDeliverySlots();
+  }
+
+  private generateDateOptions() {
+    const options: DateOption[] = [];
+    for (let i = 0; i < 5; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      
+      let label = d.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
+      if (i === 0) label = 'Сьогодні';
+      if (i === 1) label = 'Завтра';
+
+      options.push({
+        label,
+        value: d.toISOString().split('T')[0]
+      });
+    }
+    this.dateOptions = options;
+  }
+
+  async onDateChange(dateValue: string) {
+    this.selectedDate.set(dateValue);
+    this.selectedTimeSlot = null;
+    await this.loadDeliverySlots();
+  }
+
+  private async loadDeliverySlots() {
+    this.isLoadingSlots.set(true);
+    
+    const { data, error } = await deliverySlotsControllerFindByDate({ 
+      query: { date: this.selectedDate() } 
+    });
+
+    if (error || !data) {
+      console.error('Failed to load slots:', error);
+      this.isLoadingSlots.set(false);
+      return;
+    }
+
+    const mappedSlots: TimeSlot[] = data.map((slot: DeliverySlots) => ({
+      id: slot.slotId,
+      time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`
+    }));
+
+    this.timeSlots.set(mappedSlots);
+    this.isLoadingSlots.set(false);
+  }
+
+  private formatTime(dateSource: string | Date): string {
+    const d = new Date(dateSource);
+    return d.toLocaleTimeString('uk-UA', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
+  }
 
   goBack() {
     this.router.navigate(['/']);
   }
 
   onAddressSelected(address: string) {
-    console.log('Вибрано адресу:', address);
+    this.selectedAddress = address;
   }
 
   onTimeSlotSelected(slot: TimeSlot) {
     this.selectedTimeSlot = slot;
-    console.log('Вибрано час:', slot);
   }
 
   onProfileChanged(data: { name: string; phone: string }) {
     this.userName = data.name;
     this.userPhone = data.phone;
-    console.log('Профіль оновлено:', data);
   }
 
   onFormDataChanged(data: { comment: string; noPaperReceipt: boolean }) {
-    console.log('Дані форми змінено:', data);
+    this.orderComment = data.comment;
+    this.noPaperReceipt = data.noPaperReceipt;
   }
 
   onPaymentChange(value: string) {
-    console.log('Вибрано спосіб оплати:', value);
+    this.selectedPayment = value;
+  }
+
+  async confirmOrder() {
+    if (!this.selectedAddress || !this.selectedTimeSlot) {
+      alert('Будь ласка, виберіть адресу та час доставки');
+      return;
+    }
+
+    const currentCart = await firstValueFrom(this.basketService.cart$);
+
+    if (!currentCart || currentCart.cartItems.length === 0) {
+      alert('Ваш кошик порожній');
+      return;
+    }
+
+    const orderPayload = {
+      guestSessionId: currentCart.guestSessionId,
+      items: currentCart.cartItems.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        priceAtOrder: item.product.price
+      })),
+      totalAmount: this.basketService.getTotalToPay(),
+
+      deliveryAddress: this.selectedAddress,
+      deliverySlotId: this.selectedTimeSlot.id,
+      deliveryDate: this.selectedDate, 
+      customerName: this.userName,
+      customerPhone: this.userPhone,
+      paymentMethod: this.selectedPayment,
+      comment: this.orderComment,
+      isPaperless: this.noPaperReceipt,    
+    };
+
+    console.log('Order Ready for Backend:', orderPayload);
+    
+    // Future integration point:
+    // await this.orderService.create(orderPayload);
+    // this.basketService.clear();
+    // this.router.navigate(['/success']);
   }
 }

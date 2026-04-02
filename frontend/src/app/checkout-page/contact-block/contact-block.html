@@ -1,37 +1,28 @@
 <div class="contact-card">
   <div class="contact-content" [formGroup]="contactForm">
-    <!-- Профіль користувача -->
+    
     <div class="user-profile">
-      <div class="user-info">
-        <div class="info-row">
-          <span class="label">Ім'я</span>
-          <div class="value">
-            <ng-container *ngIf="!isEditing; else nameEdit">
-              <span class="text">{{ userName }}</span>
-              <button class="edit-icon" (click)="enableEditing()">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </ng-container>
-            <ng-template #nameEdit>
-              <div class="edit-form">
-                <input #newName [value]="userName" placeholder="Ім'я">
-                <input #newPhone [value]="userPhone" placeholder="Телефон">
-                <button (click)="saveUserData(newName.value, newPhone.value)">Зберегти</button>
-                <button (click)="cancelEditing()">Скасувати</button>
-              </div>
-            </ng-template>
-          </div>
-        </div>
-        <div class="info-row">
-          <span class="label">Телефон</span>
-          <div class="value">
-            <span class="text">{{ userPhone }}</span>
-          </div>
-        </div>
-      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ім'я</mat-label>
+        <input 
+          matInput 
+          #newName 
+          [value]="userName" 
+          (input)="saveUserData(newName.value, newPhone.value)" 
+          placeholder="Наприклад, Іван Петренко">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Телефон</mat-label>
+        <input 
+          matInput 
+          #newPhone 
+          [value]="userPhone" 
+          (input)="saveUserData(newName.value, newPhone.value)" 
+          placeholder="+380 99 123 45 67">
+      </mat-form-field>
     </div>
 
-    <!-- Коментар для збиральника -->
     <div class="comment-field">
       <textarea
         formControlName="comment"
@@ -41,7 +32,6 @@
       <div class="counter">{{ commentLength }}/500</div>
     </div>
 
-    <!-- Блок перемикача з синім фоном та хвилею -->
     <div class="toggle-wrapper">
       <div class="wave"></div>
       <div class="switch-row">

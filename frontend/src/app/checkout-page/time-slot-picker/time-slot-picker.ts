@@ -17,10 +17,9 @@ export class TimeSlotPickerComponent {
   @Input() slots: TimeSlot[] = [];
   @Output() slotSelected = new EventEmitter<TimeSlot>();
 
-  selectedSlotId: number | null = null;
+  @Input() selectedSlot: TimeSlot | null = null;
 
   selectSlot(slot: TimeSlot) {
-    this.selectedSlotId = slot.id;
     this.slotSelected.emit(slot);
   }
 }
