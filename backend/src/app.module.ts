@@ -9,9 +9,11 @@ import { ProductsModule } from "./products/products.module";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { appDataSourceOptions } from './config/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
