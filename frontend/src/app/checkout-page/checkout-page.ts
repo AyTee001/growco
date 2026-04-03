@@ -8,7 +8,7 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
-import { DeliverySlots, deliverySlotsControllerFindByDate,  } from '../client';
+import { DeliverySlots, deliverySlotsControllerFindByDate, } from '../client';
 
 interface DateOption {
   label: string;
@@ -32,7 +32,7 @@ interface DateOption {
 export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
-  
+
   userName = 'Іван Петренко';
   userPhone = '+380 99 123 45 67';
   orderComment = '';
@@ -42,7 +42,7 @@ export class CheckoutPageComponent implements OnInit {
   isLoadingSlots = signal(false);
 
   dateOptions: DateOption[] = [];
-  selectedDate = signal<string>(new Date().toISOString().split('T')[0]);
+  selectedDate = signal<string>('');
 
   paymentMethods: PaymentMethod[] = [
     { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
@@ -63,22 +63,34 @@ export class CheckoutPageComponent implements OnInit {
 
   private generateDateOptions() {
     const options: DateOption[] = [];
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    const startOffset = currentHour >= 22 ? 1 : 0;
+
     for (let i = 0; i < 5; i++) {
       const d = new Date();
-      d.setDate(d.getDate() + i);
-      
+      d.setDate(now.getDate() + startOffset + i);
+
       let label = d.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
-      if (i === 0) label = 'Сьогодні';
-      if (i === 1) label = 'Завтра';
+
+      const daysFromToday = startOffset + i;
+      if (daysFromToday === 0) label = 'Сьогодні';
+      if (daysFromToday === 1) label = 'Завтра';
 
       options.push({
         label,
         value: d.toISOString().split('T')[0]
       });
     }
-    this.dateOptions = options;
-  }
 
+    this.dateOptions = options;
+
+    if (this.dateOptions.length > 0) {
+      this.selectedDate.set(this.dateOptions[0].value);
+    }
+  }
+  
   async onDateChange(dateValue: string) {
     this.selectedDate.set(dateValue);
     this.selectedTimeSlot = null;
@@ -87,9 +99,9 @@ export class CheckoutPageComponent implements OnInit {
 
   private async loadDeliverySlots() {
     this.isLoadingSlots.set(true);
-    
-    const { data, error } = await deliverySlotsControllerFindByDate({ 
-      query: { date: this.selectedDate() } 
+
+    const { data, error } = await deliverySlotsControllerFindByDate({
+      query: { date: this.selectedDate() }
     });
 
     if (error || !data) {
@@ -109,10 +121,10 @@ export class CheckoutPageComponent implements OnInit {
 
   private formatTime(dateSource: string | Date): string {
     const d = new Date(dateSource);
-    return d.toLocaleTimeString('uk-UA', { 
-      hour: '2-digit', 
+    return d.toLocaleTimeString('uk-UA', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   }
 
@@ -166,16 +178,16 @@ export class CheckoutPageComponent implements OnInit {
 
       deliveryAddress: this.selectedAddress,
       deliverySlotId: this.selectedTimeSlot.id,
-      deliveryDate: this.selectedDate, 
+      deliveryDate: this.selectedDate,
       customerName: this.userName,
       customerPhone: this.userPhone,
       paymentMethod: this.selectedPayment,
       comment: this.orderComment,
-      isPaperless: this.noPaperReceipt,    
+      isPaperless: this.noPaperReceipt,
     };
 
     console.log('Order Ready for Backend:', orderPayload);
-    
+
     // Future integration point:
     // await this.orderService.create(orderPayload);
     // this.basketService.clear();
