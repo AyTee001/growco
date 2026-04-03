@@ -61,7 +61,6 @@ export class Header {
   }
 
   openBasket(): void {
-    console.log('basket click');
     this.basketService.open();
   }
 

@@ -62,6 +62,8 @@ export class ProductPanel {
   data = computed(() => this.productResource());
   similarProducts = computed(() => this.similarProductsResource());
 
+  cartQuantity = computed(() => this.basketService.getItemQuantity(this.productId()));
+
   public addToCart() {
     this.basketService.increment(this.productId())
   }

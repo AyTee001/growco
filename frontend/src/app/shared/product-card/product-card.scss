@@ -57,8 +57,9 @@ p {
   display: flex;
   align-items: center;
   margin-top: auto;
-  gap: 4px;
+  gap: 8px;
   width: 100%;
+  justify-content: space-between;
 }
 
 .price {
@@ -102,9 +103,9 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   padding: 0;
-
+  flex-shrink: 0;
+  
   &:hover {
     background-color: var(--mat-sys-on-primary-container);
   }
@@ -132,4 +133,43 @@ p {
   h3 {
     cursor: pointer;
   }
+}
+
+.in-cart-indicator {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: var(--mat-sys-outline);
+  flex-shrink: 0;
+  
+  margin-left: auto; 
+}
+
+.price-container {
+  display: flex;
+  align-items: baseline;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+}
+
+.cart-indicator-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  color: var(--mat-sys-outline);
+}
+
+.quantity-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.in-cart-indicator {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
 }

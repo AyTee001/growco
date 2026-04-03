@@ -1,11 +1,11 @@
-<mat-card class="product-card" [class.promo]="product().isPromo">
+<mat-card class="product-card" [class.promo]="product().isPromo" [class.in-basket]="isInCart()">
   <img mat-card-image [src]="'uploads/' + product().imgUrl" [alt]="product().name">
-  
+
   <mat-card-content>
     <div class="header-section">
       <h3 (click)="navigateToProduct()">{{ product().name }}</h3>
       @if (product().netContent) {
-        <span class="net-content">{{ product().netContent }} {{ product().unit }}</span>
+      <span class="net-content">{{ product().netContent }} {{ product().unit }}</span>
       }
     </div>
 
@@ -14,13 +14,20 @@
     <div class="price-row">
       <div class="price-container">
         @if (product().isPromo && product().oldPrice) {
-          <span class="old-price">{{ product().oldPrice | currency:'UAH':'symbol':'':'uk' }}</span>
-          <span class="price promo-price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
+        <span class="old-price">{{ product().oldPrice | currency:'UAH':'symbol':'':'uk' }}</span>
+        <span class="price promo-price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
         } @else {
-          <span class="price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
+        <span class="price">{{ product().price | currency:'UAH':'symbol':'':'uk' }}</span>
         }
       </div>
-      
+
+      @if (cartQuantity() > 0) {
+      <div class="cart-indicator-group">
+        <span class="quantity-text">{{ cartQuantity() }}</span>
+        <mat-icon class="in-cart-indicator">shopping_cart</mat-icon>
+      </div>
+      }
+
       <button mat-icon-button class="add-button" (click)="addToCart()">
         <mat-icon>add</mat-icon>
       </button>

@@ -20,12 +20,20 @@
                 }
             </div>
 
-            <button mat-flat-button class="buy-btn" (click)="addToCart()">
-                <mat-icon>shopping_cart</mat-icon>
-                До кошику
-            </button>
-        </div>
+            <div class="cart-actions">
+                @if (cartQuantity() > 0) {
+                <div class="cart-indicator-group">
+                    <mat-icon class="in-cart-indicator">check_circle</mat-icon>
+                    <span class="quantity-text">{{ cartQuantity() }} в кошику</span>
+                </div>
+                }
 
+                <button mat-flat-button class="buy-btn" (click)="addToCart()">
+                    <mat-icon>shopping_cart</mat-icon>
+                    До кошику
+                </button>
+            </div>
+        </div>
         <div class="details-container">
             <section class="details-section">
                 <h2 class="section-title">Опис</h2>

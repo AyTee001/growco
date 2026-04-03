@@ -32,6 +32,7 @@
     font-size: 24px;
     font-weight: 600;
     margin: 16px 0;
+    white-space: nowrap;
 }
 
 .buy-btn {
@@ -70,8 +71,10 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 24px;
+    
+    flex-wrap: wrap; 
+    gap: 16px;
 }
-
 
 :host ::ng-deep .mat-expansion-indicator svg {
     min-width: 24px;
@@ -181,4 +184,34 @@
     }
 }
 
+.cart-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap; /* NEW */
+}
 
+.cart-indicator-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--mat-sys-primary);
+    background-color: var(--mat-sys-surface);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    
+    white-space: nowrap; 
+}
+
+.in-cart-indicator {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.quantity-text {
+    font-size: 14px;
+    font-weight: 600;
+}

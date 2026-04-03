@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, debounceTime, groupBy, mergeMap, Subject, switchMap } from 'rxjs';
 import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,8 @@ import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCu
 export class BasketService {
   public readonly cartSubject = new BehaviorSubject<Cart | null>(null);
   readonly cart$ = this.cartSubject.asObservable();
+
+  public readonly cartSignal = toSignal(this.cart$, { initialValue: null });
 
   private readonly quantityUpdate$ = new Subject<{ productId: number; targetQuantity: number }>();
   constructor() {
@@ -17,6 +20,23 @@ export class BasketService {
 
   private readonly isOpenSubject = new BehaviorSubject<boolean>(false);
   readonly isOpen$ = this.isOpenSubject.asObservable();
+
+  hasItem(productId: number): boolean {
+    const cart = this.cartSignal();
+
+    if (!cart || !cart.cartItems) return false;
+
+    return cart.cartItems.some(item => item.productId === productId);
+  }
+
+  getItemQuantity(productId: number): number {
+    const cart = this.cartSignal();
+
+    if (!cart || !cart.cartItems) return 0;
+
+    const item = cart.cartItems.find(i => i.productId === productId);
+    return item ? item.quantity : 0;
+  }
 
   private setupDebouncedUpdates() {
     this.quantityUpdate$.pipe(

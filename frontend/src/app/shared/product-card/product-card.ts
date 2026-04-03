@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,12 +19,14 @@ export class ProductCardComponent {
   private basketService = inject(BasketService);
 
   product = input.required<Products>();
+  cartQuantity = computed(() => this.basketService.getItemQuantity(this.product().productId));
+  isInCart = computed(() => this.basketService.hasItem(this.product().productId));
 
   public navigateToProduct(): void {
-    this.router.navigateByUrl(`/product/${this.product().productId}`)
+    this.router.navigateByUrl(`/product/${this.product().productId}`);
   }
 
   public addToCart() {
-    this.basketService.increment(this.product().productId)
+    this.basketService.increment(this.product().productId);
   }
 }
