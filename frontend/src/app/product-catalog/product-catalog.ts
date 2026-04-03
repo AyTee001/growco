@@ -1,4 +1,4 @@
-import { Component, input, computed, numberAttribute, signal, effect, inject } from '@angular/core';
+import { Component, input, computed, numberAttribute, signal, effect, inject, untracked } from '@angular/core';
 import { Products, productsControllerFindAll, productsControllerFindAllOptions } from '../client';
 import { ProductGridComponent } from "./product-grid/product-grid";
 import { SortSelectComponent } from "../shared/sort-select/sort-select";
@@ -25,7 +25,10 @@ export class ProductCatalog {
     }
   });
   readonly q = input<string | null>(null);
-  readonly sort = signal('price_asc');
+  
+  // Notice we moved the initial state to the top for easy resetting
+  readonly initialSort = 'price_asc';
+  readonly sort = signal(this.initialSort);
   readonly activeFilters = signal<any>({});
 
   filterConfig = signal<FilterCategory[]>([]);
@@ -40,16 +43,30 @@ export class ProductCatalog {
   });
 
   constructor() {
-    effect(async () => {
-      this.getProducts();
-      this.loadFilterOptions();
-    });
+    effect(() => {
+      const id = this.categoryId();
+      const searchTerm = this.q();
+
+      untracked(() => {
+        this.activeFilters.set({});
+        this.filterConfig.set([]);
+        this.loadFilterOptions(id, searchTerm);
+      });
+    }, { allowSignalWrites: true });
+
+    effect(() => {
+      const id = this.categoryId();
+      const searchTerm = this.q();
+      const currentSort = this.sort();
+      const currentFilters = this.activeFilters();
+
+      untracked(() => {
+        this.getProducts(id, searchTerm, currentSort, currentFilters);
+      });
+    }, { allowSignalWrites: true });
   }
 
-  private async loadFilterOptions() {
-    const id = this.categoryId();
-    const searchTerm = this.q();
-
+  private async loadFilterOptions(id: number | null, searchTerm: string | null) {
     const { data, error } = await productsControllerFindAllOptions({
       query: {
         categoryId: id ?? undefined,
@@ -93,20 +110,9 @@ export class ProductCatalog {
     this.activeFilters.set(filters);
   }
 
-  private async getProducts() {
-    const id = this.categoryId();
-    const sort = this.sort();
-    const filters = this.activeFilters();
-
+  private async getProducts(id: number | null, searchTerm: string | null, sort: string, filters: any) {
     this.isLoading.set(true);
-    const data = await this.getProductsByQuery(id, sort, filters);
-    this.products.set(data);
-    this.isLoading.set(false);
-  }
-
-  async getProductsByQuery(id: number | null, sort: string, filters: any): Promise<Products[]> {
-    const searchTerm = this.q();
-
+    
     const { data, error } = await productsControllerFindAll({
       query: {
         categoryId: id,
@@ -121,8 +127,11 @@ export class ProductCatalog {
 
     if (error) {
       console.error('API Error:', error);
-      return [];
+      this.products.set([]);
+    } else {
+      this.products.set(data || []);
     }
-    return data || [];
+    
+    this.isLoading.set(false);
   }
 }
