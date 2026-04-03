@@ -21,16 +21,18 @@
         }
       </div>
 
-      @if (cartQuantity() > 0) {
-      <div class="cart-indicator-group">
-        <span class="quantity-text">{{ cartQuantity() }}</span>
-        <mat-icon class="in-cart-indicator">shopping_cart</mat-icon>
-      </div>
+@if (cartQuantity() > 0 && product().qtyInStock > 0) {
+        <div class="cart-indicator-group">
+          <span class="quantity-text">{{ cartQuantity() }}</span>
+          <mat-icon class="in-cart-indicator">shopping_cart</mat-icon>
+        </div>
       }
 
-      <button mat-icon-button class="add-button" (click)="addToCart()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+      <button mat-icon-button 
+              class="add-button" 
+              [disabled]="product().qtyInStock <= 0 || cartQuantity() >= product().qtyInStock"
+              (click)="addToCart()">
+        <mat-icon>{{ product().qtyInStock <= 0 ? 'block' : 'add' }}</mat-icon>
+      </button>    </div>
   </mat-card-content>
 </mat-card>

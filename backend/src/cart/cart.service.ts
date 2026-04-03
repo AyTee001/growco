@@ -11,6 +11,7 @@ import { CartItems } from '../entities/CartItems';
 import { Users } from '../entities/Users';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { Products } from 'src/entities/Products';
 
 @Injectable()
 export class CartService {
@@ -21,6 +22,8 @@ export class CartService {
     private readonly usersRepository: Repository<Users>,
     @InjectRepository(CartItems)
     private readonly cartItemsRepository: Repository<CartItems>,
+    @InjectRepository(Products)
+    private readonly productsRepository: Repository<Products>,
   ) { }
 
   async findOrCreateBySession(guestSessionId: string): Promise<Cart> {
@@ -53,8 +56,14 @@ export class CartService {
       where: { cartId: cart.cartId, productId: productId }
     });
 
+    const futureQuantity = item ? item.quantity + quantity : quantity;
+
+    if (futureQuantity > 0) {
+      await this.ensureStockAvailable(productId, futureQuantity);
+    }
+
     if (item) {
-      item.quantity += quantity;
+      item.quantity = futureQuantity;
       if (item.quantity <= 0) {
         await this.cartItemsRepository.remove(item);
       } else {
@@ -212,6 +221,11 @@ export class CartService {
       where: { cartId: cart.cartId, productId: productId }
     });
 
+    // NEW: Validate before saving!
+    if (targetQuantity > 0) {
+      await this.ensureStockAvailable(productId, targetQuantity);
+    }
+
     if (targetQuantity <= 0) {
       if (item) await this.cartItemsRepository.remove(item);
     } else {
@@ -230,7 +244,6 @@ export class CartService {
 
     return this.findOne(cart.cartId);
   }
-
   async update(cartId: number, updateCartDto: UpdateCartDto) {
     const cart = await this.cartRepository.findOne({
       where: { cartId },
@@ -294,5 +307,23 @@ export class CartService {
     return {
       message: `Cart with id ${cartId} deleted successfully`,
     };
+  }
+
+  private async ensureStockAvailable(productId: number, requestedQuantity: number) {
+    const product = await this.productsRepository.findOne({
+      where: { productId }
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Product with id ${productId} not found`);
+    }
+
+    if (requestedQuantity > product.qtyInStock) {
+      throw new BadRequestException(
+        `Cannot add ${requestedQuantity} items. Only ${product.qtyInStock} available in stock.`
+      );
+    }
+
+    return product;
   }
 }

@@ -19,19 +19,24 @@
                 <p class="price-text">{{ product.price | number:'1.2-2' }} грн</p>
                 }
             </div>
-
             <div class="cart-actions">
-                @if (cartQuantity() > 0) {
+                @if (cartQuantity() > 0 && product.qtyInStock > 0) {
                 <div class="cart-indicator-group">
                     <mat-icon class="in-cart-indicator">check_circle</mat-icon>
                     <span class="quantity-text">{{ cartQuantity() }} в кошику</span>
                 </div>
                 }
 
-                <button mat-flat-button class="buy-btn" (click)="addToCart()">
-                    <mat-icon>shopping_cart</mat-icon>
-                    До кошику
-                </button>
+                <button mat-flat-button
+                    class="buy-btn"
+                    [disabled]="product.qtyInStock <= 0 || cartQuantity() >= product.qtyInStock"
+                    (click)="addToCart()"
+                    >
+                    <mat-icon>{{ product.qtyInStock <= 0 ? 'remove_shopping_cart' : 'shopping_cart' }}</mat-icon>
+                            {{
+                            product.qtyInStock <= 0 ? 'Немає в наявності' : (cartQuantity()>= product.qtyInStock ?
+                                'Максимум в кошику' : 'До кошику')
+                                }} </button>
             </div>
         </div>
         <div class="details-container">

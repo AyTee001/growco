@@ -39,9 +39,19 @@
     height: 48px;
     min-width: 130px;
     background-color: #2d4a1e !important;
-    padding: 24px 0 !important;
+    
+    padding: 0 24px !important; 
+    
     border-radius: 8px !important;
     font-weight: 600;
+    
+    flex-shrink: 0;
+
+    &:disabled {
+        background-color: var(--mat-sys-surface-container-highest) !important;
+        color: var(--mat-sys-outline) !important;
+        cursor: not-allowed;
+    }
 }
 
 .label {
@@ -94,6 +104,7 @@
 .price-stack {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 .old-price {
@@ -201,7 +212,8 @@
     border-radius: 8px;
     border: 1px solid var(--mat-sys-outline-variant);
     
-    white-space: nowrap; 
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .in-cart-indicator {
