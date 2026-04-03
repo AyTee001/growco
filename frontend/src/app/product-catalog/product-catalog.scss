@@ -48,3 +48,44 @@
     font-weight: 800;
     color: #1a1a1a;
 }
+
+
+.empty-state {
+    width: 50%;
+    min-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    margin-top: 24px;
+    text-align: center;
+    background-color: var(--mat-sys-surface-container-lowest);
+    border-radius: 16px;
+    border: 1px dashed var(--mat-sys-outline-variant);
+
+    .empty-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        color: var(--mat-sys-outline-variant);
+        margin-bottom: 16px;
+        opacity: 0.7;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--mat-sys-on-surface);
+        margin: 0 0 8px 0;
+    }
+
+    p {
+        font-size: 15px;
+        color: var(--mat-sys-on-surface-variant);
+        max-width: 400px;
+        margin: 0;
+        line-height: 1.5;
+    }
+}
