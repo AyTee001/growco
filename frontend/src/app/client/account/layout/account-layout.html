@@ -1,0 +1,27 @@
+<div class="account-layout">
+    <header class="account-header">
+      <div class="account-header__left">
+        <button class="account-header__menu-btn" type="button" aria-label="Відкрити меню">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+  
+        <a routerLink="/" class="account-header__logo">
+          <img src="assets/logo-no-bg1.png" alt="Logo" />
+        </a>
+  
+        <h1 class="account-header__title">Персональний Аккаунт</h1>
+      </div>
+  
+      <button class="account-header__profile-btn" type="button" aria-label="Профіль">
+        <span class="material-symbols-outlined">account_circle</span>
+      </button>
+    </header>
+  
+    <div class="account-layout__body">
+      <app-account-sidebar [items]="navItems"></app-account-sidebar>
+  
+      <main class="account-layout__content">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>

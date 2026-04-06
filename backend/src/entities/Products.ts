@@ -10,6 +10,7 @@ import { CartItems } from './CartItems';
 import { OrderItems } from './OrderItems';
 import { Categories } from './Categories';
 import { ApiProperty } from '@nestjs/swagger';
+import { ColumnNumericTransformer } from '../shared/column-numeric-transformer';
 
 @Index('ix_products_name', ['name'], {})
 @Index('products_pkey', ['productId'], { unique: true })
@@ -27,9 +28,15 @@ export class Products {
   @Column('text', { name: 'description', nullable: true })
   description: string | null;
 
-  @ApiProperty({ type: 'string', description: 'Current product price' })
-  @Column('numeric', { name: 'price', precision: 10, scale: 2 })
-  price: string;
+  @ApiProperty({ type: 'number', description: 'Current product price' })
+  @Column('numeric', {
+    name: 'price',
+    precision: 10,
+    scale: 2,
+    transformer: new ColumnNumericTransformer()
+  })
+  price: number;
+
 
   @ApiProperty({ type: 'integer', default: 0 })
   @Column('integer', { name: 'qty_in_stock', default: () => '0' })
@@ -51,18 +58,30 @@ export class Products {
   @Column('boolean', { name: 'is_promo', default: false })
   isPromo: boolean;
 
-  @ApiProperty({ 
-    type: 'string', 
-    nullable: true, 
-    required: false, 
-    description: 'Price before discount' 
+  @ApiProperty({
+    type: 'number',
+    nullable: true,
+    required: false,
+    description: 'Price before discount'
   })
-  @Column('numeric', { name: 'old_price', precision: 10, scale: 2, nullable: true })
-  oldPrice: string | null;
+  @Column('numeric', {
+    name: 'old_price',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+    transformer: new ColumnNumericTransformer()
+  })
+  oldPrice: number | null;
 
-  @ApiProperty({ type: 'string', nullable: true, required: false, example: '1.75' })
-  @Column('numeric', { name: 'net_content', precision: 10, scale: 2, nullable: true })
-  netContent: string | null;
+  @ApiProperty({ type: 'number', nullable: true, required: false, example: 1.75 })
+  @Column('numeric', {
+    name: 'net_content',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+    transformer: new ColumnNumericTransformer()
+  })
+  netContent: number | null;
 
   @ApiProperty({ type: 'string', nullable: true, required: false, example: 'л' })
   @Column('character varying', { nullable: true, length: 20 })

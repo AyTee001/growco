@@ -1,29 +1,34 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { BasketItemModel } from '../basket-item.model';
+import { CartItems } from '../../../../client';
 import { BasketService } from '../basket.service';
+import { CommonModule } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-basket-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIcon],
   templateUrl: './basket-item.html',
   styleUrls: ['./basket-item.scss']
 })
 export class BasketItem {
-  @Input({ required: true }) item!: BasketItemModel;
+  @Input({ required: true }) item!: CartItems; 
 
   constructor(private basketService: BasketService) {}
 
   increase(): void {
-    this.basketService.increaseQuantity(this.item.id);
+    if (this.item.quantity < this.item.product.qtyInStock) {
+      this.basketService.updateQuantity(this.item.productId, 1);
+    }
   }
 
   decrease(): void {
-    this.basketService.decreaseQuantity(this.item.id);
+    if (this.item.quantity > 1) {
+      this.basketService.updateQuantity(this.item.productId, -1);
+    }
   }
 
   remove(): void {
-    this.basketService.removeItem(this.item.id);
+    this.basketService.removeItem(this.item.itemId);
   }
 }

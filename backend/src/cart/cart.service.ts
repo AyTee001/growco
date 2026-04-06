@@ -11,6 +11,7 @@ import { CartItems } from '../entities/CartItems';
 import { Users } from '../entities/Users';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { Products } from 'src/entities/Products';
 
 @Injectable()
 export class CartService {
@@ -21,7 +22,83 @@ export class CartService {
     private readonly usersRepository: Repository<Users>,
     @InjectRepository(CartItems)
     private readonly cartItemsRepository: Repository<CartItems>,
-  ) {}
+    @InjectRepository(Products)
+    private readonly productsRepository: Repository<Products>,
+  ) { }
+
+  async findOrCreateBySession(guestSessionId: string): Promise<Cart> {
+    const normalizedId = this.normalizeGuestSessionId(guestSessionId);
+
+    if (!normalizedId) {
+      throw new BadRequestException('A valid guest session ID must be provided.');
+    }
+
+    let cart = await this.cartRepository.findOne({
+      where: { guestSessionId: normalizedId },
+      relations: ['cartItems', 'cartItems.product'],
+    });
+
+    if (!cart) {
+      cart = await this.create({
+        guestSessionId: normalizedId,
+        userId: undefined
+      });
+      cart.cartItems = [];
+    }
+
+    return cart;
+  }
+
+  async addItem(sessionId: string, productId: number, quantity: number) {
+    let cart = await this.findOrCreateBySession(sessionId);
+
+    let item = await this.cartItemsRepository.findOne({
+      where: { cartId: cart.cartId, productId: productId }
+    });
+
+    const futureQuantity = item ? item.quantity + quantity : quantity;
+
+    if (futureQuantity > 0) {
+      await this.ensureStockAvailable(productId, futureQuantity);
+    }
+
+    if (item) {
+      item.quantity = futureQuantity;
+      if (item.quantity <= 0) {
+        await this.cartItemsRepository.remove(item);
+      } else {
+        await this.cartItemsRepository.save(item);
+      }
+    } else if (quantity > 0) {
+      item = this.cartItemsRepository.create({
+        cartId: cart.cartId,
+        productId: productId,
+        quantity: quantity
+      });
+      await this.cartItemsRepository.save(item);
+    }
+
+    return this.findOne(cart.cartId);
+  }
+
+  async removeCartItem(sessionId: string, itemId: number) {
+    const cart = await this.findOrCreateBySession(sessionId);
+    await this.cartItemsRepository.delete({ itemId, cartId: cart.cartId });
+    return this.findOne(cart.cartId);
+  }
+
+  async findOne(cartId: number) {
+    const cart = await this.cartRepository.findOne({
+      where: { cartId },
+      relations: ['user', 'cartItems', 'cartItems.product'],
+    });
+
+    if (!cart) {
+      throw new NotFoundException(`Cart with id ${cartId} not found`);
+    }
+
+    return cart;
+  }
 
   private normalizeGuestSessionId(value?: string | null): string | null {
     if (value === undefined || value === null) {
@@ -129,26 +206,44 @@ export class CartService {
     }
   }
 
-  async findAll() {
-    return this.cartRepository.find({
-      relations: ['user', 'cartItems'],
-      order: { cartId: 'ASC' },
-    });
+  async clearCart(sessionId: string) {
+    const cart = await this.findOrCreateBySession(sessionId);
+
+    await this.cartItemsRepository.delete({ cartId: cart.cartId });
+
+    return this.findOne(cart.cartId);
   }
 
-  async findOne(cartId: number) {
-    const cart = await this.cartRepository.findOne({
-      where: { cartId },
-      relations: ['user', 'cartItems'],
+  async updateItemQuantity(sessionId: string, productId: number, targetQuantity: number) {
+    let cart = await this.findOrCreateBySession(sessionId);
+
+    let item = await this.cartItemsRepository.findOne({
+      where: { cartId: cart.cartId, productId: productId }
     });
 
-    if (!cart) {
-      throw new NotFoundException(`Cart with id ${cartId} not found`);
+    // NEW: Validate before saving!
+    if (targetQuantity > 0) {
+      await this.ensureStockAvailable(productId, targetQuantity);
     }
 
-    return cart;
-  }
+    if (targetQuantity <= 0) {
+      if (item) await this.cartItemsRepository.remove(item);
+    } else {
+      if (item) {
+        item.quantity = targetQuantity;
+        await this.cartItemsRepository.save(item);
+      } else {
+        item = this.cartItemsRepository.create({
+          cartId: cart.cartId,
+          productId: productId,
+          quantity: targetQuantity
+        });
+        await this.cartItemsRepository.save(item);
+      }
+    }
 
+    return this.findOne(cart.cartId);
+  }
   async update(cartId: number, updateCartDto: UpdateCartDto) {
     const cart = await this.cartRepository.findOne({
       where: { cartId },
@@ -212,5 +307,23 @@ export class CartService {
     return {
       message: `Cart with id ${cartId} deleted successfully`,
     };
+  }
+
+  private async ensureStockAvailable(productId: number, requestedQuantity: number) {
+    const product = await this.productsRepository.findOne({
+      where: { productId }
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Product with id ${productId} not found`);
+    }
+
+    if (requestedQuantity > product.qtyInStock) {
+      throw new BadRequestException(
+        `Cannot add ${requestedQuantity} items. Only ${product.qtyInStock} available in stock.`
+      );
+    }
+
+    return product;
   }
 }

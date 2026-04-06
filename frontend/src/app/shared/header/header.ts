@@ -20,7 +20,8 @@ export class Header {
   private dialog = inject(MatDialog);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
+  private basketService = inject(BasketService);
+  
   searchQuery = signal<string>('');
 
   constructor() {
@@ -59,13 +60,10 @@ export class Header {
     });
   }
 
-  constructor(private basketService: BasketService) {}
-
   openBasket(): void {
-    console.log('basket click');
     this.basketService.open();
   }
-}
+
   onSearch(eventOrValue: any) {
     const query = typeof eventOrValue === 'string'
       ? eventOrValue

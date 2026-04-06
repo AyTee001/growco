@@ -1,0 +1,60 @@
+<div class="profile-page">
+    <div class="profile-page__container">
+      <h2 class="profile-page__title">Персональний Аккаунт</h2>
+  
+      <section class="profile-summary">
+        <div class="profile-summary__avatar">
+          <span class="material-symbols-outlined">person</span>
+        </div>
+  
+        <div class="profile-summary__info">
+          <h3 class="profile-summary__name">{{ user.fullName }}</h3>
+          <p class="profile-summary__phone">{{ user.phone }}</p>
+  
+          <a class="profile-summary__button" routerLink="/account/my-data">
+            Мої дані
+          </a>
+        </div>
+      </section>
+  
+      <section class="profile-cards">
+        <article class="profile-card profile-card--large">
+          <h3 class="profile-card__title">{{ cards[0].title }}</h3>
+  
+          <p class="profile-card__text">
+            <span *ngFor="let line of cards[0].description.split('\n'); let last = last">
+              {{ line }}<br *ngIf="!last" />
+            </span>
+          </p>
+  
+          <a class="profile-card__action" [routerLink]="cards[0].route">
+            <span>{{ cards[0].actionText }}</span>
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+        </article>
+  
+        <article class="profile-card profile-card--large">
+          <h3 class="profile-card__title">{{ cards[1].title }}</h3>
+  
+          <p class="profile-card__text">
+            <span *ngFor="let line of cards[1].description.split('\n'); let last = last">
+              {{ line }}<br *ngIf="!last" />
+            </span>
+          </p>
+        </article>
+  
+        <article class="profile-card profile-card--small">
+          <h3 class="profile-card__title">{{ cards[2].title }}</h3>
+  
+          <p class="profile-card__text">
+            {{ cards[2].description }}
+          </p>
+  
+          <a class="profile-card__action" [routerLink]="cards[2].route">
+            <span>{{ cards[2].actionText }}</span>
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+        </article>
+      </section>
+    </div>
+  </div>

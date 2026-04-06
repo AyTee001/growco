@@ -1,0 +1,58 @@
+.payment-method-container {
+  background-color: var(--mat-sys-surface-container-lowest);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.payment-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 20px 0;
+  color: var(--mat-sys-on-surface);
+}
+
+.payment-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.payment-option {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 16px;
+  padding: 12px 16px;
+  transition: background-color 0.2s, border-color 0.2s;
+  margin: 0;
+  background-color: var(--mat-sys-surface);
+}
+
+.payment-option-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.payment-icon {
+  color: var(--mat-sys-primary);
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.payment-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+
+::ng-deep .payment-option .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
+  border-color: #2196f3 !important;
+}
+
+::ng-deep .payment-option .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle {
+  border-color: #2196f3 !important;
+  background-color: #2196f3 !important;
+}

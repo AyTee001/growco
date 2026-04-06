@@ -71,52 +71,17 @@ h1, h2, h3, h4 {
   margin-bottom: 16px;
 }
 
-.mission-section {
-  text-align: center;
-  padding: 20px 0;
-}
-.mission-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
-.mission-section p {
-  font-size: 1.1rem;
-  line-height: 1.5;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-.service-item {
-  border: 1px solid #eaeaea;
-  border-radius: 16px;
-  padding: 24px;
-  text-align: center;
-}
-.service-item h4 {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-.service-item p {
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
-.gallery-section {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  width: 100%;
-  max-width: 1200px;
-}
-.gallery-section img {
-  width: 100%;
-  aspect-ratio: 4/5;
-  object-fit: cover;
-  border-radius: 16px;
+/* Місія та візія – вертикальні блоки, без додаткового позиціонування */
+.mission-card, .vision-card {
+  h3 {
+    margin-top: 0;
+    color: #2b4d32;
+    font-size: 1.5rem;
+  }
+  p {
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
 }
 
 .values-grid {
@@ -139,12 +104,33 @@ h1, h2, h3, h4 {
   line-height: 1.5;
 }
 
+.strategy-card {
+  .tactical-goals {
+    margin-top: 24px;
+    ul {
+      padding-left: 20px;
+      li { margin-bottom: 8px; }
+    }
+  }
+}
+
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  .leader {
+    background: var(--mat-sys-surface-container-lowest);
+    padding: 12px 16px;
+    border-radius: var(--mat-sys-corner-small);
+    border: 1px solid var(--mat-sys-outline-variant);
+    font-weight: 500;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-card { flex-direction: column; }
-  .services-grid, .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-section { grid-template-columns: repeat(3, 1fr); }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
-  .services-grid, .values-grid { grid-template-columns: 1fr; }
-  .gallery-section { grid-template-columns: repeat(2, 1fr); }
+  .values-grid { grid-template-columns: 1fr; }
 }
