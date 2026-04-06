@@ -1,0 +1,94 @@
+.footer {
+  background: #ECEFE5;
+  padding: 40px 60px 20px;
+  color: #43483F; // основной текст;
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .links-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 220px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px; // Spacing between the three blocks
+
+    mat-icon {
+      color: #43483F;
+      font-size: 20px;
+      opacity: 0.7;
+    }
+
+    .text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+
+      .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 600;
+        opacity: 0.5;
+        margin-bottom: 2px;
+      }
+
+      .value {
+        font-size: 14px;
+        color: #43483F;
+        font-weight: 500;
+      }
+
+      .link-action {
+        text-decoration: none;
+        border-bottom: 1px solid rgba(67, 72, 63, 0.3);
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: #617a55;
+          border-bottom-color: #617a55;
+        }
+      }
+    }
+  }
+}
+
+.footer-bottom {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+  .footer {
+    padding: 30px 20px;
+
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .logo-section {
+      margin-top: 20px;
+    }
+
+    .footer-bottom {
+      text-align: left;
+    }
+  }
+}
+
+.logo-section img {
+  max-width: 200px !important;
+}

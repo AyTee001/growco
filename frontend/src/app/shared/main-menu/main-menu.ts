@@ -1,23 +1,29 @@
-import { Component, computed, signal, inject } from '@angular/core';
-import { MAIN_MENU_SCHEMA } from './main-menu-schema';
+import { Component, computed, signal, inject, OnInit } from '@angular/core';
 import { SidebarNav } from "./sidebar-nav/sidebar-nav";
 import { SubcategoryGrid } from "./subcategory-grid/subcategory-grid";
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { CategoryService } from '../services/category.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
-  imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule],
+  standalone: true,
+  imports: [SidebarNav, SubcategoryGrid, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './main-menu.html',
   styleUrl: './main-menu.scss',
 })
 export class MainMenu {
-  readonly selectedCategoryId = signal<string>('meat-products');
   private dialogRef = inject(MatDialogRef<MainMenu>);
+  private categoryService = inject(CategoryService);
+
+  categoryTree = this.categoryService.categoryTree;
+
+  readonly selectedCategoryId = signal<number>(1);
 
   activeCategory = computed(() =>
-    MAIN_MENU_SCHEMA.find(c => c.id === this.selectedCategoryId())! //Not sure how this schema info will propagate here in the end
+    this.categoryTree().find(c => c.categoryId === this.selectedCategoryId())!
   );
 
   readonly brands = signal([

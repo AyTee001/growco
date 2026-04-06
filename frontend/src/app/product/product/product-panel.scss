@@ -1,0 +1,229 @@
+.product-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 24px;
+}
+
+.image-area {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.product-descr-panel {
+    max-height: 200px;
+    overflow-x: auto;
+}
+
+.product-img {
+    width: 100%;
+    max-width: 515px;
+    max-height: 515px;
+    height: auto;
+    object-fit: contain;
+    position: sticky;
+    top: 24px;
+}
+
+.price-text {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 16px 0;
+    white-space: nowrap;
+}
+
+.buy-btn {
+    height: 48px;
+    min-width: 130px;
+    background-color: #2d4a1e !important;
+    
+    padding: 0 24px !important; 
+    
+    border-radius: 8px !important;
+    font-weight: 600;
+    
+    flex-shrink: 0;
+
+    &:disabled {
+        background-color: var(--mat-sys-surface-container-highest) !important;
+        color: var(--mat-sys-outline) !important;
+        cursor: not-allowed;
+    }
+}
+
+.label {
+    color: #757575;
+}
+
+.value {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .image-area {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.price-cart-btn {
+    background: var(--mat-sys-surface-container-low);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    
+    flex-wrap: wrap; 
+    gap: 16px;
+}
+
+:host ::ng-deep .mat-expansion-indicator svg {
+    min-width: 24px;
+}
+
+.product-slider {
+    padding: 12px 24px;
+}
+
+.unit-text {
+    font-size: 18px;
+    color: var(--mat-sys-on-surface-variant);
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.price-stack {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.old-price {
+    font-size: 16px;
+    text-decoration: line-through;
+    color: #757575;
+    margin: 0;
+}
+
+.price-text.promo {
+    color: #ff5252;
+    margin-top: -4px;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+
+.product-header {
+    margin-bottom: 8px;
+
+    h1 {
+        margin: 0;
+        font-weight: 700;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+    }
+}
+
+.brand-subtitle {
+    color: var(--mat-sys-primary);
+    font-weight: 500;
+    margin: 4px 0 0 0;
+    font-size: 16px;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px; // Space between Description and Specs
+    margin-top: 32px;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+    padding-top: 24px;
+}
+
+.section-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0 0 12px 0;
+    font-weight: 600;
+}
+
+.description-text {
+    line-height: 1.6;
+    color: var(--mat-sys-on-surface);
+    margin: 0;
+    font-size: 15px;
+}
+
+.info-table {
+    .row {
+        display: flex;
+        padding: 8px 0;
+        border-bottom: 1px dashed var(--mat-sys-outline-variant);
+        font-size: 15px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .label {
+        flex: 1;
+        color: var(--mat-sys-on-surface-variant);
+    }
+
+    .value {
+        flex: 1;
+        font-weight: 500;
+        text-align: right;
+    }
+}
+
+.cart-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap; /* NEW */
+}
+
+.cart-indicator-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--mat-sys-primary);
+    background-color: var(--mat-sys-surface);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.in-cart-indicator {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.quantity-text {
+    font-size: 14px;
+    font-weight: 600;
+}

@@ -1,0 +1,20 @@
+<div class="address-container">
+  <div class="current-address">
+    <span>{{ selectedAddress }}</span>
+    <button mat-icon-button (click)="openModal()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Виберіть адресу</h3>
+    <div class="address-list">
+      <div *ngFor="let addr of addresses" class="address-item" (click)="selectAddress(addr)">
+        {{ addr }}
+      </div>
+    </div>
+    <button mat-raised-button (click)="closeModal()">Скасувати</button>
+  </div>
+</div>

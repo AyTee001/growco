@@ -4,20 +4,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CategoryCard } from './homepage/category-card/category-card';
-import { Header } from './shared/header/header';
+import { RouterOutlet } from "@angular/router";
+
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
-    CommonModule, 
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
     MatCardModule,
-    CategoryCard
-    Header
-  ],
+    RouterOutlet
+],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

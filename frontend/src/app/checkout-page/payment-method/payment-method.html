@@ -1,0 +1,18 @@
+<div class="payment-method-container">
+  <h3 class="payment-title">При отриманні</h3>
+
+  <mat-radio-group
+    [value]="selectedValue"
+    (change)="onSelectionChange($event.value)"
+    class="payment-radio-group"
+  >
+    @for (method of methods; track method.id) {
+      <mat-radio-button [value]="method.value" class="payment-option">
+        <div class="payment-option-content">
+          <mat-icon class="payment-icon">{{ method.icon }}</mat-icon>
+          <span class="payment-label">{{ method.label }}</span>
+        </div>
+      </mat-radio-button>
+    }
+  </mat-radio-group>
+</div>

@@ -16,6 +16,17 @@
   }
 }
 
+:host ::ng-deep .mat-mdc-select-arrow {
+  width: 24px;
+  height: 24px;
+}
+
+:host ::ng-deep .mat-mdc-select-trigger {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
 .filter-icon {
   color: var(--mat-sys-primary);
   font-size: 24px;
@@ -25,7 +36,6 @@
 
 .sort-select {
   flex: 1;
-  // Стилізація самого селекта (Material Design)
   ::ng-deep .mat-mdc-select-value {
     color: var(--mat-sys-on-surface);
   }
@@ -35,7 +45,6 @@
   }
 }
 
-// Стилі для випадаючого меню (глобальні, можна винести в styles.scss)
 ::ng-deep .sort-select-panel {
   background-color: var(--mat-sys-surface-container-lowest);
   border-radius: var(--mat-sys-corner-small);
@@ -57,4 +66,8 @@
       color: var(--mat-sys-on-primary-container);
     }
   }
+}
+
+:host ::ng-deep .mat-mdc-option {
+  font-size: 14px;
 }

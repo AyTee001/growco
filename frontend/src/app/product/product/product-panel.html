@@ -1,0 +1,76 @@
+@if (productResource(); as product) {
+<div class="product-grid">
+    <div class="image-area">
+        <img [src]="'uploads/' + product.imgUrl" [alt]="product.name" class="productResource()-img">
+    </div>
+
+    <div class="content-area">
+        <h1 class="mat-headline-medium">
+            {{ product.name }}
+            <span class="unit-text">{{ product.netContent }}{{ product.unit }}</span>
+        </h1>
+
+        <div class="price-cart-btn">
+            <div class="price-stack">
+                @if (product.isPromo && product.oldPrice) {
+                <p class="old-price">{{ product.oldPrice | number:'1.2-2' }} грн</p>
+                <p class="price-text promo">{{ product.price | number:'1.2-2' }} грн</p>
+                } @else {
+                <p class="price-text">{{ product.price | number:'1.2-2' }} грн</p>
+                }
+            </div>
+            <div class="cart-actions">
+                @if (cartQuantity() > 0 && product.qtyInStock > 0) {
+                <div class="cart-indicator-group">
+                    <mat-icon class="in-cart-indicator">check_circle</mat-icon>
+                    <span class="quantity-text">{{ cartQuantity() }} в кошику</span>
+                </div>
+                }
+
+                <button mat-flat-button
+                    class="buy-btn"
+                    [disabled]="product.qtyInStock <= 0 || cartQuantity() >= product.qtyInStock"
+                    (click)="addToCart()"
+                    >
+                    <mat-icon>{{ product.qtyInStock <= 0 ? 'remove_shopping_cart' : 'shopping_cart' }}</mat-icon>
+                            {{
+                            product.qtyInStock <= 0 ? 'Немає в наявності' : (cartQuantity()>= product.qtyInStock ?
+                                'Максимум в кошику' : 'До кошику')
+                                }} </button>
+            </div>
+        </div>
+        <div class="details-container">
+            <section class="details-section">
+                <h2 class="section-title">Опис</h2>
+                <p class="description-text">{{ product.description }}</p>
+            </section>
+
+            <section class="details-section">
+                <h2 class="section-title">Характеристики</h2>
+                <div class="info-table">
+                    <div class="row">
+                        <span class="label">Країна походження</span>
+                        <span class="value">{{ product.originCountry || 'Не вказано' }}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Торгова марка</span>
+                        <span class="value">{{ product.brand || 'Не вказано' }}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Об'єм/Вага</span>
+                        <span class="value">{{ product.netContent }} {{ product.unit }}</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="product-slider">
+    <app-product-slider title="Схожі товари" [items]="similarProducts()"></app-product-slider>
+</div>
+} @else {
+<div class="loading-container">
+    <p>Завантаження продукту...</p>
+</div>
+}

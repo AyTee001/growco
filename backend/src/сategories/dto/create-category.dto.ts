@@ -20,7 +20,7 @@ export class CreateCategoryDto {
   parentCategoryId?: number | null;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   @Length(1, 500)
   imgUrl?: string | null;
 }

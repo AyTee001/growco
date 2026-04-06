@@ -1,0 +1,136 @@
+.about-container {
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: #2b4d32;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.page-title {
+  width: 100%;
+  max-width: 1200px;
+  font-size: 2.5rem;
+  margin-bottom: -20px;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-heading::before {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  background-color: #2b4d32;
+}
+
+.hero-card {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+.hero-image {
+  flex: 1;
+}
+.hero-image img {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+.hero-content {
+  flex: 1;
+}
+.hero-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.hero-content p {
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Місія та візія – вертикальні блоки, без додаткового позиціонування */
+.mission-card, .vision-card {
+  h3 {
+    margin-top: 0;
+    color: #2b4d32;
+    font-size: 1.5rem;
+  }
+  p {
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+.value-item .icon {
+  font-size: 2rem;
+  color: #4a7c59;
+  display: block;
+  margin-bottom: 15px;
+}
+.value-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+.value-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.strategy-card {
+  .tactical-goals {
+    margin-top: 24px;
+    ul {
+      padding-left: 20px;
+      li { margin-bottom: 8px; }
+    }
+  }
+}
+
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  .leader {
+    background: var(--mat-sys-surface-container-lowest);
+    padding: 12px 16px;
+    border-radius: var(--mat-sys-corner-small);
+    border: 1px solid var(--mat-sys-outline-variant);
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-card { flex-direction: column; }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .values-grid { grid-template-columns: 1fr; }
+}
