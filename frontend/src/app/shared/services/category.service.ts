@@ -17,7 +17,7 @@ export class CategoryService {
     readonly categoryTree = this._categoryTree.asReadonly();
 
     async init(): Promise<void> {
-        const request$ = this.http.get<Category[]>('http://localhost:4200/api/categories').pipe(
+        const request$ = this.http.get<Category[]>('/api/categories').pipe(
             map(data => this.buildTree(data))
         );
         const tree = await lastValueFrom(request$);

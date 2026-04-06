@@ -11,7 +11,7 @@ function initializeCategories(categoryService: CategoryService) {
 }
 
 client.setConfig({
-  baseUrl: 'http://localhost:4200/api',
+  baseUrl: '/api',
 });
 
 export const appConfig: ApplicationConfig = {
