@@ -17,8 +17,8 @@ import { ProductSliderComponent } from "../shared/product-slider/product-slider"
 })
 export class Homepage {
   readonly leftImages = [
-    'assets/banner/banner-1.png',
-    'assets/banner/banner-2.png'
+    '/banners/banner.png',
+    '/banners/banner2.png'
   ];
 
 
