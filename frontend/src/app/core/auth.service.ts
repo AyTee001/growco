@@ -20,7 +20,7 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth'; // змініть на ваш бекенд
+  private apiUrl = 'http://localhost:3000/auth';
   private tokenKey = 'access_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
 

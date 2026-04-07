@@ -46,7 +46,7 @@ export const routes: Routes = [
         path: 'checkout',
         loadComponent: () =>
           import('./checkout-page/checkout-page').then((m) => m.CheckoutPageComponent),
-        canActivate: [AuthGuard]   // защищаем страницу оформления заказа
+        canActivate: [AuthGuard]
       }
     ]
   },

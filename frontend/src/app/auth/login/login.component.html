@@ -1,7 +1,4 @@
 <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  <div class="error-message" [class.hidden]="!errorMessage">
-    {{ errorMessage }}
-  </div>
 
   <div class="form-group">
     <label for="email">Email *</label>
@@ -14,6 +11,10 @@
     <label for="password">Пароль *</label>
     <input type="password" id="password" name="password" [(ngModel)]="password" required />
     <div *ngIf="submitted && !password" class="error">Пароль обов'язковий</div>
+  </div>
+
+  <div class="error-message" [class.hidden]="!errorMessage">
+    {{ errorMessage }}
   </div>
 
   <button type="submit" [disabled]="loading">Увійти</button>
