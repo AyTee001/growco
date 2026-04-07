@@ -1,0 +1,22 @@
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+
+  <div class="form-group">
+    <label for="email">Email *</label>
+    <input type="email" id="email" name="email" [(ngModel)]="email" required email />
+    <div *ngIf="submitted && !email" class="error">Email обов'язковий</div>
+    <div *ngIf="submitted && email && !email.includes('@')" class="error">Введіть коректний email</div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Пароль *</label>
+    <input type="password" id="password" name="password" [(ngModel)]="password" required />
+    <div *ngIf="submitted && !password" class="error">Пароль обов'язковий</div>
+  </div>
+
+  <div class="error-message" [class.hidden]="!errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <button type="submit" [disabled]="loading">Увійти</button>
+  <p>Немає акаунта? <a routerLink="/register">Зареєструватися</a></p>
+</form>

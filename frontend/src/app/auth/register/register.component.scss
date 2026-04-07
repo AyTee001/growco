@@ -1,0 +1,38 @@
+.form-group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--mat-sys-corner-small);
+}
+.error {
+  color: var(--mat-sys-error);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+button {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--mat-sys-corner-small);
+  cursor: pointer;
+}
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+}
+.hidden {
+  display: none;
+}

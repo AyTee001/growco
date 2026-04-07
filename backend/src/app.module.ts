@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config'; // 👈 імпорт
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,9 +11,14 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { appDataSourceOptions } from './config/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '../.env',   // піднімаємось на рівень вище
+    }),
     ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
@@ -23,7 +29,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     CartModule,
     ProductsModule,
     DeliverySlotsModule,
-    ProductsModule
+    ProductsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
