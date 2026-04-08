@@ -1,38 +1,93 @@
-.form-group {
-  margin-bottom: 1rem;
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--mat-sys-surface-container-low) 0%, var(--mat-sys-surface) 100%);
+  padding: 20px;
 }
-label {
-  display: block;
-  margin-bottom: 0.25rem;
-}
-input {
+
+.auth-card {
+  max-width: 480px;
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: var(--mat-sys-corner-small);
+  padding: 32px 24px;
+  border-radius: var(--mat-sys-corner-large);
+  background-color: var(--mat-sys-surface-container-lowest);
+  box-shadow: var(--mat-sys-level3);
 }
-.error {
-  color: var(--mat-sys-error);
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
+
+mat-card-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .logo {
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+  }
 }
-button {
+
+mat-card-subtitle {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 14px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 8px;
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
-  padding: 0.5rem 1rem;
-  border: none;
   border-radius: var(--mat-sys-corner-small);
-  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--mat-sys-primary-fixed-dim);
+  }
 }
+
+.register-link {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 14px;
+
+  a {
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .error-message {
   background-color: #ffebee;
   color: #c62828;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+  padding: 12px;
+  border-radius: var(--mat-sys-corner-small);
+  margin-bottom: 20px;
   text-align: center;
-  border: 1px solid #f5c6cb;
+  font-size: 14px;
 }
+
 .hidden {
   display: none;
 }
