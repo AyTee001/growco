@@ -1,32 +1,25 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Categories } from '../entities/Categories';
-import { Products } from '../entities/Products';
-import { Addresses } from '../entities/Addresses';
-import { Cart } from '../entities/Cart';
-import { CartItems } from '../entities/CartItems';
-import { DeliverySlots } from '../entities/DeliverySlots';
-import { LoyaltyTransactions } from '../entities/LoyaltyTransactions';
-import { OrderItems } from '../entities/OrderItems';
-import { Orders } from '../entities/Orders';
-import { Stores } from '../entities/Stores';
-import { Users } from '../entities/Users';
+import * as path from 'path';
+
 
 export const appDataSourceOptions: DataSourceOptions = {
     type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'root',
-    database: 'growco_db',
-    entities: [Categories, Products, Addresses, Cart, CartItems, DeliverySlots, LoyaltyTransactions, OrderItems, Orders, Stores, Users],
-    synchronize: false,
-    ssl: false,
-    logging: true
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432'),
+    username: process.env.DB_USERNAME || 'postgres',
+    password: process.env.DB_PASSWORD || 'root',
+    database: process.env.DB_NAME || 'growco_db',
+    
+    entities: [path.join(__dirname, '/../entities/**/*.{ts,js}')],
+    
+    synchronize: process.env.DB_SYNC === 'true',
+    logging: process.env.DB_LOGGING === 'true',
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 };
 
 export const fullDataSourceOptions: DataSourceOptions = {
-  ...appDataSourceOptions,
-  migrations: ['src/migrations/*.ts'],
+    ...appDataSourceOptions,
+    migrations: [path.join(__dirname, '/../migrations/**/*.{ts,js}')],
 };
 
 const dataSource = new DataSource(fullDataSourceOptions);

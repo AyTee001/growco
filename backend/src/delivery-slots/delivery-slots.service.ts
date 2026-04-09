@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Between, QueryFailedError, Repository } from 'typeorm';
 import { DeliverySlots } from '../entities/DeliverySlots';
 import { Orders } from '../entities/Orders';
 import { CreateDeliverySlotDto } from './dto/create-delivery-slot.dto';
@@ -14,11 +14,27 @@ import { UpdateDeliverySlotDto } from './dto/update-delivery-slot.dto';
 export class DeliverySlotsService {
   constructor(
     @InjectRepository(DeliverySlots)
-    private readonly deliverySlotsRepository: Repository<DeliverySlots>,
-    @InjectRepository(Orders)
-    private readonly ordersRepository: Repository<Orders>,
-  ) {}
+    private readonly deliverySlotsRepository: Repository<DeliverySlots>
+  ) { }
 
+  async findByDate(dateStr: string) {
+    const startOfDay = new Date(dateStr);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(dateStr);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const now = new Date();
+    const searchStart = startOfDay > now ? startOfDay : now;
+
+    return await this.deliverySlotsRepository.find({
+      where: {
+        startTime: Between(searchStart, endOfDay),
+        isAvailable: true,
+      },
+      order: { startTime: 'ASC' },
+    });
+  }
   private assertValidRange(startTime: Date, endTime: Date) {
     if (endTime.getTime() <= startTime.getTime()) {
       throw new BadRequestException('endTime must be later than startTime');

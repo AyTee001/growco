@@ -11,267 +11,164 @@ import { ProductSliderComponent } from "../shared/product-slider/product-slider"
     BannerSectionComponent,
     CategoryCard,
     ProductSliderComponent
-],
+  ],
   templateUrl: './homepage.html',
   styleUrl: './homepage.scss'
 })
 export class Homepage {
   readonly leftImages = [
-    'assets/banner/banner-1.png',
-    'assets/banner/banner-2.png'
+    'images/banners/banner.png',
+    'images/banners/banner2.png'
   ];
 
-  readonly products: Partial<Products>[] = [
+
+  public readonly dummy_items: Products[] = [
     {
-      imgUrl: 'assets/products/noodles.png',
-      name: 'Вермішель «Мівіна»',
-      description: 'з соусом солодкий чилі',
-      price: '42.0',
+      productId: 1,
+      name: 'Вода Borjomi',
+      description: 'Натуральна мінеральна вода вулканічного походження.',
+      price: 35.50,
+      qtyInStock: 50,
+      imgUrl: '/products/borjomi.png',
+      brand: 'Borjomi',
+      originCountry: 'Georgia',
+      isPromo: false,
+      netContent: 0.5,
+      unit: 'л',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/reeva.png',
-      name: 'Вермішель Reeva',
-      description: 'зі смаком курки',
-      price: '18.69',
+      productId: 2,
+      name: 'Coca-Cola Classic',
+      description: 'Класичний освіжаючий напій.',
+      price: 28.00,
+      oldPrice: 32.00,
+      qtyInStock: 100,
+      imgUrl: '/products/coca-cola.png',
+      brand: 'Coca-Cola',
+      originCountry: 'Ukraine',
+      isPromo: true,
+      netContent: 0.5,
+      unit: 'л',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/pelmeni.png',
-      name: 'Пельмені «Три ведмеді»',
-      description: 'зі смаком індички',
-      price: '310.0',
+      productId: 3,
+      name: 'Lays Сметана та зелень',
+      description: 'Хрустка картопля зі смаком ніжної сметани.',
+      price: 45.90,
+      qtyInStock: 30,
+      imgUrl: '/products/lays-sour-cream.png',
+      brand: 'Lays',
+      originCountry: 'Ukraine',
+      isPromo: false,
+      netContent: 120,
+      unit: 'г',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/varenyky.png',
-      name: 'Вареники «Три Ведмеді»',
-      description: 'з картоплею',
-      price: '70.0',
+      productId: 4,
+      name: 'Monster Energy',
+      description: 'Енергетичний напій для максимального заряду.',
+      price: 42.00,
+      qtyInStock: 25,
+      imgUrl: '/products/monster-energy.png',
+      brand: 'Monster',
+      originCountry: 'Ireland',
+      isPromo: false,
+      netContent: 0.5,
+      unit: 'л',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/puree.png',
-      name: 'Пюре Reeva',
-      description: 'швидкого приготування',
-      price: '38.2',
+      productId: 5,
+      name: 'Печиво Oreo',
+      description: 'Легендарне шоколадне печиво з кремовою начинкою.',
+      price: 38.00,
+      qtyInStock: 40,
+      imgUrl: '/products/oreo.png',
+      brand: 'Oreo',
+      originCountry: 'Poland',
+      isPromo: false,
+      netContent: 154,
+      unit: 'г',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/cordero.png',
-      name: 'Полента Cordero',
-      description: 'швидкого приготування',
-      price: '90.0',
+      productId: 6,
+      name: 'Pepsi Zero Sugar',
+      description: 'Максимальний смак, нуль цукру.',
+      price: 26.50,
+      qtyInStock: 80,
+      imgUrl: '/products/pepsi-zero.png',
+      brand: 'Pepsi',
+      originCountry: 'Ukraine',
+      isPromo: true,
+      oldPrice: 30.00,
+      netContent: 0.5,
+      unit: 'л',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/glads-wok-soba.png',
-      name: 'Локшина Glads Wok Soba',
-      description: 'швидкого приготування',
-      price: '75.99',
+      productId: 7,
+      name: 'Сік Sandora Апельсин',
+      description: '100% натуральний апельсиновий сік.',
+      price: 65.00,
+      qtyInStock: 15,
+      imgUrl: '/products/sandora-orange.png',
+      brand: 'Sandora',
+      originCountry: 'Ukraine',
+      isPromo: false,
+      netContent: 1,
+      unit: 'л',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     },
     {
-      imgUrl: 'assets/products/ekstra-oats.png',
-      name: 'Пластівці вівсяні',
-      description: 'екст. швидкого приготування',
-      price: '17.99',
-    },
-    {
-      imgUrl: 'assets/products/alive-mushroom-soup.png',
-      name: 'Крем-суп Alive з грибами',
-      description: 'швидкого приготування',
-      price: '33.99',
-    },
-    {
-      imgUrl: 'assets/products/oat-flakes-mix.png',
-      name: 'Суміш пластівців',
-      description: 'злаки швидкого приготування',
-      price: '11.99',
+      productId: 8,
+      name: 'Батончик Snickers',
+      description: 'Смажений арахіс, карамель та нуга в шоколаді.',
+      price: 22.00,
+      qtyInStock: 120,
+      imgUrl: '/products/snickers.png',
+      brand: 'Mars',
+      originCountry: 'Netherlands',
+      isPromo: false,
+      netContent: 50,
+      unit: 'г',
+      cartItems: [],
+      orderItems: [],
+      categories: []
     }
   ];
+
   readonly extraCategories1 = [
-    { title: 'Макарони', image: 'images/categories/pasta.svg',  bgColor: '#E6E8DF' },
-    { title: 'Птиця', image: '/images/categories/chicken.svg',bgColor: '#EFCFD3' },
+    { title: 'Макарони', image: 'images/categories/pasta.svg', bgColor: '#E6E8DF' },
+    { title: 'Птиця', image: '/images/categories/chicken.svg', bgColor: '#EFCFD3' },
     { title: 'Піца та напівфабрикати', image: '/images/categories/pizza.svg', bgColor: '#DDE7CF' },
     { title: 'Соки', image: '/images/categories/1.png', bgColor: '#DDE7CF' },
     { title: 'Фрукти', image: '/images/categories/fruits.png', bgColor: '#CFE3E7' }
   ];
-  readonly candyBoxes: Partial<Products>[] = [
-    {
-      imgUrl: 'assets/products/toffifee.png',
-      name: 'Цукерки Toffifee',
-      description: 'Subtitle',
-      price: '190.00',
-    },
-    {
-      imgUrl: 'assets/products/schoko-gruss.png',
-      name: 'Набір шоколадних фігур',
-      description: 'Шоко-кули',
-      price: '229.00',
-    },
-    {
-      imgUrl: 'assets/products/pure-chocolate.png',
-      name: 'Цукерки Pure Chocolate',
-      description: 'трюфель асорті',
-      price: '400.00',
-    },
-    {
-      imgUrl: 'assets/products/merci.png',
-      name: 'Шоколад Merci асорті',
-      description: 'Subtitle',
-      price: '429.00',
-    },
-    {
-      imgUrl: 'assets/products/lindt-lindor.png',
-      name: 'Цукерки Lindt Lindor',
-      description: 'Subtitle',
-      price: '95.00',
-    },
-    {
-      imgUrl: 'assets/products/milka-heart.png',
-      name: 'Цукерки Milka в шоколаді',
-      description: 'Subtitle',
-      price: '169.00',
-    },
-    {
-      imgUrl: 'assets/products/lovita.png',
-      name: 'Цукерки у шоколаді',
-      description: '«Пташине молоко»',
-      price: '179.00',
-    },
-    {
-      imgUrl: 'assets/products/raffaello.png',
-      name: 'Цукерки Raffaello',
-      description: 'Subtitle',
-      price: '199.00',
-    },
-    {
-      imgUrl: 'assets/products/belgidor.png',
-      name: 'Цукерки BelgidOr',
-      description: '«Морські мушлі»',
-      price: '199.00',
-    },
-    {
-      imgUrl: 'assets/products/millennium.png',
-      name: 'Цукерки Millennium',
-      description: 'з арахісом та родзинками',
-      price: '99.99',
-    }
-  ];
-  
-  readonly sweetSpreads: Partial<Products>[] = [
-    {
-      imgUrl: 'assets/products/nutella-classic.png',
-      name: 'Паста Nutella з какао',
-      description: 'з какао',
-      price: '484.00',
-    },
-    {
-      imgUrl: 'assets/products/milka-spread.png',
-      name: 'Паста Milka горіхова',
-      description: 'з фундуком та какао',
-      price: '199.00',
-    },
-    {
-      imgUrl: 'assets/products/peanut-butter.png',
-      name: 'Паста арахісова',
-      description: 'класична',
-      price: '199.00',
-    },
-    {
-      imgUrl: 'assets/products/peanut-crunch.png',
-      name: 'Паста арахісова',
-      description: 'з сіллю і крихтами',
-      price: '149.00',
-    },
-    {
-      imgUrl: 'assets/products/peanut-tom.png',
-      name: 'Паста арахісова',
-      description: 'карнч с/б',
-      price: '199.00',
-    },
-    {
-      imgUrl: 'assets/products/nutella-alt.png',
-      name: 'Паста горіхова Nutella',
-      description: 'Subtitle',
-      price: '149.00',
-    },
-    {
-      imgUrl: 'assets/products/pralinutta.png',
-      name: 'Паста Pralinutta',
-      description: 'з горіхами та какао',
-      price: '259.00',
-    },
-    {
-      imgUrl: 'assets/products/pralinutta-duo.png',
-      name: 'Паста Pralinutta Duo',
-      description: 'з горіхами та какао',
-      price: '299.00',
-    },
-    {
-      imgUrl: 'assets/products/coconut-manna.png',
-      name: 'Паста кокосова Aumi',
-      description: 'ніжна',
-      price: '174.00',
-    },
-    {
-      imgUrl: 'assets/products/nutella-small.png',
-      name: 'Паста горіхова Nutella',
-      description: 'Subtitle',
-      price: '149.00',
-    }
-  ];
+
   readonly extraCategories2 = [
-    { title: 'Овочі', image: '/images/categories/vegetables.svg',  bgColor: '#A9C37A' },
-    { title: 'Торти та десерти', image: '/images/categories/desserts.svg',bgColor: '#E2B8C8' },
+    { title: 'Овочі', image: '/images/categories/vegetables.svg', bgColor: '#A9C37A' },
+    { title: 'Торти та десерти', image: '/images/categories/desserts.svg', bgColor: '#E2B8C8' },
     { title: 'Газовані напої', image: '/images/categories/drinks.svg', bgColor: '#F0C987' },
     { title: 'Кава та чай', image: '/images/categories/coffee.svg', bgColor: '#D6C9B3' },
     { title: 'Свіже м’ясо', image: '/images/categories/meat.svg', bgColor: '#B7CFB2' }
-  ];
-  
-  readonly yogurtProducts: Partial<Products>[] = [
-    {
-      imgUrl: '/images/products/yogurt1.png',
-      name: 'Десерт сирковий Valio',
-      description: 'ваніль-лимон',
-      price: '92.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt2.png',
-      name: 'Пудинг Valio PROfeel',
-      description: 'ваніль та біле',
-      price: '93.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt3.png',
-      name: 'Десерт сирковий',
-      description: 'ваніль та манго',
-      price: '88.49',
-    },
-    {
-      imgUrl: '/images/products/yogurt4.png',
-      name: 'Йогурт Bakoma MEN',
-      description: 'зі смаком ванілі',
-      price: '68.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt5.png',
-      name: 'Пудинг Valio PROfeel',
-      description: 'з карамеллю',
-      price: '91.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt6.png',
-      name: 'Йогурт Bakoma MEN',
-      description: 'манго-маракуя',
-      price: '84.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt7.png',
-      name: 'Мус Valio',
-      description: 'шоколадний',
-      price: '79.99',
-    },
-    {
-      imgUrl: '/images/products/yogurt8.png',
-      name: 'Коктейль Valio PROfeel',
-      description: 'шоколадний',
-      price: '139.00',
-    }
   ];
 
   onAddToCart(product: Products): void {

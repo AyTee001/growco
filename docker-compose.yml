@@ -1,0 +1,74 @@
+x-db-env: &db-env
+  DB_HOST: ${DB_HOST}
+  DB_PORT: ${DB_PORT}
+  DB_USERNAME: ${DB_USERNAME}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_NAME: ${DB_NAME}
+  DB_SYNC: ${DB_SYNC}
+  DB_LOGGING: ${DB_LOGGING}
+  DB_SSL: ${DB_SSL}
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: wowpoint-db
+    profiles: ["main"]
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: wowpoint-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  migration-tool:
+    build: ./backend
+    profiles: ["tools"]
+    environment: *db-env
+    command: npx typeorm migration:run -d dist/config/typeorm.js
+
+  seed-categories-tool:
+    build: ./backend
+    profiles: ["tools"]
+    environment: *db-env
+    command: npm run seed:categories:prod
+
+  seed-products-tool:
+    build: ./backend
+    profiles: ["tools"]
+    environment: *db-env
+    command: npm run seed:products:prod
+
+
+  api:
+    build: ./backend
+    container_name: wowpoint-api
+    restart: always
+    profiles: ["main"]
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@db:5432/wowpoint-db
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+  web:
+    build: ./frontend
+    profiles: ["main"]
+    container_name: wowpoint-web
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

@@ -74,7 +74,7 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto): Promise<Products> {
     const product = this.productsRepository.create({
       ...createProductDto,
-      price: createProductDto.price.toString(),
+      price: createProductDto.price,
     });
     return await this.productsRepository.save(product);
   }
@@ -155,5 +155,21 @@ export class ProductsService {
       maxPrice: parseFloat(stats?.max || '1000'),
       brands: brands.map(b => b.brand),
     };
+  }
+
+  async findSimilar(id: number): Promise<Products[]> {
+    const product = await this.findOne(id);
+    const categoryIds = product.categories.map((cat) => cat.categoryId);
+
+    if (categoryIds.length === 0) return [];
+
+    return await this.productsRepository.createQueryBuilder('product')
+      .innerJoin('product.categories', 'category')
+      .where('category.categoryId IN (:...categoryIds)', { categoryIds })
+      .andWhere('product.productId != :id', { id })
+      .groupBy('product.productId')
+      .orderBy('RANDOM()')
+      .limit(15)
+      .getMany();
   }
 }
