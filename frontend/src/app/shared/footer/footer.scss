@@ -1,7 +1,7 @@
 .footer {
   background: #ECEFE5;
   padding: 40px 60px 20px;
-  color: #43483F; // основной текст;
+  color: #43483F;
 
   .footer-container {
     display: flex;
@@ -11,7 +11,7 @@
     flex-wrap: wrap;
   }
 
-  .links-column {
+  .info-column {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -20,9 +20,9 @@
 
   .info-item {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
     gap: 12px;
-    margin-bottom: 18px; // Spacing between the three blocks
+    margin-bottom: 18px;
 
     mat-icon {
       color: #43483F;
@@ -30,35 +30,21 @@
       opacity: 0.7;
     }
 
-    .text-group {
+    .contact-item {
       display: flex;
-      flex-direction: column;
-      line-height: 1.4;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
 
-      .label {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        font-weight: 600;
-        opacity: 0.5;
-        margin-bottom: 2px;
-      }
+    .link-action {
+      text-decoration: none;
+      border-bottom: 1px solid rgba(67, 72, 63, 0.3);
+      transition: all 0.2s ease;
 
-      .value {
-        font-size: 14px;
-        color: #43483F;
-        font-weight: 500;
-      }
-
-      .link-action {
-        text-decoration: none;
-        border-bottom: 1px solid rgba(67, 72, 63, 0.3);
-        transition: all 0.2s ease;
-
-        &:hover {
-          color: #617a55;
-          border-bottom-color: #617a55;
-        }
+      &:hover {
+        color: #617a55;
+        border-bottom-color: #617a55;
       }
     }
   }
@@ -69,26 +55,96 @@
   font-weight: 500;
 }
 
-/* Адаптив */
-@media (max-width: 900px) {
+.logo-section img {
+  max-width: 200px !important;
+}
+
+//////////////////////////////////////////////////
+// 📱 MOBILE (< 768px)
+//////////////////////////////////////////////////
+@media (max-width: 767px) {
   .footer {
-    padding: 30px 20px;
+    padding: 25px 16px;
 
     .footer-container {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
     }
 
     .logo-section {
-      margin-top: 20px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
     }
 
     .footer-bottom {
-      text-align: left;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .mobile-collapsible {
+      width: 100%;
+
+      .collapsible-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px 0;
+      }
+
+      .collapsible-content {
+        padding-left: 24px;
+      }
     }
   }
 }
 
-.logo-section img {
-  max-width: 200px !important;
+//////////////////////////////////////////////////
+// 📲 TABLET (768px - 1024px)
+//////////////////////////////////////////////////
+@media (min-width: 768px) and (max-width: 1024px) {
+  .footer {
+    padding: 30px 40px;
+
+    .footer-container {
+      flex-direction: row; // 🔥 ключевое изменение
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .info-column {
+      flex: 1;
+      max-width: 50%;
+    }
+
+    .logo-section {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    // ❗ убираем "аккордеон" на планшете
+    .mobile-collapsible {
+      .collapsible-header {
+        cursor: default;
+        pointer-events: none;
+
+        mat-icon {
+          display: none;
+        }
+      }
+
+      .collapsible-content {
+        display: block !important;
+        padding-left: 0;
+      }
+    }
+  }
 }

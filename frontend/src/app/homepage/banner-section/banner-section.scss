@@ -239,4 +239,57 @@
       height: calc(100% - 41px);
     }
   }
+
+  /* Скрываем стрелки для мобильных и планшетов */
+@media (max-width: 1024px) {
+  .banner-swiper-button-prev,
+  .banner-swiper-button-next {
+    display: none !important;
+  }
+}
+
+/* Адаптация размеров банера для планшета и мобильных */
+@media (max-width: 1024px) {
+  .banner-section {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .left-carousel {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 749/349; /* сохраняем пропорции */
+  }
+
+  .right-grid {
+    width: 100%;
+    height: auto;
+    grid-template-columns: repeat(2, 1fr); /* для планшета оставляем 2 колонки */
+    gap: 12px;
+  }
+
+  .banner-card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 258/167;
+
+    img {
+      height: calc(100% - 41px);
+    }
+  }
+}
+
+/* Мобильная версия: 2 колонки вместо 1 */
+@media (max-width: 767px) {
+  .right-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px; /* можно уменьшить расстояние между карточками */
+  }
+}
+@media (max-width: 767px) {
+  .banner-card .title {
+    font-size: 12px; /* уменьшенный шрифт для мобильных */
+  }
+}
 }

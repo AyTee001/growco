@@ -1,32 +1,39 @@
 <footer class="footer">
   <div class="footer-container">
     
+    <!-- Контакти -->
     <div class="info-column">
-      <div class="info-item">
-        <mat-icon aria-hidden="false">info</mat-icon>
-        <div class="text-group">
+      <div class="info-item mobile-collapsible">
+        <div class="collapsible-header" (click)="toggleSection('contacts')">
+          <span class="label">Контакти</span>
+          <mat-icon>{{ openSections().contacts ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </div>
+        <div class="collapsible-content" *ngIf="openSections().contacts">
+          <div class="contact-item">
+            <mat-icon aria-hidden="false">mail</mat-icon>
+            <span class="value">hello@growco.ua</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon aria-hidden="false">phone</mat-icon>
+            <span class="value">0 800 500 100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Компанія -->
+      <div class="info-item mobile-collapsible">
+        <div class="collapsible-header" (click)="toggleSection('company')">
           <span class="label">Компанія</span>
+          <mat-icon>{{ openSections().company ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </div>
+        <div class="collapsible-content" *ngIf="openSections().company">
           <a class="value link-action" href="/about">Про нас</a>
         </div>
       </div>
 
-      <div class="info-item">
-        <mat-icon aria-hidden="false">mail</mat-icon>
-        <div class="text-group">
-          <span class="label">Email</span>
-          <span class="value">hello@growco.ua</span>
-        </div>
-      </div>
-
-      <div class="info-item">
-        <mat-icon aria-hidden="false">phone</mat-icon>
-        <div class="text-group">
-          <span class="label">Гаряча лінія</span>
-          <span class="value">0 800 500 100</span>
-        </div>
-      </div>
     </div>
 
+    <!-- Logo -->
     <div class="logo-section">
       <img src="logo-no-bg.png" alt="Growco logo" />
     </div>

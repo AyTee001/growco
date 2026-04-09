@@ -117,3 +117,66 @@
   /* Додаємо фільтр тіні саме для прозорого PNG/SVG, щоб пакет виглядав реалістично */
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
 }
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .homepage__promo-card {
+    width: 90%; /* уменьшаем ширину, чтобы помещалось на планшет */
+    flex-direction: row; /* сохраняем горизонтальное расположение */
+    padding: 25px 30px;
+  }
+
+  .homepage__promo-content {
+    max-width: 50%; /* текст занимает половину блока */
+  }
+
+  .homepage__promo-image {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    margin-left: 20px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .homepage__promo-image img {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .homepage__promo-card {
+    flex-direction: column; /* вертикальный стек */
+    align-items: center;
+    padding: 20px;
+    width: 90%;
+  }
+
+  .homepage__promo-content {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .homepage__promo-image {
+    position: relative; /* сбрасываем абсолютное позиционирование */
+    right: 0;
+    bottom: 0;
+    margin-top: 20px; /* отступ сверху, чтобы картинка шла после текста */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .homepage__promo-image img {
+    width: 60%; /* уменьшаем размер картинки для мобильного */
+    max-width: 200px;
+  }
+
+  /* Можно подправить фон, если он слишком большой */
+  .homepage__promo {
+    background-size: 400px; /* подстраиваем под мобильный экран */
+    margin: 40px 0;
+  }
+}
