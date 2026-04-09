@@ -1,51 +1,61 @@
 import {
+  IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  MaxLength,
   Min,
 } from 'class-validator';
-import { Type, Transform } from 'class-transformer';
 
 export class CreateOrderDto {
-  @Type(() => Number)
+  @IsOptional()
   @IsInt()
-  @Min(1)
-  userId: number;
+  userId?: number;
 
   @IsOptional()
-  @Type(() => Number)
   @IsInt()
-  @Min(1)
-  deliveryAddressId?: number | null;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  storeId?: number | null;
-
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  deliverySlotId: number;
+  deliverySlotId?: number;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
-  status: string;
+  deliveryTimeRange: string;
 
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber()
   @Min(0)
-  @Type(() => Number)
   totalAmount: number;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   paymentMethod: string;
+
+  @IsOptional()
+  @IsString()
+  deliveryAddress?: string;
+
+  @IsOptional()
+  // @IsDateString(), for dates like "2024-05-20"
+  @IsString()
+  deliveryDate?: string;
+
+  @IsOptional()
+  @IsString()
+  customerName?: string;
+
+  @IsOptional()
+  @IsString()
+  customerPhone?: string;
+
+  @IsOptional()
+  @IsString()
+  comment?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isPaperless?: boolean;
+
+  @IsArray()
+  @IsOptional()
+  items?: any[];
 }

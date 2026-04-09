@@ -90,7 +90,7 @@ export class CheckoutPageComponent implements OnInit {
       this.selectedDate.set(this.dateOptions[0].value);
     }
   }
-  
+
   async onDateChange(dateValue: string) {
     this.selectedDate.set(dateValue);
     this.selectedTimeSlot = null;
@@ -168,22 +168,20 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     const orderPayload = {
-      guestSessionId: currentCart.guestSessionId,
       items: currentCart.cartItems.map(item => ({
         productId: item.productId,
         quantity: item.quantity,
         priceAtOrder: item.product.price
       })),
       totalAmount: this.basketService.getTotalToPay(),
-
-      deliveryAddress: this.selectedAddress,
-      deliverySlotId: this.selectedTimeSlot.id,
-      deliveryDate: this.selectedDate,
+      deliveryTimeRange: this.selectedTimeSlot.time,
       customerName: this.userName,
       customerPhone: this.userPhone,
       paymentMethod: this.selectedPayment,
       comment: this.orderComment,
       isPaperless: this.noPaperReceipt,
+      deliveryAddress: this.selectedAddress,
+      deliveryDate: this.selectedDate,
     };
 
     console.log('Order Ready for Backend:', orderPayload);
