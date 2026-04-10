@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { appDataSourceOptions } from './config/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
+import { StoresModule } from './stores/stores.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     CartModule,
     ProductsModule,
     DeliverySlotsModule,
-    ProductsModule
+    ProductsModule,
+    StoresModule
   ],
   controllers: [AppController],
   providers: [AppService],
