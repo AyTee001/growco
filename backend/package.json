@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:categories": "ts-node -r dotenv/config src/db/categories.seed.ts",
     "seed:products": "ts-node -r dotenv/config src/db/products.seed.ts",
+    "seed:stores": "ts-node src/db/stores.seed.ts",
     "seed:categories:prod": "node dist/db/categories.seed.js",
     "seed:products:prod": "node dist/db/products.seed.js"
   },
