@@ -16,11 +16,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'homepage',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: MainLayout,
     children: [
       {

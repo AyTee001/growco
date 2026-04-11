@@ -10,18 +10,20 @@ import { Delivery } from '../delivery/delivery';
 import { BasketService } from './basket/basket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
+    imports: [
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
     MatMenuModule,
+    RouterModule,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',

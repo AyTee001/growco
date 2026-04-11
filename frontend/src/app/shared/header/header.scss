@@ -23,11 +23,17 @@
   height: 48px;
   margin-left: 1rem;
   transition: height 0.2s;
+  cursor: pointer;  // из master
 
   @media (max-width: 1100px) {
     height: 36px;
     margin-left: 0.5rem;
   }
+}
+
+.logo-link {
+  display: inline-flex;
+  text-decoration: none;
 }
 
 .search-section {
@@ -166,4 +172,4 @@
       display: none;
     }
   }
-}   
+}
