@@ -28,9 +28,7 @@ export class OrdersController {
     summary: 'Create order (works for both guests and logged users)',
   })
   async create(@Body() createOrderDto: CreateOrderDto, @Request() req) {
-    // Якщо JWT Guard спрацював, беремо ID з токена
-    const userId = req.user?.userId;
-    return this.ordersService.create(createOrderDto, userId);
+    return this.ordersService.create(createOrderDto);
   }
 
   @Get('my')

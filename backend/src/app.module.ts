@@ -12,6 +12,7 @@ import { join } from 'path';
 import { appDataSourceOptions } from './config/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { AuthModule } from './auth/auth.module';
     ProductsModule,
     DeliverySlotsModule,
     ProductsModule,
-    AuthModule
+    AuthModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

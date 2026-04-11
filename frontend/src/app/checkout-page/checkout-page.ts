@@ -9,6 +9,7 @@ import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
 import { DeliverySlots, deliverySlotsControllerFindByDate, } from '../client';
+import { ordersControllerCreate } from '../client';
 
 interface DateOption {
   label: string;
@@ -168,10 +169,10 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     const orderPayload = {
-      items: currentCart.cartItems.map(item => ({
+      items: currentCart.cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
-        priceAtOrder: item.product.price
+        priceAtOrder: item.product.price,
       })),
       totalAmount: this.basketService.getTotalToPay(),
       deliveryTimeRange: this.selectedTimeSlot.time,
@@ -181,10 +182,30 @@ export class CheckoutPageComponent implements OnInit {
       comment: this.orderComment,
       isPaperless: this.noPaperReceipt,
       deliveryAddress: this.selectedAddress,
-      deliveryDate: this.selectedDate,
+      deliveryDate: this.selectedDate(),
     };
 
-    console.log('Order Ready for Backend:', orderPayload);
+    try {
+      // 1. Надсилаємо дані на бекенд
+      const { data, error } = await ordersControllerCreate({ body: orderPayload });
+
+      if (error) {
+        console.error('Помилка при створенні замовлення:', error);
+        alert('Не вдалося оформити замовлення. Спробуйте пізніше.');
+        return;
+      }
+
+      console.log('Замовлення успішно створено:', data);
+
+      // 2. Очищуємо кошик (через ваш BasketService)
+      // this.basketService.clear();
+
+      // 3. Переходимо на сторінку успіху
+      this.router.navigate(['/success']);
+    } catch (err) {
+      console.error('Системна помилка:', err);
+      alert('Сталася непередбачувана помилка');
+    }
 
     // Future integration point:
     // await this.orderService.create(orderPayload);

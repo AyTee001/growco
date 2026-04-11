@@ -112,6 +112,10 @@ export type DeliverySlots = {
     orders?: Array<Orders>;
 };
 
+export type CreateOrderDto = {
+    [key: string]: unknown;
+};
+
 export type AppControllerGetHelloData = {
     body?: never;
     path?: never;
@@ -341,3 +345,38 @@ export type DeliverySlotsControllerFindByDateResponses = {
 };
 
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
+
+export type OrdersControllerCreateData = {
+    body: CreateOrderDto;
+    path?: never;
+    query?: never;
+    url: '/orders';
+};
+
+export type OrdersControllerCreateResponses = {
+    201: unknown;
+};
+
+export type OrdersControllerFindMyOrdersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/orders/my';
+};
+
+export type OrdersControllerFindMyOrdersResponses = {
+    200: unknown;
+};
+
+export type OrdersControllerFindOneData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/orders/{id}';
+};
+
+export type OrdersControllerFindOneResponses = {
+    200: unknown;
+};

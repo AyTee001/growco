@@ -13,6 +13,7 @@ import { DeliverySlots } from './DeliverySlots';
 import { Stores } from './Stores';
 import { Users } from './Users';
 
+// Індекси також мають посилатися на правильні назви властивостей класу
 @Index('IX_Orders_Address_Id', ['deliveryAddressId'], {})
 @Index('IX_Orders_Slot_Id', ['deliverySlotId'], {})
 @Index('Orders_pkey', ['orderId'], { unique: true })
@@ -23,14 +24,17 @@ export class Orders {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'order_id' })
   orderId: number;
 
-  @Column('integer', { name: 'user_id', nullable: true })
+  // Назва в БД: "user id"
+  @Column('integer', { name: 'user id', nullable: true })
   userId: number | null;
 
-  @Column('integer', { name: 'delivery_slot_id', nullable: true })
+  // Назва в БД: "delivery slot id"
+  @Column('integer', { name: 'delivery slot id', nullable: true })
   deliverySlotId: number | null;
 
+  // Назва в БД: "order date"
   @Column('timestamp without time zone', {
-    name: 'order_date',
+    name: 'order date',
     default: () => 'CURRENT_TIMESTAMP',
   })
   orderDate: Date;
@@ -38,22 +42,24 @@ export class Orders {
   @Column('character varying', { name: 'status', length: 50 })
   status: string;
 
-  @Column('numeric', { name: 'total_amount', precision: 10, scale: 2 })
+  // Назва в БД: "total amount"
+  @Column('numeric', { name: 'total amount', precision: 10, scale: 2 })
   totalAmount: string;
 
-  @Column('character varying', { name: 'payment_method', length: 50 })
+  // Назва в БД: "payment method"
+  @Column('character varying', { name: 'payment method', length: 50 })
   paymentMethod: string;
 
-  @Column('character varying', {
-    name: 'delivery_address',
-    nullable: true,
-    length: 500,
-  })
-  deliveryAddress: string | null;
+  // Назва в БД: "delivery address id"
+  @Column('integer', { name: 'delivery address id', nullable: true })
+  deliveryAddressId: number | null;
 
-  @Column('date', { name: 'delivery_date', nullable: true })
-  deliveryDate: string | Date | null;
+  // Назва в БД: "store id"
+  @Column('integer', { name: 'store id', nullable: true })
+  storeId: number | null;
 
+  // Решта полів, які ми додавали пізніше (customer_name тощо)
+  // Якщо їх немає в CREATE TABLE, вони мають бути nullable в Entity
   @Column('character varying', {
     name: 'customer_name',
     nullable: true,
@@ -67,6 +73,16 @@ export class Orders {
     length: 50,
   })
   customerPhone: string | null;
+
+  @Column('character varying', {
+    name: 'delivery_address',
+    nullable: true,
+    length: 500,
+  })
+  deliveryAddress: string | null;
+
+  @Column('date', { name: 'delivery_date', nullable: true })
+  deliveryDate: string | Date | null;
 
   @Column('text', { name: 'comment', nullable: true })
   comment: string | null;
@@ -86,11 +102,7 @@ export class Orders {
   })
   deliverySlotEnd: string | null;
 
-  @Column('integer', { name: 'delivery_address_id', nullable: true })
-  deliveryAddressId: number | null;
-
-  @Column('integer', { name: 'store_id', nullable: true })
-  storeId: number | null;
+  // --- Relations ---
 
   @OneToMany(
     () => LoyaltyTransactions,
@@ -102,14 +114,14 @@ export class Orders {
   orderItems: OrderItems[];
 
   @ManyToOne(() => DeliverySlots, (deliverySlots) => deliverySlots.orders)
-  @JoinColumn([{ name: 'delivery_slot_id', referencedColumnName: 'slotId' }]) // Виправлено на snake_case
+  @JoinColumn([{ name: 'delivery slot id', referencedColumnName: 'slotId' }])
   deliverySlot: DeliverySlots;
 
   @ManyToOne(() => Stores, (stores) => stores.orders)
-  @JoinColumn([{ name: 'store_id', referencedColumnName: 'storeId' }]) // Виправлено на snake_case
+  @JoinColumn([{ name: 'store id', referencedColumnName: 'storeId' }])
   store: Stores;
 
   @ManyToOne(() => Users, (users) => users.orders)
-  @JoinColumn([{ name: 'user_id', referencedColumnName: 'userId' }]) // Виправлено на snake_case
+  @JoinColumn([{ name: 'user id', referencedColumnName: 'userId' }])
   user: Users;
 }
