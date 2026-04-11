@@ -2,7 +2,10 @@
   <main class="homepage__content">
     <section class="homepage__hero">
       <div class="homepage__banner">
-        <app-banner-section [leftImages]="leftImages"></app-banner-section>
+        <app-banner-section
+          [leftImages]="leftImages"
+          (cardClick)="onBannerCardClick($event)">
+        </app-banner-section>
       </div>
     </section>
 

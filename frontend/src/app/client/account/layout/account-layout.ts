@@ -29,10 +29,5 @@ export class AccountLayout {
       icon: 'history',
       route: '/account/orders'
     },
-    {
-      label: 'Адреса',
-      icon: 'location_on',
-      route: '/account/addresses'
-    }
   ];
 }

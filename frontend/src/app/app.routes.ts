@@ -13,11 +13,7 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./client/account/account.routes').then((m) => m.ACCOUNT_ROUTES)
   },
-  {
-    path: '',
-    redirectTo: 'account',
-    pathMatch: 'full'
-  },
+  
   {
     path: '',
     component: MainLayout,
@@ -50,6 +46,7 @@ export const routes: Routes = [
       }
     ]
   },
+  
   {
     path: '**',
     redirectTo: ''
