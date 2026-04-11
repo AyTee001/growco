@@ -1,17 +1,19 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layouts/main-layout/main-layout';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard } from './core/auth.guard';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
   {
     path: 'account',
     loadChildren: () =>
       import('./client/account/account.routes').then((m) => m.ACCOUNT_ROUTES)
   },
-  {
-    path: '',
-    redirectTo: 'account',
-    pathMatch: 'full'
-  },
+  
   {
     path: '',
     component: MainLayout,
@@ -39,10 +41,12 @@ export const routes: Routes = [
       {
         path: 'checkout',
         loadComponent: () =>
-          import('./checkout-page/checkout-page').then((m) => m.CheckoutPageComponent)
+          import('./checkout-page/checkout-page').then((m) => m.CheckoutPageComponent),
+        canActivate: [AuthGuard]
       }
     ]
   },
+  
   {
     path: '**',
     redirectTo: ''

@@ -25,22 +25,22 @@ export class BannerSectionComponent implements AfterViewInit, OnDestroy {
     { 
       id: 'discounts', 
       title: 'Всі акції', 
-      imageUrl: 'discount.png'
+      imageUrl: 'images/discount.png'
     },
     { 
       id: 'about', 
       title: 'Про нас', 
-      imageUrl: 'logo-no-bg.png'
+      imageUrl: 'images/logo-no-bg.png'
     },
     { 
       id: 'week-products', 
       title: 'Товари тижня', 
-      imageUrl: 'product-of-the-week.png'
+      imageUrl: 'images/product-of-the-week.png'
     },
     { 
       id: 'new-items', 
       title: 'Новинки', 
-      imageUrl: 'new-items.png'
+      imageUrl: 'images/new-items.png'
     },
   ];
 
