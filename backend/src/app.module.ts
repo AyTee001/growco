@@ -11,6 +11,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { appDataSourceOptions } from './config/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
+import { StoresModule } from './stores/stores.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     ProductsModule,
     DeliverySlotsModule,
     ProductsModule,
+    StoresModule
     AuthModule
   ],
   controllers: [AppController],

@@ -2,12 +2,15 @@
   <main class="homepage__content">
     <section class="homepage__hero">
       <div class="homepage__banner">
-        <app-banner-section [leftImages]="leftImages"></app-banner-section>
+        <app-banner-section
+          [leftImages]="leftImages"
+          (cardClick)="onBannerCardClick($event)">
+        </app-banner-section>
       </div>
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Швидко та смачно'" [items]="[]" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Швидко та смачно'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -18,7 +21,7 @@
       }
     </section>
     <section class="homepage__products">
-      <app-product-slider [title]="'Коробки із цукерками'" [items]="[]" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Коробки із цукерками'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -36,13 +39,13 @@
         </div>
 
         <div class="homepage__promo-image">
-          <img src="/grocery-bag.svg" alt="Пакет із продуктами" />
+          <img src="images/grocery-bag.svg" alt="Пакет із продуктами" />
         </div>
       </div>
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Солодке до хліба'" [items]="[]" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Солодке до хліба'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -54,7 +57,7 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Протеїнові йогурти'" [items]="[]" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Протеїнові йогурти'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
   </main>

@@ -21,11 +21,6 @@ export const ACCOUNT_ROUTES: Routes = [
         loadComponent: () =>
           import('./pages/order-history/order-history').then((m) => m.OrderHistoryPage)
       },
-      {
-        path: 'addresses',
-        loadComponent: () =>
-          import('./pages/addresses/addresses').then((m) => m.AddressesPage)
-      }
     ]
   }
 ];
