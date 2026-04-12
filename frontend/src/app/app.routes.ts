@@ -11,9 +11,9 @@ export const routes: Routes = [
   {
     path: 'account',
     loadChildren: () =>
-      import('./client/account/account.routes').then((m) => m.ACCOUNT_ROUTES)
+      import('./client/account/account.routes').then((m) => m.ACCOUNT_ROUTES),
+    canActivate: [AuthGuard]
   },
-  
   {
     path: '',
     component: MainLayout,
@@ -42,7 +42,6 @@ export const routes: Routes = [
         path: 'checkout',
         loadComponent: () =>
           import('./checkout-page/checkout-page').then((m) => m.CheckoutPageComponent),
-        canActivate: [AuthGuard]
       }
     ]
   },
