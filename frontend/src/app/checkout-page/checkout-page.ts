@@ -210,6 +210,7 @@ export class CheckoutPageComponent implements OnInit {
 
       // 3. Переходимо на сторінку успіху
       this.router.navigate(['/success']);
+      this.basketService.refreshCart();
     } catch (err) {
       console.error('Системна помилка:', err);
       alert('Сталася непередбачувана помилка');

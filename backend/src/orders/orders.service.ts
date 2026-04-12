@@ -11,6 +11,7 @@ import { Users } from '../entities/Users';
 import { Products } from '../entities/Products';
 import { Cart } from '../entities/Cart'; 
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CartItems } from 'src/entities/CartItems';
 
 @Injectable()
 export class OrdersService {
@@ -122,10 +123,12 @@ export class OrdersService {
       await queryRunner.manager.save(Products, productsToUpdate);
 
       // 7. CLEAR THE DATABASE CART
-      if (targetUserId) {
-        await queryRunner.manager.delete(Cart, { user: { userId: targetUserId } });
-      } else if (sessionId) {
-        await queryRunner.manager.delete(Cart, { guestSessionId: sessionId });
+      const cartToClear = await queryRunner.manager.findOne(Cart, {
+        where: targetUserId ? { userId: targetUserId } : { guestSessionId: sessionId }
+      });
+
+      if (cartToClear) {
+        await queryRunner.manager.delete(CartItems, { cartId: cartToClear.cartId });
       }
 
       // 8. COMMIT
