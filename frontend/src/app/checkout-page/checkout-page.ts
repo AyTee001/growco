@@ -8,8 +8,9 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
-import { DeliverySlots, deliverySlotsControllerFindByDate, Stores, } from '../client';
+import { DeliverySlots, deliverySlotsControllerFindByDate, Stores, usersControllerGetProfile, } from '../client';
 import { ordersControllerCreate, storesControllerFindAll } from '../client';
+import { AuthService } from '../core/auth.service';
 
 interface DateOption {
   label: string;
@@ -34,14 +35,16 @@ export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private authService = inject(AuthService);
 
-  userName = 'Іван Петренко';
-  userPhone = '+380 99 123 45 67';
+  userName = '';
+  userPhone = '';
   orderComment = '';
   noPaperReceipt = false;
 
   timeSlots = signal<TimeSlot[]>([]);
   isLoadingSlots = signal(false);
+
 
   dateOptions: DateOption[] = [];
   selectedDate = signal<string>('');
@@ -56,6 +59,7 @@ export class CheckoutPageComponent implements OnInit {
   selectedPayment = 'cash_on_pickup';
 
   async ngOnInit() {
+    await this.loadUserProfile();
     await this.generateDateOptions();
 
     if (this.selectedDate()) {
@@ -67,6 +71,18 @@ export class CheckoutPageComponent implements OnInit {
       await this.loadStores();
     }
   }
+
+  private async loadUserProfile() {
+  if (!this.authService.isAuthenticated()) return;
+
+  const { data, error } = await usersControllerGetProfile();
+
+  if (data && !error) {
+    this.userName = data.name;
+    this.userPhone = data.phoneNumber;    
+    this.cdr.detectChanges();
+  }
+}
 
   private async generateDateOptions() {
     const options: DateOption[] = [];
@@ -219,8 +235,8 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   async confirmOrder() {
-    if (!this.selectedAddress || !this.selectedTimeSlot) {
-      alert('Будь ласка, виберіть адресу та час доставки');
+    if (!this.selectedAddress || !this.selectedTimeSlot || !this.userName || !this.userPhone) {
+      alert('Будь ласка, заповніть всі обов\'язкові поля (Адреса, Час, Ім\'я, Телефон)');
       return;
     }
 
@@ -267,3 +283,4 @@ export class CheckoutPageComponent implements OnInit {
     }
   }
 }
+

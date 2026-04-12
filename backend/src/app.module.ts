@@ -14,12 +14,13 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { StoresModule } from './stores/stores.module';
 import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
+import { UsersModule } from './user/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '../.env',   // піднімаємось на рівень вище
+      envFilePath: '../.env',
     }),
     ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
@@ -34,7 +35,8 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     AuthModule,
     OrdersModule,
-    StoresModule
+    StoresModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

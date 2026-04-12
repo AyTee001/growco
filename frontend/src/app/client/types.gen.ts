@@ -12,24 +12,6 @@ export type UpdateCategoryDto = {
     [key: string]: unknown;
 };
 
-export type Users = {
-    [key: string]: unknown;
-};
-
-export type Cart = {
-    /**
-     * Unique identifier for the cart
-     */
-    cartId: number;
-    userId?: number | null;
-    guestSessionId?: string | null;
-    user: Users | null;
-    /**
-     * List of items in the cart
-     */
-    cartItems: Array<CartItems>;
-};
-
 export type OrderItems = {
     [key: string]: unknown;
 };
@@ -71,6 +53,43 @@ export type CartItems = {
     product: Products;
 };
 
+export type Cart = {
+    /**
+     * Unique identifier for the cart
+     */
+    cartId: number;
+    userId?: number | null;
+    guestSessionId?: string | null;
+    user: Users | null;
+    /**
+     * List of items in the cart
+     */
+    cartItems: Array<CartItems>;
+};
+
+export type LoyaltyTransactions = {
+    [key: string]: unknown;
+};
+
+export type Orders = {
+    [key: string]: unknown;
+};
+
+export type Addresses = {
+    [key: string]: unknown;
+};
+
+export type Users = {
+    userId: number;
+    phoneNumber: string;
+    email: string;
+    name: string;
+    carts: Array<Cart>;
+    loyaltyTransactions: Array<LoyaltyTransactions>;
+    orders: Array<Orders>;
+    addresses: Array<Addresses>;
+};
+
 export type AddToCartDto = {
     /**
      * The ID of the product to add
@@ -86,10 +105,6 @@ export type FilterOptionsDto = {
     minPrice: number;
     maxPrice: number;
     brands: Array<string>;
-};
-
-export type Orders = {
-    [key: string]: unknown;
 };
 
 export type DeliverySlots = {
@@ -131,6 +146,14 @@ export type Stores = {
     houseNumber: string;
     workingHours: string;
     orders?: Array<Orders>;
+    /**
+     * Latitude coordinate for map placement
+     */
+    lat: string;
+    /**
+     * Longitude coordinate for map placement
+     */
+    lng: string;
 };
 
 export type AppControllerGetHelloData = {
@@ -432,3 +455,26 @@ export type StoresControllerFindAllResponses = {
 };
 
 export type StoresControllerFindAllResponse = StoresControllerFindAllResponses[keyof StoresControllerFindAllResponses];
+
+export type UsersControllerGetProfileData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerGetProfileErrors = {
+    /**
+     * Invalid or missing token.
+     */
+    401: unknown;
+};
+
+export type UsersControllerGetProfileResponses = {
+    /**
+     * The user profile has been successfully retrieved.
+     */
+    200: Users;
+};
+
+export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];

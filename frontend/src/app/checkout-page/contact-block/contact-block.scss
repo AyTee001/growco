@@ -85,3 +85,22 @@
 .user-profile {
   width: 50%;
 }
+
+mat-form-field.locked {
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+  }
+  
+  input {
+    color: #666;
+    cursor: not-allowed;
+  }
+
+  .lock-icon {
+    color: #aaa;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
