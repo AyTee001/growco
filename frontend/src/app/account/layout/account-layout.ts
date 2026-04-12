@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  AccountNavItem,
-  AccountSidebar
-} from '../../../shared/account-sidebar/account-sidebar';
+import { AccountSidebar, AccountNavItem } from '../../shared/account-sidebar/account-sidebar';
 
 @Component({
   selector: 'app-account-layout',

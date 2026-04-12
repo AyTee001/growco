@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, OrdersControllerFindOneData, OrdersControllerFindOneResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, OrdersControllerFindOneData, OrdersControllerFindOneResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -97,8 +97,19 @@ export const productsControllerFindSimilar = <ThrowOnError extends boolean = fal
  */
 export const deliverySlotsControllerFindByDate = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerFindByDateData, ThrowOnError>) => (options.client ?? client).get<DeliverySlotsControllerFindByDateResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
 
+export const authControllerLogin = <ThrowOnError extends boolean = false>(options?: Options<AuthControllerLoginData, ThrowOnError>) => (options?.client ?? client).post<AuthControllerLoginResponses, unknown, ThrowOnError>({ url: '/auth/login', ...options });
+
+export const authControllerRegister = <ThrowOnError extends boolean = false>(options: Options<AuthControllerRegisterData, ThrowOnError>) => (options.client ?? client).post<AuthControllerRegisterResponses, unknown, ThrowOnError>({
+    url: '/auth/register',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
 /**
- * Create order (works for both guests and logged users)
+ * Create order (works for both guests and logged users) and clears cart
  */
 export const ordersControllerCreate = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerCreateData, ThrowOnError>) => (options.client ?? client).post<OrdersControllerCreateResponses, unknown, ThrowOnError>({
     url: '/orders',
@@ -115,3 +126,8 @@ export const ordersControllerCreate = <ThrowOnError extends boolean = false>(opt
 export const ordersControllerFindMyOrders = <ThrowOnError extends boolean = false>(options?: Options<OrdersControllerFindMyOrdersData, ThrowOnError>) => (options?.client ?? client).get<OrdersControllerFindMyOrdersResponses, unknown, ThrowOnError>({ url: '/orders/my', ...options });
 
 export const ordersControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<OrdersControllerFindOneResponses, unknown, ThrowOnError>({ url: '/orders/{id}', ...options });
+
+/**
+ * Отримати список усіх магазинів
+ */
+export const storesControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<StoresControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<StoresControllerFindAllResponses, unknown, ThrowOnError>({ url: '/stores', ...options });

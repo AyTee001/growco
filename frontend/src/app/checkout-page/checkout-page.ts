@@ -8,8 +8,8 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
-import { DeliverySlots, deliverySlotsControllerFindByDate, } from '../client';
-import { ordersControllerCreate } from '../client';
+import { DeliverySlots, deliverySlotsControllerFindByDate, Stores, } from '../client';
+import { ordersControllerCreate, storesControllerFindAll } from '../client';
 
 interface DateOption {
   label: string;
@@ -49,17 +49,36 @@ export class CheckoutPageComponent implements OnInit {
     { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
   ];
 
-  addresses = [
-    'вул. Головна, 123', 'вул. Садова, 45', 'просп. Лесі Українки, 7', 'площа Ринок, 1'
-  ];
-
-  selectedAddress: string = this.addresses[0];
+  addresses: string[] = [];
+  selectedAddress: string = ''; 
   selectedTimeSlot: TimeSlot | null = null;
   selectedPayment = 'cash_on_pickup';
 
   async ngOnInit() {
     this.generateDateOptions();
-    await this.loadDeliverySlots();
+    
+    await Promise.all([
+      this.loadDeliverySlots(),
+      this.loadStores()
+    ]);
+  }
+
+  private async loadStores() {
+    const { data, error } = await storesControllerFindAll();
+    
+    if (error || !data) {
+      console.error('Failed to load stores:', error);
+      this.addresses = ['Магазин тимчасово недоступний'];
+      return;
+    }
+
+    this.addresses = data.map((store: any) => {
+      return `${store.name} — м. ${store.city}, ${store.street}, ${store.houseNumber} (${store.workingHours})`;
+    });
+
+    if (this.addresses.length > 0) {
+      this.selectedAddress = this.addresses[0];
+    }
   }
 
   private generateDateOptions() {

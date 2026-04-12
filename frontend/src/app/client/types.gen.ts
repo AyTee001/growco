@@ -112,8 +112,25 @@ export type DeliverySlots = {
     orders?: Array<Orders>;
 };
 
+export type RegisterDto = {
+    [key: string]: unknown;
+};
+
 export type CreateOrderDto = {
     [key: string]: unknown;
+};
+
+export type Stores = {
+    /**
+     * Unique identifier for the store
+     */
+    storeId: number;
+    name: string;
+    city: string;
+    street: string;
+    houseNumber: string;
+    workingHours: string;
+    orders?: Array<Orders>;
 };
 
 export type AppControllerGetHelloData = {
@@ -346,6 +363,28 @@ export type DeliverySlotsControllerFindByDateResponses = {
 
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
 
+export type AuthControllerLoginData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthControllerLoginResponses = {
+    201: unknown;
+};
+
+export type AuthControllerRegisterData = {
+    body: RegisterDto;
+    path?: never;
+    query?: never;
+    url: '/auth/register';
+};
+
+export type AuthControllerRegisterResponses = {
+    201: unknown;
+};
+
 export type OrdersControllerCreateData = {
     body: CreateOrderDto;
     path?: never;
@@ -380,3 +419,16 @@ export type OrdersControllerFindOneData = {
 export type OrdersControllerFindOneResponses = {
     200: unknown;
 };
+
+export type StoresControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/stores';
+};
+
+export type StoresControllerFindAllResponses = {
+    200: Array<Stores>;
+};
+
+export type StoresControllerFindAllResponse = StoresControllerFindAllResponses[keyof StoresControllerFindAllResponses];
