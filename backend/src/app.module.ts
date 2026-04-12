@@ -31,7 +31,7 @@ import { AuthModule } from './auth/auth.module';
     ProductsModule,
     DeliverySlotsModule,
     ProductsModule,
-    StoresModule
+    StoresModule,
     AuthModule
   ],
   controllers: [AppController],

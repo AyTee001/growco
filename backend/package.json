@@ -22,7 +22,8 @@
     "seed:products": "ts-node -r dotenv/config src/db/products.seed.ts",
     "seed:stores": "ts-node src/db/stores.seed.ts",
     "seed:categories:prod": "node dist/db/categories.seed.js",
-    "seed:products:prod": "node dist/db/products.seed.js"
+    "seed:products:prod": "node dist/db/products.seed.js",
+    "seed:stores:prod": "ts-node src/db/stores.seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
