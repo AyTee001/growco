@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +33,7 @@ interface DateOption {
 export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   userName = 'Іван Петренко';
   userPhone = '+380 99 123 45 67';
@@ -121,12 +122,14 @@ export class CheckoutPageComponent implements OnInit {
       this.selectedDate.set(this.dateOptions[0].value);
     }
   }
+
   private async loadStores() {
     const { data, error } = await storesControllerFindAll();
 
     if (error || !data) {
       console.error('Failed to load stores:', error);
       this.addresses = ['Магазин тимчасово недоступний'];
+      this.cdr.detectChanges();
       return;
     }
 
@@ -137,6 +140,8 @@ export class CheckoutPageComponent implements OnInit {
     if (this.addresses.length > 0) {
       this.selectedAddress = this.addresses[0];
     }
+
+    this.cdr.detectChanges();
   }
 
   async onDateChange(dateValue: string) {
