@@ -50,22 +50,80 @@ export class CheckoutPageComponent implements OnInit {
   ];
 
   addresses: string[] = [];
-  selectedAddress: string = ''; 
+  selectedAddress: string = '';
   selectedTimeSlot: TimeSlot | null = null;
   selectedPayment = 'cash_on_pickup';
 
   async ngOnInit() {
-    this.generateDateOptions();
-    
-    await Promise.all([
-      this.loadDeliverySlots(),
-      this.loadStores()
-    ]);
+    await this.generateDateOptions();
+
+    if (this.selectedDate()) {
+      await Promise.all([
+        this.loadDeliverySlots(),
+        this.loadStores()
+      ]);
+    } else {
+      await this.loadStores();
+    }
   }
 
+  private async generateDateOptions() {
+    const options: DateOption[] = [];
+    const now = new Date();
+
+    const potentialDates = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(now.getDate() + i);
+      potentialDates.push(d);
+    }
+
+    const fetchPromises = potentialDates.map(d => {
+      const dateStr = d.toISOString().split('T')[0];
+      return deliverySlotsControllerFindByDate({ query: { date: dateStr } })
+        .then(res => ({ date: d, dateStr, res }));
+    });
+
+    const results = await Promise.all(fetchPromises);
+
+    for (const item of results) {
+      if (options.length >= 5) break;
+
+      if (!item.res.error && item.res.data) {
+        const isToday = item.dateStr === now.toISOString().split('T')[0];
+
+        const validSlots = item.res.data.filter((slot: any) => {
+          if (isToday) {
+            return new Date(slot.endTime) > now;
+          }
+          return true;
+        });
+
+        if (validSlots.length > 0) {
+          let label = item.date.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
+
+          const todayStr = now.toISOString().split('T')[0];
+          const tomorrow = new Date(now);
+          tomorrow.setDate(now.getDate() + 1);
+          const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+          if (item.dateStr === todayStr) label = 'Сьогодні';
+          else if (item.dateStr === tomorrowStr) label = 'Завтра';
+
+          options.push({ label, value: item.dateStr });
+        }
+      }
+    }
+
+    this.dateOptions = options;
+
+    if (this.dateOptions.length > 0) {
+      this.selectedDate.set(this.dateOptions[0].value);
+    }
+  }
   private async loadStores() {
     const { data, error } = await storesControllerFindAll();
-    
+
     if (error || !data) {
       console.error('Failed to load stores:', error);
       this.addresses = ['Магазин тимчасово недоступний'];
@@ -78,36 +136,6 @@ export class CheckoutPageComponent implements OnInit {
 
     if (this.addresses.length > 0) {
       this.selectedAddress = this.addresses[0];
-    }
-  }
-
-  private generateDateOptions() {
-    const options: DateOption[] = [];
-    const now = new Date();
-    const currentHour = now.getHours();
-
-    const startOffset = currentHour >= 22 ? 1 : 0;
-
-    for (let i = 0; i < 5; i++) {
-      const d = new Date();
-      d.setDate(now.getDate() + startOffset + i);
-
-      let label = d.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
-
-      const daysFromToday = startOffset + i;
-      if (daysFromToday === 0) label = 'Сьогодні';
-      if (daysFromToday === 1) label = 'Завтра';
-
-      options.push({
-        label,
-        value: d.toISOString().split('T')[0]
-      });
-    }
-
-    this.dateOptions = options;
-
-    if (this.dateOptions.length > 0) {
-      this.selectedDate.set(this.dateOptions[0].value);
     }
   }
 
@@ -216,7 +244,6 @@ export class CheckoutPageComponent implements OnInit {
     };
 
     try {
-      // 1. Надсилаємо дані на бекенд
       const { data, error } = await ordersControllerCreate({ body: orderPayload });
 
       if (error) {
@@ -227,7 +254,6 @@ export class CheckoutPageComponent implements OnInit {
 
       console.log('Замовлення успішно створено:', data);
 
-      // 3. Переходимо на сторінку успіху
       this.router.navigate(['/success']);
       this.basketService.refreshCart();
     } catch (err) {
