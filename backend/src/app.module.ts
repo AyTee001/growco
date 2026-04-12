@@ -13,6 +13,7 @@ import { appDataSourceOptions } from './config/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { StoresModule } from './stores/stores.module';
 import { AuthModule } from './auth/auth.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -31,8 +32,9 @@ import { AuthModule } from './auth/auth.module';
     ProductsModule,
     DeliverySlotsModule,
     ProductsModule,
+    AuthModule,
+    OrdersModule,
     StoresModule
-    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
