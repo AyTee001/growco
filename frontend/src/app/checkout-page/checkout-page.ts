@@ -106,15 +106,26 @@ export class CheckoutPageComponent implements OnInit {
     });
 
     if (error || !data) {
-      console.error('Failed to load slots:', error);
       this.isLoadingSlots.set(false);
       return;
     }
 
-    const mappedSlots: TimeSlot[] = data.map((slot: DeliverySlots) => ({
-      id: slot.slotId,
-      time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`
-    }));
+    const now = new Date();
+    const isToday = this.selectedDate() === now.toISOString().split('T')[0];
+
+    const mappedSlots: TimeSlot[] = data
+      .map((slot: DeliverySlots) => ({
+        id: slot.slotId,
+        time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`,
+        // Keep the raw end time for comparison
+        endTime: new Date(slot.endTime)
+      }))
+      .filter((slot: any) => {
+        if (isToday) {
+          return slot.endTime > now;
+        }
+        return true;
+      });
 
     this.timeSlots.set(mappedSlots);
     this.isLoadingSlots.set(false);
@@ -197,19 +208,11 @@ export class CheckoutPageComponent implements OnInit {
 
       console.log('Замовлення успішно створено:', data);
 
-      // 2. Очищуємо кошик (через ваш BasketService)
-      // this.basketService.clear();
-
       // 3. Переходимо на сторінку успіху
       this.router.navigate(['/success']);
     } catch (err) {
       console.error('Системна помилка:', err);
       alert('Сталася непередбачувана помилка');
     }
-
-    // Future integration point:
-    // await this.orderService.create(orderPayload);
-    // this.basketService.clear();
-    // this.router.navigate(['/success']);
   }
 }

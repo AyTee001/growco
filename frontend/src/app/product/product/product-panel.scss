@@ -227,3 +227,10 @@
     font-size: 14px;
     font-weight: 600;
 }
+
+.productResource-img {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}

@@ -3,18 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   ParseIntPipe,
-  UseGuards,
   Request,
+  Res,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-} from '@nestjs/swagger';
+import express from 'express';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -25,16 +21,34 @@ export class OrdersController {
 
   @Post()
   @ApiOperation({
-    summary: 'Create order (works for both guests and logged users)',
+    summary: 'Create order (works for both guests and logged users) and clears cart',
   })
-  async create(@Body() createOrderDto: CreateOrderDto, @Request() req) {
-    return this.ordersService.create(createOrderDto);
+  async create(
+    @Body() createOrderDto: CreateOrderDto,
+    @Request() req,
+    @Res({ passthrough: true }) res: express.Response,
+  ) {
+    const authenticatedUserId = req.user?.userId;
+
+    const sessionId = req.cookies?.['guest_cart_id'];
+
+    const order = await this.ordersService.create(
+      createOrderDto,
+      authenticatedUserId,
+      sessionId,
+    );
+
+    if (sessionId) {
+      res.clearCookie('guest_cart_id', { path: '/' });
+    }
+
+    return order;
   }
 
   @Get('my')
   @ApiOperation({ summary: 'Get history for current user' })
   findMyOrders(@Request() req) {
-    if (!req.user) throw new UnauthorizedException();
+    if (!req.user) throw new UnauthorizedException('Please log in to view order history');
     return this.ordersService.findByUser(req.user.userId);
   }
 
