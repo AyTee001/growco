@@ -38,4 +38,20 @@ export class Stores {
   @ApiProperty({ type: () => [Orders], required: false })
   @OneToMany(() => Orders, (orders) => orders.store)
   orders: Orders[];
+
+  @ApiProperty({
+    type: 'string',
+    example: '50.4025120',
+    description: 'Latitude coordinate for map placement'
+  })
+  @Column('decimal', { precision: 10, scale: 7, nullable: true })
+  lat: string;
+
+  @ApiProperty({
+    type: 'string',
+    example: '30.6540340',
+    description: 'Longitude coordinate for map placement'
+  })
+  @Column('decimal', { precision: 10, scale: 7, nullable: true })
+  lng: string;
 }

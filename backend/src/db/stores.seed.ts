@@ -16,8 +16,10 @@ const runSeed = async () => {
     street: 'проспект Миколи Бажана',
     houseNumber: '17',
     workingHours: '08:00 - 22:00',
+    lat: '50.4025120',
+    lng: '30.6540340',
   };
-
+  
   const existingStore = await storesRepo.findOne({
     where: {
       city: storeData.city,
