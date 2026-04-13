@@ -23,7 +23,7 @@
     "seed:stores": "ts-node src/db/stores.seed.ts",
     "seed:categories:prod": "node dist/db/categories.seed.js",
     "seed:products:prod": "node dist/db/products.seed.js",
-    "seed:stores:prod": "ts-node src/db/stores.seed.js"
+    "seed:stores:prod": "node src/db/stores.seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
