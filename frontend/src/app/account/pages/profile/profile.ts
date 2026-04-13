@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-interface AccountCard {
-  title: string;
-  description: string;
-  actionText: string;
-  route: string;
-}
+import { AuthService } from '../../../core/auth.service';
+import { usersControllerGetProfile } from '../../../client';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,33 +11,42 @@ interface AccountCard {
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
+  private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
+
+  isLoading = true;
   user = {
-    fullName: "Ім'я та прізвище",
-    phone: '+380 (XX) XXX XX XX'
+    fullName: '',
+    phone: ''
   };
 
-  cards: AccountCard[] = [
-    {
-      title: 'Мої замовлення',
-      description:
-        'Оце так 🙂\nЖодної покупочки онлайн в «Grovco».\nСпробуйте, маємо для вас круті пропозиції!',
-      actionText: 'Замовити',
-      route: '/product-catalog'
-    },
-    {
-      title: 'Чеки',
-      description:
-        'Отакої, тут порожньо 🙂\nЩоб мати змогу переглядати чеки, щоразу скануйте QR Вашого Рахунку на касі.',
-      actionText: '',
-      route: ''
-    },
-    {
-      title: 'Мої адреси',
-      description:
-        '🏡 Додайте свою першу адресу, щоб ми знали, куди відвезти ваше замовлення.',
-      actionText: 'Додати адресу',
-      route: '/account/addresses'
+  // Logic for the empty state
+  ordersCount = 0; 
+
+  ngOnInit(): void {
+    this.loadUserProfile();
+  }
+
+  private async loadUserProfile() {
+    if (!this.authService.isAuthenticated()) {
+      this.isLoading = false;
+      return;
     }
-  ];
+
+    try {
+      const { data, error } = await usersControllerGetProfile();
+      if (data && !error) {
+        this.user.fullName = data.name;
+        this.user.phone = data.phoneNumber;
+      }
+    } finally {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }

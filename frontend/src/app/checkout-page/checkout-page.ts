@@ -73,16 +73,16 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   private async loadUserProfile() {
-  if (!this.authService.isAuthenticated()) return;
+    if (!this.authService.isAuthenticated()) return;
 
-  const { data, error } = await usersControllerGetProfile();
+    const { data, error } = await usersControllerGetProfile();
 
-  if (data && !error) {
-    this.userName = data.name;
-    this.userPhone = data.phoneNumber;    
-    this.cdr.detectChanges();
+    if (data && !error) {
+      this.userName = data.name;
+      this.userPhone = data.phoneNumber;
+      this.cdr.detectChanges();
+    }
   }
-}
 
   private async generateDateOptions() {
     const options: DateOption[] = [];
