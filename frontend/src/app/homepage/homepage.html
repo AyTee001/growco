@@ -10,7 +10,7 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Швидко та смачно'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Швидко та смачно'" [items]="quickTastyItems" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -20,8 +20,9 @@
       </app-category-card>
       }
     </section>
+
     <section class="homepage__products">
-      <app-product-slider [title]="'Коробки із цукерками'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Коробки із цукерками'" [items]="candyBoxesItems" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -37,7 +38,6 @@
             Здорове харчування починається з правильного вибору.
           </p>
         </div>
-
         <div class="homepage__promo-image">
           <img src="images/grocery-bag.svg" alt="Пакет із продуктами" />
         </div>
@@ -45,7 +45,7 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Солодке до хліба'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Солодке до хліба'" [items]="sweetSpreadsItems" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -57,7 +57,7 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Протеїнові йогурти'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Протеїнові йогурти'" [items]="proteinYogurtsItems" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
   </main>

@@ -11,7 +11,7 @@ async function seed() {
   const productRepo = dataSource.getRepository(Products);
 
   console.log('Seeding products...');
-
+  
   for (const data of PRODUCTS_DATA) {
     const categories = await categoryRepo.findBy({
       categoryId: In(data.categoryIds)
