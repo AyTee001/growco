@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-interface AccountCard {
-  title: string;
-  description: string;
-  actionText: string;
-  route: string;
-}
+import { AuthService } from '../../../core/auth.service';
+import { UserContextService } from '../../user.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,33 +11,21 @@ interface AccountCard {
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
-export class ProfilePage {
-  user = {
-    fullName: "Ім'я та прізвище",
-    phone: '+380 (XX) XXX XX XX'
-  };
+export class ProfilePage implements OnInit {
+  private authService = inject(AuthService);
+  public userContext = inject(UserContextService);
 
-  cards: AccountCard[] = [
-    {
-      title: 'Мої замовлення',
-      description:
-        'Оце так 🙂\nЖодної покупочки онлайн в «Grovco».\nСпробуйте, маємо для вас круті пропозиції!',
-      actionText: 'Замовити',
-      route: '/product-catalog'
-    },
-    {
-      title: 'Чеки',
-      description:
-        'Отакої, тут порожньо 🙂\nЩоб мати змогу переглядати чеки, щоразу скануйте QR Вашого Рахунку на касі.',
-      actionText: '',
-      route: ''
-    },
-    {
-      title: 'Мої адреси',
-      description:
-        '🏡 Додайте свою першу адресу, щоб ми знали, куди відвезти ваше замовлення.',
-      actionText: 'Додати адресу',
-      route: '/account/addresses'
+  readonly user = computed(() => this.userContext.user());
+  readonly isLoading = computed(() => this.userContext.isLoading());
+  readonly ordersCount = computed(() => this.userContext.orders().length);
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.userContext.refreshOrders();
     }
-  ];
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }

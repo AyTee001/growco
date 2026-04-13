@@ -2,11 +2,12 @@ import {
   Controller, Get, Post, Body, 
   Request, Res, UseGuards} from '@nestjs/common';
 import express from 'express';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from 'src/auth/optional-jwt-auth.guard';
+import { Orders } from 'src/entities/Orders';
 
 @ApiTags('orders')
 @ApiBearerAuth()
@@ -41,6 +42,7 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   @Get('my')
   @ApiOperation({ summary: 'Get order history for the authenticated user' })
+  @ApiOkResponse({ type: [Orders] })
   findMyOrders(@Request() req) {
     return this.ordersService.findByUser(req.user.userId);
   }

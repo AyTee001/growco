@@ -45,10 +45,18 @@ export class OrdersService {
         });
         if (user) {
           finalName = user.name || finalName;
-          finalPhone = user.phoneNumber || finalPhone; 
+          finalPhone = user.phoneNumber || finalPhone;
         }
       }
 
+      if (!finalName || finalName.trim() === '') {
+        throw new BadRequestException('Name is a mandatory field');
+      }
+
+      if (!finalPhone || finalPhone.trim() === '') {
+        throw new BadRequestException('Phone is a mandatory field');
+      }
+      
       // 2. FETCH PRODUCTS
       const productIds = dto.items.map((i) => i.productId);
       const products = await queryRunner.manager.find(Products, {
@@ -101,7 +109,7 @@ export class OrdersService {
         userId: targetUserId,
         customerName: finalName,
         customerPhone: finalPhone,
-        totalAmount: calculatedTotal.toFixed(2),
+        totalAmount: Math.round(calculatedTotal * 100) / 100,
         status: 'PENDING',
         paymentMethod: dto.paymentMethod || 'cash_on_pickup',
         orderDate: new Date(),

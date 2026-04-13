@@ -141,3 +141,15 @@ export const storesControllerFindAll = <ThrowOnError extends boolean = false>(op
  * Retrieves the full profile of the authenticated user based on the JWT token.
  */
 export const usersControllerGetProfile = <ThrowOnError extends boolean = false>(options?: Options<UsersControllerGetProfileData, ThrowOnError>) => (options?.client ?? client).get<UsersControllerGetProfileResponses, UsersControllerGetProfileErrors, ThrowOnError>({ url: '/users/profile', ...options });
+
+/**
+ * Update user profile
+ */
+export const usersControllerUpdateProfile = <ThrowOnError extends boolean = false>(options: Options<UsersControllerUpdateProfileData, ThrowOnError>) => (options.client ?? client).patch<UsersControllerUpdateProfileResponses, unknown, ThrowOnError>({
+    url: '/users/profile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

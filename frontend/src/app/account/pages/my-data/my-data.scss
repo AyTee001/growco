@@ -1,19 +1,37 @@
-.account-page {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-  
-    h2 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      font-size: 24px;
-      color: #222222;
-    }
-  
-    p {
-      margin: 0;
-      color: #555555;
-      font-size: 16px;
+.my-data-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 8px;
+
+  .my-data-header {
+    margin-bottom: 32px;
+    h2 { margin: 0; font-size: 24px; font-weight: 500; }
+    p { margin: 4px 0 0; color: #777; font-size: 14px; }
+  }
+
+  .data-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .full-width { width: 100%; }
+
+    .readonly-field {
+      opacity: 0.8;
+      .lock-icon { font-size: 18px; color: #999; margin-right: 8px; }
     }
   }
+
+  .form-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      background-color: #4d8b37; // Keeping your brand green
+      padding: 0 32px;
+      height: 48px;
+      border-radius: 12px;
+    }
+  }
+}

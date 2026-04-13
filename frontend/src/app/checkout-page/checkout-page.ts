@@ -35,7 +35,7 @@ export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
 
   userName = '';
   userPhone = '';
@@ -73,16 +73,16 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   private async loadUserProfile() {
-  if (!this.authService.isAuthenticated()) return;
+    if (!this.authService.isAuthenticated()) return;
 
-  const { data, error } = await usersControllerGetProfile();
+    const { data, error } = await usersControllerGetProfile();
 
-  if (data && !error) {
-    this.userName = data.name;
-    this.userPhone = data.phoneNumber;    
-    this.cdr.detectChanges();
+    if (data && !error) {
+      this.userName = data.name;
+      this.userPhone = data.phoneNumber;
+      this.cdr.detectChanges();
+    }
   }
-}
 
   private async generateDateOptions() {
     const options: DateOption[] = [];
@@ -251,17 +251,20 @@ export class CheckoutPageComponent implements OnInit {
       items: currentCart.cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
-        priceAtOrder: item.product.price,
       })),
-      totalAmount: this.basketService.getTotalToPay(),
+
+      deliverySlotId: this.selectedTimeSlot?.id,
       deliveryTimeRange: this.selectedTimeSlot.time,
-      customerName: this.userName,
-      customerPhone: this.userPhone,
+      deliveryDate: this.selectedDate(),
+
+      deliveryAddress: this.selectedAddress,
       paymentMethod: this.selectedPayment,
+
+      customerName: this.userName || undefined,
+      customerPhone: this.userPhone || undefined,
+
       comment: this.orderComment,
       isPaperless: this.noPaperReceipt,
-      deliveryAddress: this.selectedAddress,
-      deliveryDate: this.selectedDate(),
     };
 
     try {
