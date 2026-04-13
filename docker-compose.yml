@@ -39,6 +39,12 @@ services:
     environment: *db-env
     command: npm run seed:products:prod
 
+  seed-stores-tool:
+    build: ./backend
+    profiles: ["tools"]
+    environment: *db-env
+    command: npm run seed:stores:prod
+
 
   api:
     build: ./backend
