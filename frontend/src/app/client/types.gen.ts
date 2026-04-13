@@ -474,6 +474,8 @@ export type OrdersControllerFindMyOrdersResponses = {
     200: Array<Orders>;
 };
 
+export type OrdersControllerFindMyOrdersResponse = OrdersControllerFindMyOrdersResponses[keyof OrdersControllerFindMyOrdersResponses];
+
 export type StoresControllerFindAllData = {
     body?: never;
     path?: never;
