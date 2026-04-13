@@ -98,3 +98,12 @@ body {
 app-main-menu {
   overflow: hidden;
 }
+
+/* Діалог редагування полів профілю: outlined label не обрізається зверху (mat-dialog-content має overflow: auto). */
+.edit-profile-dialog-panel .mdc-dialog__surface {
+  overflow: visible;
+}
+
+.edit-profile-dialog-panel .mat-mdc-dialog-content {
+  overflow: visible !important;
+}

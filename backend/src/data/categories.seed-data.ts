@@ -1,6 +1,6 @@
 export const CATEGORIES_SEED_DATA = [
   {
-    //done 20 + images
+    //done 20 + images сухофрукти
     categoryId: 1,
     name: "М'ясні продукти",
     parentCategoryId: null,
