@@ -29,4 +29,10 @@ export class ProductCardComponent {
   public addToCart() {
     this.basketService.increment(this.product().productId);
   }
+
+  public onImgError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'images/categories/1.png';
+    img.onerror = null; // prevent infinite loop
+  }
 }

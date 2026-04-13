@@ -47,6 +47,13 @@
   &:active {
     background-color: var(--mat-sys-secondary-fixed-dim);
   }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+    box-shadow: none;
+    pointer-events: none;
+  }
 }
 
 .swiper {

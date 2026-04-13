@@ -341,6 +341,21 @@ export type ProductsControllerFindAllOptionsResponses = {
 
 export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
 
+export type ProductsControllerFindCollectionData = {
+    body?: never;
+    path: {
+        slug: string;
+    };
+    query?: never;
+    url: '/products/collection/{slug}';
+};
+
+export type ProductsControllerFindCollectionResponses = {
+    200: Array<Products>;
+};
+
+export type ProductsControllerFindCollectionResponse = ProductsControllerFindCollectionResponses[keyof ProductsControllerFindCollectionResponses];
+
 export type ProductsControllerFindOneData = {
     body?: never;
     path: {
@@ -427,19 +442,6 @@ export type OrdersControllerFindMyOrdersData = {
 };
 
 export type OrdersControllerFindMyOrdersResponses = {
-    200: unknown;
-};
-
-export type OrdersControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/orders/{id}';
-};
-
-export type OrdersControllerFindOneResponses = {
     200: unknown;
 };
 

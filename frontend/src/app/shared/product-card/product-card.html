@@ -1,5 +1,6 @@
 <mat-card class="product-card" [class.promo]="product().isPromo" [class.in-basket]="isInCart()">
-  <img mat-card-image [src]="'uploads/' + product().imgUrl" [alt]="product().name">
+  <img mat-card-image [src]="'uploads/' + product().imgUrl" [alt]="product().name"
+       (error)="onImgError($event)">
 
   <mat-card-content>
     <div class="header-section">

@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
 import { Products } from '../client';
 import { ProductSliderComponent } from "../shared/product-slider/product-slider";
-import { ProductService } from '../shared/services/product.service';
 
 @Component({
   selector: 'app-homepage',
@@ -20,7 +20,7 @@ import { ProductService } from '../shared/services/product.service';
 export class Homepage implements OnInit {
 
   private readonly router = inject(Router);
-  private readonly productService = inject(ProductService);
+  private readonly http = inject(HttpClient);
 
   readonly leftImages = [
     'images/banners/banner.png',
@@ -49,24 +49,15 @@ export class Homepage implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.productService.getCollection('quick-tasty').subscribe({
-      next: (items) => this.quickTastyItems = items,
-      error: (err) => console.error('quick-tasty collection error', err)
-    });
-
-    this.productService.getCollection('candy-boxes').subscribe({
-      next: (items) => this.candyBoxesItems = items,
-      error: (err) => console.error('candy-boxes collection error', err)
-    });
-
-    this.productService.getCollection('sweet-spreads').subscribe({
-      next: (items) => this.sweetSpreadsItems = items,
-      error: (err) => console.error('sweet-spreads collection error', err)
-    });
-
-    this.productService.getCollection('protein-yogurts').subscribe({
-      next: (items) => this.proteinYogurtsItems = items,
-      error: (err) => console.error('protein-yogurts collection error', err)
+    this.http.get<Products[]>('/api/products').subscribe({
+      next: (all) => {
+        // Split 40 seed products into 4 groups of 10 each
+        this.quickTastyItems    = all.slice(0, 10);
+        this.candyBoxesItems    = all.slice(10, 20);
+        this.sweetSpreadsItems  = all.slice(20, 30);
+        this.proteinYogurtsItems = all.slice(30, 40);
+      },
+      error: (err) => console.error('Failed to load products', err)
     });
   }
 
@@ -79,25 +70,16 @@ export class Homepage implements OnInit {
       this.router.navigate(['/about-us']);
       return;
     }
-
     if (event.id === 'discounts') {
-      this.router.navigate(['/catalog'], {
-        queryParams: { promo: true }
-      });
+      this.router.navigate(['/catalog'], { queryParams: { promo: true } });
       return;
     }
-
     if (event.id === 'week-products') {
-      this.router.navigate(['/catalog'], {
-        queryParams: { week: true }
-      });
+      this.router.navigate(['/catalog'], { queryParams: { week: true } });
       return;
     }
-
     if (event.id === 'new-items') {
-      this.router.navigate(['/catalog'], {
-        queryParams: { new: true }
-      });
+      this.router.navigate(['/catalog'], { queryParams: { new: true } });
       return;
     }
   }
