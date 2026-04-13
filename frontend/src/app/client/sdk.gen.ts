@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileErrors, UsersControllerGetProfileResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileErrors, UsersControllerGetProfileResponses, UsersControllerUpdateProfileData, UsersControllerUpdateProfileResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -136,3 +136,15 @@ export const storesControllerFindAll = <ThrowOnError extends boolean = false>(op
  * Retrieves the full profile of the authenticated user based on the JWT token.
  */
 export const usersControllerGetProfile = <ThrowOnError extends boolean = false>(options?: Options<UsersControllerGetProfileData, ThrowOnError>) => (options?.client ?? client).get<UsersControllerGetProfileResponses, UsersControllerGetProfileErrors, ThrowOnError>({ url: '/users/profile', ...options });
+
+/**
+ * Update user profile
+ */
+export const usersControllerUpdateProfile = <ThrowOnError extends boolean = false>(options: Options<UsersControllerUpdateProfileData, ThrowOnError>) => (options.client ?? client).patch<UsersControllerUpdateProfileResponses, unknown, ThrowOnError>({
+    url: '/users/profile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

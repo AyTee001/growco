@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request, NotFoundException } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, NotFoundException, Patch, Req, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { 
@@ -6,9 +6,11 @@ import {
   ApiOperation, 
   ApiOkResponse, 
   ApiBearerAuth, 
-  ApiUnauthorizedResponse 
+  ApiUnauthorizedResponse, 
+  ApiResponse
 } from '@nestjs/swagger';
 import { Users } from '../entities/Users';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('users')
 @ApiBearerAuth() // Indicates that a JWT is required to access these routes
@@ -36,5 +38,17 @@ export class UsersController {
 
     const { passwordHash, ...result } = user;
     return result;
+  }
+
+  @Patch('profile')
+  @ApiOperation({ summary: 'Update user profile' })
+  @ApiResponse({ status: 200, type: Users })
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(
+    @Req() req, 
+    @Body() updateUserDto: UpdateUserDto
+  ): Promise<Users> {
+    const userId = req.user.userId; 
+    return this.usersService.updateProfile(userId, updateUserDto);
   }
 }

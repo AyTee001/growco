@@ -156,6 +156,11 @@ export type Stores = {
     lng: string;
 };
 
+export type UpdateUserDto = {
+    name?: string;
+    phoneNumber?: string;
+};
+
 export type AppControllerGetHelloData = {
     body?: never;
     path?: never;
@@ -465,3 +470,16 @@ export type UsersControllerGetProfileResponses = {
 };
 
 export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
+
+export type UsersControllerUpdateProfileData = {
+    body: UpdateUserDto;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerUpdateProfileResponses = {
+    200: Users;
+};
+
+export type UsersControllerUpdateProfileResponse = UsersControllerUpdateProfileResponses[keyof UsersControllerUpdateProfileResponses];
