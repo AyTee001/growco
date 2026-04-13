@@ -172,4 +172,27 @@ export class ProductsService {
       .limit(15)
       .getMany();
   }
+
+  private readonly COLLECTIONS: Record<string, number[]> = {
+    'quick-tasty':     [52, 18],
+    'candy-boxes':     [48],
+    'sweet-spreads':   [48],
+    'protein-yogurts': [21],
+  };
+
+  async findCollection(slug: string): Promise<Products[]> {
+    const categoryIds = this.COLLECTIONS[slug];
+
+    if (!categoryIds) {
+      throw new NotFoundException(`Collection '${slug}' not found`);
+    }
+
+    return await this.productsRepository.createQueryBuilder('product')
+      .innerJoin('product.categories', 'category')
+      .where('category.categoryId IN (:...categoryIds)', { categoryIds })
+      .groupBy('product.productId')
+      .orderBy('RANDOM()')
+      .limit(12)
+      .getMany();
+  }
 }

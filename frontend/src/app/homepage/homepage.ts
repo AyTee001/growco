@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
 import { Products } from '../client';
 import { ProductSliderComponent } from "../shared/product-slider/product-slider";
+import { ProductService } from '../shared/services/product.service';
 
 @Component({
   selector: 'app-homepage',
@@ -16,148 +17,20 @@ import { ProductSliderComponent } from "../shared/product-slider/product-slider"
   templateUrl: './homepage.html',
   styleUrl: './homepage.scss'
 })
-export class Homepage {
+export class Homepage implements OnInit {
 
   private readonly router = inject(Router);
+  private readonly productService = inject(ProductService);
 
   readonly leftImages = [
     'images/banners/banner.png',
     'images/banners/banner2.png'
   ];
 
-
-  public readonly dummy_items: Products[] = [
-    {
-      productId: 1,
-      name: 'Вода Borjomi',
-      description: 'Натуральна мінеральна вода вулканічного походження.',
-      price: 35.50,
-      qtyInStock: 50,
-      imgUrl: '/products/borjomi.png',
-      brand: 'Borjomi',
-      originCountry: 'Georgia',
-      isPromo: false,
-      netContent: 0.5,
-      unit: 'л',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 2,
-      name: 'Coca-Cola Classic',
-      description: 'Класичний освіжаючий напій.',
-      price: 28.00,
-      oldPrice: 32.00,
-      qtyInStock: 100,
-      imgUrl: '/products/coca-cola.png',
-      brand: 'Coca-Cola',
-      originCountry: 'Ukraine',
-      isPromo: true,
-      netContent: 0.5,
-      unit: 'л',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 3,
-      name: 'Lays Сметана та зелень',
-      description: 'Хрустка картопля зі смаком ніжної сметани.',
-      price: 45.90,
-      qtyInStock: 30,
-      imgUrl: '/products/lays-sour-cream.png',
-      brand: 'Lays',
-      originCountry: 'Ukraine',
-      isPromo: false,
-      netContent: 120,
-      unit: 'г',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 4,
-      name: 'Monster Energy',
-      description: 'Енергетичний напій для максимального заряду.',
-      price: 42.00,
-      qtyInStock: 25,
-      imgUrl: '/products/monster-energy.png',
-      brand: 'Monster',
-      originCountry: 'Ireland',
-      isPromo: false,
-      netContent: 0.5,
-      unit: 'л',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 5,
-      name: 'Печиво Oreo',
-      description: 'Легендарне шоколадне печиво з кремовою начинкою.',
-      price: 38.00,
-      qtyInStock: 40,
-      imgUrl: '/products/oreo.png',
-      brand: 'Oreo',
-      originCountry: 'Poland',
-      isPromo: false,
-      netContent: 154,
-      unit: 'г',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 6,
-      name: 'Pepsi Zero Sugar',
-      description: 'Максимальний смак, нуль цукру.',
-      price: 26.50,
-      qtyInStock: 80,
-      imgUrl: '/products/pepsi-zero.png',
-      brand: 'Pepsi',
-      originCountry: 'Ukraine',
-      isPromo: true,
-      oldPrice: 30.00,
-      netContent: 0.5,
-      unit: 'л',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 7,
-      name: 'Сік Sandora Апельсин',
-      description: '100% натуральний апельсиновий сік.',
-      price: 65.00,
-      qtyInStock: 15,
-      imgUrl: '/products/sandora-orange.png',
-      brand: 'Sandora',
-      originCountry: 'Ukraine',
-      isPromo: false,
-      netContent: 1,
-      unit: 'л',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    },
-    {
-      productId: 8,
-      name: 'Батончик Snickers',
-      description: 'Смажений арахіс, карамель та нуга в шоколаді.',
-      price: 22.00,
-      qtyInStock: 120,
-      imgUrl: '/products/snickers.png',
-      brand: 'Mars',
-      originCountry: 'Netherlands',
-      isPromo: false,
-      netContent: 50,
-      unit: 'г',
-      cartItems: [],
-      orderItems: [],
-      categories: []
-    }
-  ];
+  quickTastyItems: Products[] = [];
+  candyBoxesItems: Products[] = [];
+  sweetSpreadsItems: Products[] = [];
+  proteinYogurtsItems: Products[] = [];
 
   readonly extraCategories1 = [
     { title: 'Макарони', image: 'images/categories/pasta.svg', bgColor: '#E6E8DF' },
@@ -172,8 +45,30 @@ export class Homepage {
     { title: 'Торти та десерти', image: '/images/categories/desserts.svg', bgColor: '#E2B8C8' },
     { title: 'Газовані напої', image: '/images/categories/drinks.svg', bgColor: '#F0C987' },
     { title: 'Кава та чай', image: '/images/categories/coffee.svg', bgColor: '#D6C9B3' },
-    { title: 'Свіже м’ясо', image: '/images/categories/meat.svg', bgColor: '#B7CFB2' }
+    { title: "Свіже м'ясо", image: '/images/categories/meat.svg', bgColor: '#B7CFB2' }
   ];
+
+  ngOnInit(): void {
+    this.productService.getCollection('quick-tasty').subscribe({
+      next: (items) => this.quickTastyItems = items,
+      error: (err) => console.error('quick-tasty collection error', err)
+    });
+
+    this.productService.getCollection('candy-boxes').subscribe({
+      next: (items) => this.candyBoxesItems = items,
+      error: (err) => console.error('candy-boxes collection error', err)
+    });
+
+    this.productService.getCollection('sweet-spreads').subscribe({
+      next: (items) => this.sweetSpreadsItems = items,
+      error: (err) => console.error('sweet-spreads collection error', err)
+    });
+
+    this.productService.getCollection('protein-yogurts').subscribe({
+      next: (items) => this.proteinYogurtsItems = items,
+      error: (err) => console.error('protein-yogurts collection error', err)
+    });
+  }
 
   onAddToCart(product: Products): void {
     console.log('Added to cart:', product);
@@ -184,21 +79,21 @@ export class Homepage {
       this.router.navigate(['/about-us']);
       return;
     }
-  
+
     if (event.id === 'discounts') {
       this.router.navigate(['/catalog'], {
         queryParams: { promo: true }
       });
       return;
     }
-  
+
     if (event.id === 'week-products') {
       this.router.navigate(['/catalog'], {
         queryParams: { week: true }
       });
       return;
     }
-  
+
     if (event.id === 'new-items') {
       this.router.navigate(['/catalog'], {
         queryParams: { new: true }
