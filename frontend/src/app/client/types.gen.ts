@@ -430,19 +430,6 @@ export type OrdersControllerFindMyOrdersResponses = {
     200: unknown;
 };
 
-export type OrdersControllerFindOneData = {
-    body?: never;
-    path: {
-        id: number;
-    };
-    query?: never;
-    url: '/orders/{id}';
-};
-
-export type OrdersControllerFindOneResponses = {
-    200: unknown;
-};
-
 export type StoresControllerFindAllData = {
     body?: never;
     path?: never;

@@ -45,10 +45,18 @@ export class OrdersService {
         });
         if (user) {
           finalName = user.name || finalName;
-          finalPhone = user.phoneNumber || finalPhone; 
+          finalPhone = user.phoneNumber || finalPhone;
         }
       }
 
+      if (!finalName || finalName.trim() === '') {
+        throw new BadRequestException('Name is a mandatory field');
+      }
+
+      if (!finalPhone || finalPhone.trim() === '') {
+        throw new BadRequestException('Phone is a mandatory field');
+      }
+      
       // 2. FETCH PRODUCTS
       const productIds = dto.items.map((i) => i.productId);
       const products = await queryRunner.manager.find(Products, {

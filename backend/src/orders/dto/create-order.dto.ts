@@ -1,18 +1,29 @@
 import {
   IsArray,
   IsBoolean,
+  IsDateString,
+  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
+  Matches,
   Min,
+  MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export enum PaymentMethod {
+  CASH_ON_PICKUP = 'cash_on_pickup'
+}
 
 export class CreateOrderDto {
-  @IsOptional()
-  @IsInt()
-  userId?: number;
+  @IsArray()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderItemDto)
+  items: CreateOrderItemDto[];
 
   @IsOptional()
   @IsInt()
@@ -22,25 +33,20 @@ export class CreateOrderDto {
   @IsNotEmpty()
   deliveryTimeRange: string;
 
-  @IsNumber()
-  @Min(0)
-  totalAmount: number;
+  @IsEnum(PaymentMethod)
+  paymentMethod: PaymentMethod;
 
   @IsString()
   @IsNotEmpty()
-  paymentMethod: string;
+  deliveryAddress: string;
+
+  @IsDateString()
+  @IsNotEmpty()
+  deliveryDate: string;
 
   @IsOptional()
   @IsString()
-  deliveryAddress?: string;
-
-  @IsOptional()
-  // @IsDateString(), for dates like "2024-05-20"
-  @IsString()
-  deliveryDate?: string;
-
-  @IsOptional()
-  @IsString()
+  @MinLength(2, { message: 'Name is too short' })
   customerName?: string;
 
   @IsOptional()
@@ -54,8 +60,15 @@ export class CreateOrderDto {
   @IsOptional()
   @IsBoolean()
   isPaperless?: boolean;
+}
 
-  @IsArray()
-  @IsOptional()
-  items?: any[];
+export class CreateOrderItemDto {
+  @IsInt()
+  @IsNotEmpty()
+  productId: number;
+
+  @IsInt()
+  @Min(1)
+  @IsNotEmpty()
+  quantity: number;
 }
