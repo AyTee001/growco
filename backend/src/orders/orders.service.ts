@@ -109,7 +109,7 @@ export class OrdersService {
         userId: targetUserId,
         customerName: finalName,
         customerPhone: finalPhone,
-        totalAmount: calculatedTotal.toFixed(2),
+        totalAmount: Math.round(calculatedTotal * 100) / 100,
         status: 'PENDING',
         paymentMethod: dto.paymentMethod || 'cash_on_pickup',
         orderDate: new Date(),

@@ -10,7 +10,8 @@ import { UserContextService } from '../user.service';
   standalone: true,
   imports: [RouterModule, AccountSidebar],
   templateUrl: './account-layout.html',
-  styleUrl: './account-layout.scss'
+  styleUrl: './account-layout.scss',
+  providers: [UserContextService]
 })
 export class AccountLayout implements OnInit {
   private userContext = inject(UserContextService);

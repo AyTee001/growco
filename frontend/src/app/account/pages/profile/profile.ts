@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-import { usersControllerGetProfile } from '../../../client';
+import { UserContextService } from '../../user.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -13,36 +13,15 @@ import { usersControllerGetProfile } from '../../../client';
 })
 export class ProfilePage implements OnInit {
   private authService = inject(AuthService);
-  private cdr = inject(ChangeDetectorRef);
+  public userContext = inject(UserContextService);
 
-  isLoading = true;
-  user = {
-    fullName: '',
-    phone: ''
-  };
-
-  // Logic for the empty state
-  ordersCount = 0; 
+  readonly user = computed(() => this.userContext.user());
+  readonly isLoading = computed(() => this.userContext.isLoading());
+  readonly ordersCount = computed(() => this.userContext.orders().length);
 
   ngOnInit(): void {
-    this.loadUserProfile();
-  }
-
-  private async loadUserProfile() {
-    if (!this.authService.isAuthenticated()) {
-      this.isLoading = false;
-      return;
-    }
-
-    try {
-      const { data, error } = await usersControllerGetProfile();
-      if (data && !error) {
-        this.user.fullName = data.name;
-        this.user.phone = data.phoneNumber;
-      }
-    } finally {
-      this.isLoading = false;
-      this.cdr.detectChanges();
+    if (this.authService.isAuthenticated()) {
+      this.userContext.refreshOrders();
     }
   }
 

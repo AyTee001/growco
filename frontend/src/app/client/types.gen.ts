@@ -71,8 +71,73 @@ export type LoyaltyTransactions = {
     [key: string]: unknown;
 };
 
+export type DeliverySlots = {
+    /**
+     * Unique identifier for the delivery slot
+     */
+    slotId: number;
+    /**
+     * The beginning of the delivery window
+     */
+    startTime: string;
+    /**
+     * The end of the delivery window
+     */
+    endTime: string;
+    /**
+     * Whether this slot is still open for booking
+     */
+    isAvailable: boolean;
+    orders?: Array<Orders>;
+};
+
+export type Stores = {
+    /**
+     * Unique identifier for the store
+     */
+    storeId: number;
+    name: string;
+    city: string;
+    street: string;
+    houseNumber: string;
+    workingHours: string;
+    orders?: Array<Orders>;
+    /**
+     * Latitude coordinate for map placement
+     */
+    lat: string;
+    /**
+     * Longitude coordinate for map placement
+     */
+    lng: string;
+};
+
 export type Orders = {
-    [key: string]: unknown;
+    orderId: number;
+    userId: number | null;
+    deliverySlotId: number | null;
+    orderDate: string;
+    status: string;
+    /**
+     * Total order cost
+     */
+    totalAmount: number;
+    paymentMethod: string;
+    deliveryAddressId?: number | null;
+    storeId?: number | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
+    deliveryAddress?: string | null;
+    deliveryDate?: string | null;
+    comment?: string | null;
+    isPaperless: boolean;
+    deliverySlotStart?: string | null;
+    deliverySlotEnd?: string | null;
+    loyaltyTransactions?: Array<LoyaltyTransactions>;
+    orderItems?: Array<OrderItems>;
+    deliverySlot?: DeliverySlots;
+    store?: Stores;
+    user?: Users;
 };
 
 export type Addresses = {
@@ -107,53 +172,12 @@ export type FilterOptionsDto = {
     brands: Array<string>;
 };
 
-export type DeliverySlots = {
-    /**
-     * Unique identifier for the delivery slot
-     */
-    slotId: number;
-    /**
-     * The beginning of the delivery window
-     */
-    startTime: string;
-    /**
-     * The end of the delivery window
-     */
-    endTime: string;
-    /**
-     * Whether this slot is still open for booking
-     */
-    isAvailable: boolean;
-    orders?: Array<Orders>;
-};
-
 export type RegisterDto = {
     [key: string]: unknown;
 };
 
 export type CreateOrderDto = {
     [key: string]: unknown;
-};
-
-export type Stores = {
-    /**
-     * Unique identifier for the store
-     */
-    storeId: number;
-    name: string;
-    city: string;
-    street: string;
-    houseNumber: string;
-    workingHours: string;
-    orders?: Array<Orders>;
-    /**
-     * Latitude coordinate for map placement
-     */
-    lat: string;
-    /**
-     * Longitude coordinate for map placement
-     */
-    lng: string;
 };
 
 export type UpdateUserDto = {
@@ -432,8 +456,10 @@ export type OrdersControllerFindMyOrdersData = {
 };
 
 export type OrdersControllerFindMyOrdersResponses = {
-    200: unknown;
+    200: Array<Orders>;
 };
+
+export type OrdersControllerFindMyOrdersResponse = OrdersControllerFindMyOrdersResponses[keyof OrdersControllerFindMyOrdersResponses];
 
 export type StoresControllerFindAllData = {
     body?: never;
