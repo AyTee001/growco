@@ -1,40 +1,33 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  ParseIntPipe,
-  Request,
-  Res,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { 
+  Controller, Get, Post, Body, 
+  Request, Res, UseGuards} from '@nestjs/common';
 import express from 'express';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from 'src/auth/optional-jwt-auth.guard';
 
 @ApiTags('orders')
+@ApiBearerAuth()
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  @ApiOperation({
-    summary: 'Create order (works for both guests and logged users) and clears cart',
-  })
+  @ApiOperation({ summary: 'Create order. Uses token data for users, DTO for guests.' })
   async create(
     @Body() createOrderDto: CreateOrderDto,
     @Request() req,
     @Res({ passthrough: true }) res: express.Response,
   ) {
-    const authenticatedUserId = req.user?.userId;
-
+    const userId = req.user?.userId;
     const sessionId = req.cookies?.['guest_cart_id'];
 
     const order = await this.ordersService.create(
       createOrderDto,
-      authenticatedUserId,
+      userId,
       sessionId,
     );
 
@@ -45,15 +38,10 @@ export class OrdersController {
     return order;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('my')
-  @ApiOperation({ summary: 'Get history for current user' })
+  @ApiOperation({ summary: 'Get order history for the authenticated user' })
   findMyOrders(@Request() req) {
-    if (!req.user) throw new UnauthorizedException('Please log in to view order history');
     return this.ordersService.findByUser(req.user.userId);
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.ordersService.findOne(id);
   }
 }
