@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms'; // Added NgForm
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { VALIDATION_PATTERNS } from '../../core/validation.constants';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent {
   loading = false;
   errorMessage = '';
   hidePassword = true;
+  patterns = VALIDATION_PATTERNS;
 
   constructor(
     private authService: AuthService,
@@ -39,12 +41,15 @@ export class LoginComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  onSubmit() {
+  onSubmit(form: NgForm) { // Pass the form here
     this.submitted = true;
     this.errorMessage = '';
-    if (!this.email || !this.password) {
+    
+    // Rely on native form validity
+    if (form.invalid) {
       return;
     }
+    
     this.loading = true;
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: () => {

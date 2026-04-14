@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { VALIDATION_PATTERNS } from '../../core/validation.constants';
 
 @Component({
   selector: 'app-register',
@@ -36,6 +37,7 @@ export class RegisterComponent {
   errorMessage = '';
   hidePassword = true;
   hideConfirmPassword = true;
+  patterns = VALIDATION_PATTERNS;
 
   constructor(
     private authService: AuthService,
@@ -43,12 +45,14 @@ export class RegisterComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
     this.submitted = true;
     this.errorMessage = '';
-    if (!this.name || !this.phoneNumber || !this.email || !this.password || this.password !== this.confirmPassword) {
+    
+    if (form.invalid || this.password !== this.confirmPassword) {
       return;
     }
+    
     this.loading = true;
     this.authService.register({
       name: this.name,

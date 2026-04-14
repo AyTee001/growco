@@ -184,6 +184,10 @@ export type FilterOptionsDto = {
     brands: Array<string>;
 };
 
+export type LoginDto = {
+    [key: string]: unknown;
+};
+
 export type RegisterDto = {
     [key: string]: unknown;
 };
@@ -428,7 +432,7 @@ export type DeliverySlotsControllerFindByDateResponses = {
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
 
 export type AuthControllerLoginData = {
-    body?: never;
+    body: LoginDto;
     path?: never;
     query?: never;
     url: '/auth/login';
