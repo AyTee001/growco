@@ -9,7 +9,7 @@ import { Orders } from '../entities/Orders';
 import { OrderItems } from '../entities/OrderItems';
 import { Users } from '../entities/Users';
 import { Products } from '../entities/Products';
-import { Cart } from '../entities/Cart'; 
+import { Cart } from '../entities/Cart';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { CartItems } from 'src/entities/CartItems';
 
@@ -18,7 +18,7 @@ export class OrdersService {
   constructor(
     @InjectRepository(Orders) private readonly ordersRepo: Repository<Orders>,
     private dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(
     dto: CreateOrderDto,
@@ -56,7 +56,7 @@ export class OrdersService {
       if (!finalPhone || finalPhone.trim() === '') {
         throw new BadRequestException('Phone is a mandatory field');
       }
-      
+
       // 2. FETCH PRODUCTS
       const productIds = dto.items.map((i) => i.productId);
       const products = await queryRunner.manager.find(Products, {
@@ -69,7 +69,7 @@ export class OrdersService {
 
       // 3. STOCK & PRICE VALIDATION
       let calculatedTotal = 0;
-      const verifiedOrderItems: { productId: number, quantity: number, priceAtPurchase: string }[] = [];
+      const verifiedOrderItems: { productId: number, quantity: number, priceAtPurchase: number }[] = [];
       const productsToUpdate: Products[] = [];
 
       for (const item of dto.items) {
@@ -88,13 +88,13 @@ export class OrdersService {
         product.qtyInStock -= item.quantity;
         productsToUpdate.push(product);
 
-        const itemPrice = product.price; 
+        const itemPrice = product.price;
         calculatedTotal += itemPrice * item.quantity;
 
         verifiedOrderItems.push({
           productId: item.productId,
           quantity: item.quantity,
-          priceAtPurchase: itemPrice.toString(), 
+          priceAtPurchase: itemPrice,
         });
       }
 
@@ -145,7 +145,7 @@ export class OrdersService {
 
     } catch (err) {
       await queryRunner.rollbackTransaction();
-      
+
       if (err instanceof BadRequestException || err instanceof NotFoundException) {
         throw err;
       }
@@ -159,6 +159,7 @@ export class OrdersService {
     return await this.ordersRepo.find({
       where: { userId },
       order: { orderId: 'DESC' },
+      relations: ['orderItems', 'orderItems.product'],
     });
   }
 
