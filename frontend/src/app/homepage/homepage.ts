@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
 import { Products } from '../client';
@@ -16,6 +17,9 @@ import { ProductSliderComponent } from "../shared/product-slider/product-slider"
   styleUrl: './homepage.scss'
 })
 export class Homepage {
+
+  private readonly router = inject(Router);
+
   readonly leftImages = [
     'images/banners/banner.png',
     'images/banners/banner2.png'
@@ -173,5 +177,33 @@ export class Homepage {
 
   onAddToCart(product: Products): void {
     console.log('Added to cart:', product);
+  }
+
+  onBannerCardClick(event: { id: string; title: string }): void {
+    if (event.id === 'about') {
+      this.router.navigate(['/about-us']);
+      return;
+    }
+  
+    if (event.id === 'discounts') {
+      this.router.navigate(['/catalog'], {
+        queryParams: { promo: true }
+      });
+      return;
+    }
+  
+    if (event.id === 'week-products') {
+      this.router.navigate(['/catalog'], {
+        queryParams: { week: true }
+      });
+      return;
+    }
+  
+    if (event.id === 'new-items') {
+      this.router.navigate(['/catalog'], {
+        queryParams: { new: true }
+      });
+      return;
+    }
   }
 }

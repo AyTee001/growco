@@ -206,8 +206,18 @@ export class CartService {
     }
   }
 
-  async clearCart(sessionId: string) {
-    const cart = await this.findOrCreateBySession(sessionId);
+  async clearCart(userId?: number, guestSessionId?: string) {
+    if (!userId && !guestSessionId) {
+      throw new BadRequestException('Must provide either userId or guestSessionId to clear cart');
+    }
+
+    const cart = await this.cartRepository.findOne({
+      where: userId ? { userId } : { guestSessionId },
+    });
+
+    if (!cart) {
+      return { cartItems: [] };
+    }
 
     await this.cartItemsRepository.delete({ cartId: cart.cartId });
 

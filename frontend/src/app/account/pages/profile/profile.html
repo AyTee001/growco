@@ -1,0 +1,52 @@
+<div class="profile-page">
+  <div class="profile-page__container">
+    
+    @if (isLoading()) {
+      <div class="profile-skeleton">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    } @else {
+      <section class="profile-summary">
+        <div class="profile-summary__avatar">
+          <span class="material-symbols-outlined">person</span>
+        </div>
+
+        <div class="profile-summary__info">
+          <h3 class="profile-summary__name">{{ user()?.name || "Гість" }}</h3>
+          <p class="profile-summary__phone">{{ user()?.phoneNumber || "Номер не вказано" }}</p>
+
+          <a class="profile-summary__button" routerLink="/account/my-data">
+            Мої дані
+          </a>
+        </div>
+      </section>
+
+      <section class="profile-cards">
+        <article class="profile-card profile-card--large">
+          <h3 class="profile-card__title">Мої замовлення</h3>
+
+          @if (ordersCount() === 0) {
+            <p class="profile-card__text">
+              Оце так 🙂<br />
+              Жодної покупочки онлайн в «Grovco».<br />
+              Спробуйте, маємо для вас круті пропозиції!
+            </p>
+            <a class="profile-card__action" routerLink="/product-catalog">
+              <span>Замовити</span>
+              <span class="material-symbols-outlined">chevron_right</span>
+            </a>
+          } @else {
+            <p class="profile-card__text">
+              У вас є <strong>{{ ordersCount() }}</strong> активних замовлень.
+            </p>
+            <a class="profile-card__action" routerLink="/account/orders">
+              <span>Переглянути історію</span>
+              <span class="material-symbols-outlined">history</span>
+            </a>
+          }
+        </article>
+      </section>
+    }
+  </div>
+</div>

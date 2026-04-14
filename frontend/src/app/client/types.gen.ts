@@ -12,24 +12,6 @@ export type UpdateCategoryDto = {
     [key: string]: unknown;
 };
 
-export type Users = {
-    [key: string]: unknown;
-};
-
-export type Cart = {
-    /**
-     * Unique identifier for the cart
-     */
-    cartId: number;
-    userId?: number | null;
-    guestSessionId?: string | null;
-    user: Users | null;
-    /**
-     * List of items in the cart
-     */
-    cartItems: Array<CartItems>;
-};
-
 export type OrderItems = {
     [key: string]: unknown;
 };
@@ -71,24 +53,21 @@ export type CartItems = {
     product: Products;
 };
 
-export type AddToCartDto = {
+export type Cart = {
     /**
-     * The ID of the product to add
+     * Unique identifier for the cart
      */
-    productId: number;
+    cartId: number;
+    userId?: number | null;
+    guestSessionId?: string | null;
+    user: Users | null;
     /**
-     * Quantity of the product
+     * List of items in the cart
      */
-    quantity: number;
+    cartItems: Array<CartItems>;
 };
 
-export type FilterOptionsDto = {
-    minPrice: number;
-    maxPrice: number;
-    brands: Array<string>;
-};
-
-export type Orders = {
+export type LoyaltyTransactions = {
     [key: string]: unknown;
 };
 
@@ -110,6 +89,100 @@ export type DeliverySlots = {
      */
     isAvailable: boolean;
     orders?: Array<Orders>;
+};
+
+export type Stores = {
+    /**
+     * Unique identifier for the store
+     */
+    storeId: number;
+    name: string;
+    city: string;
+    street: string;
+    houseNumber: string;
+    workingHours: string;
+    orders?: Array<Orders>;
+    /**
+     * Latitude coordinate for map placement
+     */
+    lat: string;
+    /**
+     * Longitude coordinate for map placement
+     */
+    lng: string;
+};
+
+export type Orders = {
+    orderId: number;
+    userId: number | null;
+    deliverySlotId: number | null;
+    orderDate: string;
+    status: string;
+    /**
+     * Total order cost
+     */
+    totalAmount: number;
+    paymentMethod: string;
+    deliveryAddressId?: number | null;
+    storeId?: number | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
+    deliveryAddress?: string | null;
+    deliveryDate?: string | null;
+    comment?: string | null;
+    isPaperless: boolean;
+    deliverySlotStart?: string | null;
+    deliverySlotEnd?: string | null;
+    loyaltyTransactions?: Array<LoyaltyTransactions>;
+    orderItems?: Array<OrderItems>;
+    deliverySlot?: DeliverySlots;
+    store?: Stores;
+    user?: Users;
+};
+
+export type Addresses = {
+    [key: string]: unknown;
+};
+
+export type Users = {
+    userId: number;
+    phoneNumber: string;
+    email: string;
+    name: string;
+    carts: Array<Cart>;
+    loyaltyTransactions: Array<LoyaltyTransactions>;
+    orders: Array<Orders>;
+    addresses: Array<Addresses>;
+};
+
+export type AddToCartDto = {
+    /**
+     * The ID of the product to add
+     */
+    productId: number;
+    /**
+     * Quantity of the product
+     */
+    quantity: number;
+};
+
+export type FilterOptionsDto = {
+    minPrice: number;
+    maxPrice: number;
+    brands: Array<string>;
+};
+
+export type RegisterDto = {
+    [key: string]: unknown;
+};
+
+export type CreateOrderDto = {
+    [key: string]: unknown;
+};
+
+export type UpdateUserDto = {
+    name?: string;
+    phoneNumber?: string;
 };
 
 export type AppControllerGetHelloData = {
@@ -341,3 +414,98 @@ export type DeliverySlotsControllerFindByDateResponses = {
 };
 
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
+
+export type AuthControllerLoginData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthControllerLoginResponses = {
+    201: unknown;
+};
+
+export type AuthControllerRegisterData = {
+    body: RegisterDto;
+    path?: never;
+    query?: never;
+    url: '/auth/register';
+};
+
+export type AuthControllerRegisterResponses = {
+    201: unknown;
+};
+
+export type OrdersControllerCreateData = {
+    body: CreateOrderDto;
+    path?: never;
+    query?: never;
+    url: '/orders';
+};
+
+export type OrdersControllerCreateResponses = {
+    201: unknown;
+};
+
+export type OrdersControllerFindMyOrdersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/orders/my';
+};
+
+export type OrdersControllerFindMyOrdersResponses = {
+    200: Array<Orders>;
+};
+
+export type OrdersControllerFindMyOrdersResponse = OrdersControllerFindMyOrdersResponses[keyof OrdersControllerFindMyOrdersResponses];
+
+export type StoresControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/stores';
+};
+
+export type StoresControllerFindAllResponses = {
+    200: Array<Stores>;
+};
+
+export type StoresControllerFindAllResponse = StoresControllerFindAllResponses[keyof StoresControllerFindAllResponses];
+
+export type UsersControllerGetProfileData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerGetProfileErrors = {
+    /**
+     * Invalid or missing token.
+     */
+    401: unknown;
+};
+
+export type UsersControllerGetProfileResponses = {
+    /**
+     * The user profile has been successfully retrieved.
+     */
+    200: Users;
+};
+
+export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
+
+export type UsersControllerUpdateProfileData = {
+    body: UpdateUserDto;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerUpdateProfileResponses = {
+    200: Users;
+};
+
+export type UsersControllerUpdateProfileResponse = UsersControllerUpdateProfileResponses[keyof UsersControllerUpdateProfileResponses];

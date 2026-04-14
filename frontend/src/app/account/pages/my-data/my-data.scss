@@ -1,0 +1,37 @@
+.my-data-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 8px;
+
+  .my-data-header {
+    margin-bottom: 32px;
+    h2 { margin: 0; font-size: 24px; font-weight: 500; }
+    p { margin: 4px 0 0; color: #777; font-size: 14px; }
+  }
+
+  .data-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .full-width { width: 100%; }
+
+    .readonly-field {
+      opacity: 0.8;
+      .lock-icon { font-size: 18px; color: #999; margin-right: 8px; }
+    }
+  }
+
+  .form-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      background-color: #4d8b37; // Keeping your brand green
+      padding: 0 32px;
+      height: 48px;
+      border-radius: 12px;
+    }
+  }
+}

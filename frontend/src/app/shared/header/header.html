@@ -3,17 +3,18 @@
     <button mat-icon-button aria-label="Toggle menu" class="menu-button" (click)="openMenu()">
       <mat-icon>menu</mat-icon>
     </button>
-    <img src="images/logo-no-bg2.png" alt="Grow Co." class="brand-logo">
+    <a routerLink="/" class="logo-link">
+      <img src="images/logo-no-bg2.png" alt="Grow Co." class="brand-logo">
+    </a>
   </div>
 
   <div class="search-section">
     <div class="search-pill">
       <input type="text" placeholder="Пошук" [value]="searchQuery()" (keyup.enter)="onSearch($event)" #searchInput>
-
       <mat-icon role="button" class="search-icon-right" (click)="onSearch(searchInput.value)">search</mat-icon>
     </div>
   </div>
-  
+
   <div class="center-section">
     <div class="delivery-pill" (click)="openDelivery()">
       <mat-icon class="pill-icon">map</mat-icon>
@@ -24,10 +25,35 @@
     </div>
   </div>
 
-    <div class="right-section">
-      <button mat-flat-button class="cart-pill" (click)="openBasket()">
-        <mat-icon>add_shopping_cart</mat-icon>
-        <span>Кошик</span>
+  <div class="right-section">
+    <div class="account-info">
+      <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Акаунт">
+        <mat-icon>account_circle</mat-icon>
       </button>
+      <mat-menu #accountMenu="matMenu">
+        <ng-container *ngIf="authService.isAuthenticated(); else guestMenu">
+          <button mat-menu-item (click)="goToProfile()">
+            <mat-icon>person</mat-icon> <span>Мій профіль</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon> <span>Вийти</span>
+          </button>
+        </ng-container>
+        <ng-template #guestMenu>
+          <button mat-menu-item (click)="goToLogin()">
+            <mat-icon>login</mat-icon> <span>Увійти</span>
+          </button>
+          <button mat-menu-item (click)="goToRegister()">
+            <mat-icon>person_add</mat-icon> <span>Зареєструватися</span>
+          </button>
+        </ng-template>
+      </mat-menu>
+      <span class="user-name">{{ (userName$ | async) || 'Гість' }}</span>
     </div>
+
+    <button mat-flat-button class="cart-pill" (click)="openBasket()">
+      <mat-icon>add_shopping_cart</mat-icon>
+      <span>Кошик</span>
+    </button>
+  </div>
 </mat-toolbar>

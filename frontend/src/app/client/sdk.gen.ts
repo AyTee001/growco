@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileErrors, UsersControllerGetProfileResponses, UsersControllerUpdateProfileData, UsersControllerUpdateProfileResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -96,3 +96,55 @@ export const productsControllerFindSimilar = <ThrowOnError extends boolean = fal
  * Get available delivery slots by date
  */
 export const deliverySlotsControllerFindByDate = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerFindByDateData, ThrowOnError>) => (options.client ?? client).get<DeliverySlotsControllerFindByDateResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
+
+export const authControllerLogin = <ThrowOnError extends boolean = false>(options?: Options<AuthControllerLoginData, ThrowOnError>) => (options?.client ?? client).post<AuthControllerLoginResponses, unknown, ThrowOnError>({ url: '/auth/login', ...options });
+
+export const authControllerRegister = <ThrowOnError extends boolean = false>(options: Options<AuthControllerRegisterData, ThrowOnError>) => (options.client ?? client).post<AuthControllerRegisterResponses, unknown, ThrowOnError>({
+    url: '/auth/register',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create order. Uses token data for users, DTO for guests.
+ */
+export const ordersControllerCreate = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerCreateData, ThrowOnError>) => (options.client ?? client).post<OrdersControllerCreateResponses, unknown, ThrowOnError>({
+    url: '/orders',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get order history for the authenticated user
+ */
+export const ordersControllerFindMyOrders = <ThrowOnError extends boolean = false>(options?: Options<OrdersControllerFindMyOrdersData, ThrowOnError>) => (options?.client ?? client).get<OrdersControllerFindMyOrdersResponses, unknown, ThrowOnError>({ url: '/orders/my', ...options });
+
+/**
+ * Отримати список усіх магазинів
+ */
+export const storesControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<StoresControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<StoresControllerFindAllResponses, unknown, ThrowOnError>({ url: '/stores', ...options });
+
+/**
+ * Get current user profile
+ *
+ * Retrieves the full profile of the authenticated user based on the JWT token.
+ */
+export const usersControllerGetProfile = <ThrowOnError extends boolean = false>(options?: Options<UsersControllerGetProfileData, ThrowOnError>) => (options?.client ?? client).get<UsersControllerGetProfileResponses, UsersControllerGetProfileErrors, ThrowOnError>({ url: '/users/profile', ...options });
+
+/**
+ * Update user profile
+ */
+export const usersControllerUpdateProfile = <ThrowOnError extends boolean = false>(options: Options<UsersControllerUpdateProfileData, ThrowOnError>) => (options.client ?? client).patch<UsersControllerUpdateProfileResponses, unknown, ThrowOnError>({
+    url: '/users/profile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

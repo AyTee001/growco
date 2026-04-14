@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,9 @@ import { ContactBlockComponent } from './contact-block/contact-block';
 import { PaymentMethodComponent, PaymentMethod } from './payment-method/payment-method';
 import { BasketService } from '../shared/header/basket/basket.service';
 import { firstValueFrom } from 'rxjs';
-import { DeliverySlots, deliverySlotsControllerFindByDate, } from '../client';
+import { DeliverySlots, deliverySlotsControllerFindByDate, Stores, usersControllerGetProfile, } from '../client';
+import { ordersControllerCreate, storesControllerFindAll } from '../client';
+import { AuthService } from '../core/auth.service';
 
 interface DateOption {
   label: string;
@@ -32,14 +34,17 @@ interface DateOption {
 export class CheckoutPageComponent implements OnInit {
   public basketService = inject(BasketService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  public authService = inject(AuthService);
 
-  userName = 'Іван Петренко';
-  userPhone = '+380 99 123 45 67';
+  userName = '';
+  userPhone = '';
   orderComment = '';
   noPaperReceipt = false;
 
   timeSlots = signal<TimeSlot[]>([]);
   isLoadingSlots = signal(false);
+
 
   dateOptions: DateOption[] = [];
   selectedDate = signal<string>('');
@@ -48,40 +53,83 @@ export class CheckoutPageComponent implements OnInit {
     { id: 'cash_on_pickup', label: 'Оплата на касі', icon: 'point_of_sale', value: 'cash_on_pickup' }
   ];
 
-  addresses = [
-    'вул. Головна, 123', 'вул. Садова, 45', 'просп. Лесі Українки, 7', 'площа Ринок, 1'
-  ];
-
-  selectedAddress: string = this.addresses[0];
+  addresses: string[] = [];
+  selectedAddress: string = '';
   selectedTimeSlot: TimeSlot | null = null;
   selectedPayment = 'cash_on_pickup';
 
   async ngOnInit() {
-    this.generateDateOptions();
-    await this.loadDeliverySlots();
+    await this.loadUserProfile();
+    await this.generateDateOptions();
+
+    if (this.selectedDate()) {
+      await Promise.all([
+        this.loadDeliverySlots(),
+        this.loadStores()
+      ]);
+    } else {
+      await this.loadStores();
+    }
   }
 
-  private generateDateOptions() {
+  private async loadUserProfile() {
+    if (!this.authService.isAuthenticated()) return;
+
+    const { data, error } = await usersControllerGetProfile();
+
+    if (data && !error) {
+      this.userName = data.name;
+      this.userPhone = data.phoneNumber;
+      this.cdr.detectChanges();
+    }
+  }
+
+  private async generateDateOptions() {
     const options: DateOption[] = [];
     const now = new Date();
-    const currentHour = now.getHours();
 
-    const startOffset = currentHour >= 22 ? 1 : 0;
-
-    for (let i = 0; i < 5; i++) {
+    const potentialDates = [];
+    for (let i = 0; i < 7; i++) {
       const d = new Date();
-      d.setDate(now.getDate() + startOffset + i);
+      d.setDate(now.getDate() + i);
+      potentialDates.push(d);
+    }
 
-      let label = d.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
+    const fetchPromises = potentialDates.map(d => {
+      const dateStr = d.toISOString().split('T')[0];
+      return deliverySlotsControllerFindByDate({ query: { date: dateStr } })
+        .then(res => ({ date: d, dateStr, res }));
+    });
 
-      const daysFromToday = startOffset + i;
-      if (daysFromToday === 0) label = 'Сьогодні';
-      if (daysFromToday === 1) label = 'Завтра';
+    const results = await Promise.all(fetchPromises);
 
-      options.push({
-        label,
-        value: d.toISOString().split('T')[0]
-      });
+    for (const item of results) {
+      if (options.length >= 5) break;
+
+      if (!item.res.error && item.res.data) {
+        const isToday = item.dateStr === now.toISOString().split('T')[0];
+
+        const validSlots = item.res.data.filter((slot: any) => {
+          if (isToday) {
+            return new Date(slot.endTime) > now;
+          }
+          return true;
+        });
+
+        if (validSlots.length > 0) {
+          let label = item.date.toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' });
+
+          const todayStr = now.toISOString().split('T')[0];
+          const tomorrow = new Date(now);
+          tomorrow.setDate(now.getDate() + 1);
+          const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+          if (item.dateStr === todayStr) label = 'Сьогодні';
+          else if (item.dateStr === tomorrowStr) label = 'Завтра';
+
+          options.push({ label, value: item.dateStr });
+        }
+      }
     }
 
     this.dateOptions = options;
@@ -90,7 +138,28 @@ export class CheckoutPageComponent implements OnInit {
       this.selectedDate.set(this.dateOptions[0].value);
     }
   }
-  
+
+  private async loadStores() {
+    const { data, error } = await storesControllerFindAll();
+
+    if (error || !data) {
+      console.error('Failed to load stores:', error);
+      this.addresses = ['Магазин тимчасово недоступний'];
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.addresses = data.map((store: any) => {
+      return `${store.name} — м. ${store.city}, ${store.street}, ${store.houseNumber} (${store.workingHours})`;
+    });
+
+    if (this.addresses.length > 0) {
+      this.selectedAddress = this.addresses[0];
+    }
+
+    this.cdr.detectChanges();
+  }
+
   async onDateChange(dateValue: string) {
     this.selectedDate.set(dateValue);
     this.selectedTimeSlot = null;
@@ -105,15 +174,26 @@ export class CheckoutPageComponent implements OnInit {
     });
 
     if (error || !data) {
-      console.error('Failed to load slots:', error);
       this.isLoadingSlots.set(false);
       return;
     }
 
-    const mappedSlots: TimeSlot[] = data.map((slot: DeliverySlots) => ({
-      id: slot.slotId,
-      time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`
-    }));
+    const now = new Date();
+    const isToday = this.selectedDate() === now.toISOString().split('T')[0];
+
+    const mappedSlots: TimeSlot[] = data
+      .map((slot: DeliverySlots) => ({
+        id: slot.slotId,
+        time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`,
+        // Keep the raw end time for comparison
+        endTime: new Date(slot.endTime)
+      }))
+      .filter((slot: any) => {
+        if (isToday) {
+          return slot.endTime > now;
+        }
+        return true;
+      });
 
     this.timeSlots.set(mappedSlots);
     this.isLoadingSlots.set(false);
@@ -155,8 +235,8 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   async confirmOrder() {
-    if (!this.selectedAddress || !this.selectedTimeSlot) {
-      alert('Будь ласка, виберіть адресу та час доставки');
+    if (!this.selectedAddress || !this.selectedTimeSlot || !this.userName || !this.userPhone) {
+      alert('Будь ласка, заповніть всі обов\'язкові поля (Адреса, Час, Ім\'я, Телефон)');
       return;
     }
 
@@ -168,29 +248,42 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     const orderPayload = {
-      guestSessionId: currentCart.guestSessionId,
-      items: currentCart.cartItems.map(item => ({
+      items: currentCart.cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
-        priceAtOrder: item.product.price
       })),
-      totalAmount: this.basketService.getTotalToPay(),
+
+      deliverySlotId: this.selectedTimeSlot?.id,
+      deliveryTimeRange: this.selectedTimeSlot.time,
+      deliveryDate: this.selectedDate(),
 
       deliveryAddress: this.selectedAddress,
-      deliverySlotId: this.selectedTimeSlot.id,
-      deliveryDate: this.selectedDate,
-      customerName: this.userName,
-      customerPhone: this.userPhone,
       paymentMethod: this.selectedPayment,
+
+      customerName: this.userName || undefined,
+      customerPhone: this.userPhone || undefined,
+
       comment: this.orderComment,
       isPaperless: this.noPaperReceipt,
     };
 
-    console.log('Order Ready for Backend:', orderPayload);
+    try {
+      const { data, error } = await ordersControllerCreate({ body: orderPayload });
 
-    // Future integration point:
-    // await this.orderService.create(orderPayload);
-    // this.basketService.clear();
-    // this.router.navigate(['/success']);
+      if (error) {
+        console.error('Помилка при створенні замовлення:', error);
+        alert('Не вдалося оформити замовлення. Спробуйте пізніше.');
+        return;
+      }
+
+      console.log('Замовлення успішно створено:', data);
+
+      this.router.navigate(['/success']);
+      this.basketService.refreshCart();
+    } catch (err) {
+      console.error('Системна помилка:', err);
+      alert('Сталася непередбачувана помилка');
+    }
   }
 }
+
