@@ -36,12 +36,7 @@ export class BannerSectionComponent implements AfterViewInit, OnDestroy {
       id: 'week-products', 
       title: 'Товари тижня', 
       imageUrl: 'images/product-of-the-week.png'
-    },
-    { 
-      id: 'new-items', 
-      title: 'Новинки', 
-      imageUrl: 'images/new-items.png'
-    },
+    }
   ];
 
   get rightCards() {
