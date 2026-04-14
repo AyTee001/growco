@@ -1,4 +1,59 @@
-<div class="account-page">
-    <h2>Мої дані</h2>
-    <p>Тут буде інформація про користувача.</p>
-  </div>
+<div class="my-data-page">
+  <h2 class="my-data-page__title">Мої дані</h2>
+
+  @if (profile$ | async; as p) {
+    <div class="my-data-page__avatar-block">
+      <button type="button" class="my-data-page__avatar" (click)="avatarInput.click()" aria-label="Змінити фото профілю">
+        @if (p.avatarDataUrl) {
+          <img [src]="p.avatarDataUrl" alt="" />
+        } @else {
+          <span class="material-symbols-outlined my-data-page__avatar-icon">person</span>
+        }
+      </button>
+      <input #avatarInput type="file" accept="image/*" hidden (change)="onAvatarSelected($event)" />
+    </div>
+
+    <div class="my-data-page__cards">
+      <app-account-card title="Персональна інформація">
+        <app-info-row
+          label="Прізвище та ім'я"
+          [value]="p.fullName"
+          [actionType]="actionTypeForPersonalName(p)"
+          [showDivider]="true"
+          (activated)="openFullName()"
+        />
+        <app-info-row
+          label="Дата народження"
+          [value]="p.birthDate"
+          [actionType]="actionTypeForBirth(p)"
+          [showDivider]="true"
+          (activated)="openBirthDate()"
+        />
+        <app-info-row
+          label="Стать"
+          [value]="p.gender"
+          actionType="chevron"
+          [showDivider]="false"
+          (activated)="openGender()"
+        />
+      </app-account-card>
+
+      <app-account-card title="Контакти">
+        <app-info-row
+          label="Телефон"
+          [value]="p.phone"
+          actionType="pencil"
+          [showDivider]="true"
+          (activated)="openPhone()"
+        />
+        <app-info-row
+          label="Електронна пошта"
+          [value]="p.email"
+          [actionType]="actionTypeForEmail(p)"
+          [showDivider]="false"
+          (activated)="openEmail()"
+        />
+      </app-account-card>
+    </div>
+  }
+</div>
