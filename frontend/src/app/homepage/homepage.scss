@@ -117,3 +117,8 @@
   /* Додаємо фільтр тіні саме для прозорого PNG/SVG, щоб пакет виглядав реалістично */
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
 }
+
+.homepage__category-link {
+  cursor: pointer;
+  display: block;
+}
