@@ -2,9 +2,11 @@ import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth.interceptor';
+import { CookieService } from 'ngx-cookie-service';
 import { routes } from './app.routes';
 import { client } from './client/client.gen';
 import { CategoryService } from './shared/services/category.service';
+
 
 function initializeCategories(categoryService: CategoryService) {
   return () => categoryService.init();
@@ -31,6 +33,7 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeCategories,
       deps: [CategoryService],
       multi: true,
-    }
+    },
+    CookieService
   ]
 };

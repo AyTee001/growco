@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { client } from '../client/client.gen';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { BasketService } from '../shared/header/basket/basket.service';
+import { Cart } from '../client'; // добавьте импорт, если Cart экспортируется из client.gen.ts
 
 export interface LoginRequest {
   email: string;
@@ -35,26 +37,33 @@ export class AuthService {
   private tokenKey = 'access_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
   private userNameSubject = new BehaviorSubject<string | null>(this.getUserNameFromToken());
+  private basketService = inject(BasketService);
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return from(client.post({
-      url: '/auth/login',
-      body: credentials
-    })).pipe(
+    return from(client.post({ url: '/auth/login', body: credentials })).pipe(
       map(response => response.data as AuthResponse),
       tap(response => this.setToken(response.access_token))
     );
   }
 
   register(user: RegisterRequest): Observable<AuthResponse> {
-    return from(client.post({
-      url: '/auth/register',
-      body: user
-    })).pipe(
+    return from(client.post({ url: '/auth/register', body: user })).pipe(
       map(response => response.data as AuthResponse),
       tap(response => this.setToken(response.access_token))
+    );
+  }
+
+  mergeCart(guestSessionId: string): Observable<Cart> {
+    return from(client.post({ url: '/cart/merge', body: { guestSessionId } })).pipe(
+      map(response => response.data as Cart),
+      tap(cart => {
+        if (this.basketService) {
+          this.basketService.cartSubject.next(cart);
+        }
+      })
     );
   }
 
@@ -74,6 +83,10 @@ export class AuthService {
     if (!token) return false;
     try {
       const decoded = jwtDecode<DecodedToken>(token);
+      if (!decoded.name) {
+        this.logout();
+        return false;
+      }
       if (decoded.exp && decoded.exp * 1000 < Date.now()) {
         this.logout();
         return false;
