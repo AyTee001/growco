@@ -1,6 +1,7 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { AuthInterceptor } from './core/auth.interceptor';
 import { routes } from './app.routes';
 import { client } from './client/client.gen';
@@ -30,6 +31,8 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'top'
       })
     ),
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'uk' },
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {

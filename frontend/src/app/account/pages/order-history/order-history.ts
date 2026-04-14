@@ -3,14 +3,14 @@ import { UserContextService } from '../../user.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
-import { Orders } from '../../../client';
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-order-history-page',
   standalone: true,
   templateUrl: './order-history.html',
   styleUrl: './order-history.scss',
-  imports: [CommonModule, MatExpansionModule, MatChipsModule]
+  imports: [CommonModule, MatExpansionModule, MatChipsModule, MatIconModule]
 })
 export class OrderHistoryPage implements OnInit {
   public userContext = inject(UserContextService);
