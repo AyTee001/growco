@@ -1,37 +1,94 @@
-.my-data-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 8px;
+.my-data-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 40px 16px;
+}
 
-  .my-data-header {
+.profile-card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+  &__header {
     margin-bottom: 32px;
-    h2 { margin: 0; font-size: 24px; font-weight: 500; }
-    p { margin: 4px 0 0; color: #777; font-size: 14px; }
+    text-align: left;
   }
 
-  .data-form {
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  &__subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+.data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__section {
     display: flex;
     flex-direction: column;
     gap: 12px;
-
-    .full-width { width: 100%; }
-
-    .readonly-field {
-      opacity: 0.8;
-      .lock-icon { font-size: 18px; color: #999; margin-right: 8px; }
-    }
   }
 
-  .form-actions {
-    margin-top: 24px;
-    display: flex;
-    justify-content: flex-end;
+  .full-width {
+    width: 100%;
+  }
 
-    button {
-      background-color: #4d8b37; // Keeping your brand green
-      padding: 0 32px;
-      height: 48px;
-      border-radius: 12px;
+  // Styling the readonly Material field
+  .readonly-field {
+    ::ng-deep .mat-mdc-text-field-wrapper {
+      background-color: #fcfcfc;
     }
+    
+    .lock-icon {
+      font-size: 18px;
+      color: #adb5bd;
+      margin-right: 8px;
+    }
+  }
+}
+
+.form-actions {
+  margin-top: 32px;
+
+  .submit-btn {
+    width: 100%;
+    background-color: #4d8b37 !important; // Your brand green
+    color: #ffffff;
+    height: 54px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: filter 0.2s ease;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+
+    &:disabled {
+      background-color: #e0e0e0 !important;
+    }
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 24px 20px;
+    border-radius: 12px;
   }
 }
