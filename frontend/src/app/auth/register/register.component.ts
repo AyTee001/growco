@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core'; // Added ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -31,6 +31,7 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private cookieService = inject(CookieService);
+  private cdr = inject(ChangeDetectorRef);
 
   name = '';
   phoneNumber = '';
@@ -69,7 +70,9 @@ export class RegisterComponent {
                 this.cookieService.delete('guest_cart_id', '/');
                 this.router.navigate(['/']);
               },
-              error: () => this.router.navigate(['/']),
+              error: () => {
+                this.router.navigate(['/']);
+              },
             });
           } else {
             this.router.navigate(['/']);
@@ -77,7 +80,8 @@ export class RegisterComponent {
         },
         error: (err) => {
           this.loading = false;
-          this.errorMessage = err.error?.message || 'Помилка реєстрації';
+          this.errorMessage = err.error?.message || 'Помилка реєстрації: перевірте дані, та переконайтеся, що на введеному e-mail ще немає акаунта';
+          this.cdr.markForCheck();
         },
       });
   }

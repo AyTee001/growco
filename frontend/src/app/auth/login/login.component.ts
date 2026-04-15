@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms'; // Added NgForm
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -31,6 +31,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private cookieService = inject(CookieService);
+  private cdr = inject(ChangeDetectorRef);
 
   email = '';
   password = '';
@@ -40,11 +41,10 @@ export class LoginComponent {
   hidePassword = true;
   patterns = VALIDATION_PATTERNS;
 
-  onSubmit(form: NgForm) { // Pass the form here
+  onSubmit(form: NgForm) {
     this.submitted = true;
     this.errorMessage = '';
     
-    // Rely on native form validity
     if (form.invalid) {
       return;
     }
@@ -68,6 +68,7 @@ export class LoginComponent {
       error: (err) => {
         this.loading = false;
         this.errorMessage = err.error?.message || 'Невірний email або пароль';
+        this.cdr.markForCheck();
       },
     });
   }
