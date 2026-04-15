@@ -294,8 +294,10 @@ export class CheckoutPageComponent implements OnInit {
       }
 
       console.log('Замовлення успішно створено:', data);
-      
-      this.snackBar.open('Замовлення успішно створено!', 'Закрити', { duration: 3000 });
+
+      this.snackBar.open(`Замовлення успішно створено! ID замовлення: ${data?.orderId}`, 'Закрити', {
+        duration: 0
+      });
 
       this.router.navigate(['/success']);
       this.basketService.refreshCart();

@@ -18,6 +18,7 @@ export class OrdersController {
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
   @ApiOperation({ summary: 'Create order. Uses token data for users, DTO for guests.' })
+  @ApiOkResponse({ type: Orders })
   async create(
     @Body() createOrderDto: CreateOrderDto,
     @Request() req,

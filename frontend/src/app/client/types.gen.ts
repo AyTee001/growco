@@ -489,8 +489,10 @@ export type OrdersControllerCreateData = {
 };
 
 export type OrdersControllerCreateResponses = {
-    201: unknown;
+    200: Orders;
 };
+
+export type OrdersControllerCreateResponse = OrdersControllerCreateResponses[keyof OrdersControllerCreateResponses];
 
 export type OrdersControllerFindMyOrdersData = {
     body?: never;
