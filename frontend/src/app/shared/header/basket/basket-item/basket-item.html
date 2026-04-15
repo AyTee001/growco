@@ -6,7 +6,7 @@
   <div class="basket-item__content">
     <div class="basket-item__top">
       <div class="basket-item__title-group">
-        <div class="basket-item__title">{{ item.product.name }}</div>
+        <div class="basket-item__title" (click)="navigateToProduct()">{{ item.product.name }}</div>
         @if (item.product.netContent) {
         <span class="basket-item__net-content">
           {{ item.product.netContent }} {{ item.product.unit }}

@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CartItems } from '../../../../client';
 import { BasketService } from '../basket.service';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from "@angular/material/icon";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-basket-item',
@@ -12,9 +13,10 @@ import { MatIcon } from "@angular/material/icon";
   styleUrls: ['./basket-item.scss']
 })
 export class BasketItem {
-  @Input({ required: true }) item!: CartItems; 
+  private router = inject(Router);
+  private basketService = inject(BasketService);
 
-  constructor(private basketService: BasketService) {}
+  @Input({ required: true }) item!: CartItems;
 
   increase(): void {
     if (this.item.quantity < this.item.product.qtyInStock) {
@@ -31,4 +33,10 @@ export class BasketItem {
   remove(): void {
     this.basketService.removeItem(this.item.itemId);
   }
+
+  public navigateToProduct(): void {
+    this.router.navigateByUrl(`/product/${this.item.productId}`);
+    this.basketService.close();
+  }
+
 }
