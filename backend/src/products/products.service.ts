@@ -11,16 +11,31 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsQueryDto } from './dto/products-query.dto';
 import { FilterOptionsDto } from './dto/filter-options.dto';
 import { FilterQueryDto } from './dto/filter-query.dto';
+import { WeeklyProductGeneratorService } from './weekly-generator.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
+    private readonly weeklyGenerator: WeeklyProductGeneratorService,
   ) { }
 
   async findAll(queryDto: ProductsQueryDto): Promise<Products[]> {
-    const { categoryId, search, brands, minPrice, maxPrice, isPromo, sort } = queryDto;
+    const {
+      categoryId,
+      search,
+      brands,
+      minPrice,
+      maxPrice,
+      isPromo,
+      weekOnly,
+      sort,
+    } = queryDto;
+
+    if (weekOnly) {
+      return this.findWeeklyDeals();
+    }
 
     const query = this.productsRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category');
@@ -170,6 +185,22 @@ export class ProductsService {
       .groupBy('product.productId')
       .orderBy('RANDOM()')
       .limit(15)
+      .getMany();
+  }
+
+  async findWeeklyDeals(): Promise<Products[]> {
+    // 1. Отримуємо ID, які згенерував WeeklyProductGeneratorService
+    const weeklyIds = this.weeklyGenerator.getWeeklyIds();
+
+    if (!weeklyIds || weeklyIds.length === 0) {
+      return [];
+    }
+
+    // 2. Повертаємо продукти за цими ID
+    // Використовуємо findBy для простоти або QueryBuilder для сортування
+    return await this.productsRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('product.productId IN (:...ids)', { ids: weeklyIds })
       .getMany();
   }
 }
