@@ -31,7 +31,7 @@ export class ProductCatalog {
   readonly promo = signal(false);
   readonly week = signal(false);
   readonly isNew = signal(false);
-  
+
   // Notice we moved the initial state to the top for easy resetting
   readonly initialSort = 'price_asc';
   readonly sort = signal(this.initialSort);
@@ -43,13 +43,13 @@ export class ProductCatalog {
 
   breadcrumbs = computed(() => {
     const id = this.categoryId();
-  
+
     if (id) return this.categoryService.getCategoryPath(id);
     if (this.promo()) return [{ name: 'Каталог', id: 0 }, { name: 'Всі акції', id: 0 }];
     if (this.week()) return [{ name: 'Каталог', id: 0 }, { name: 'Товари тижня', id: 0 }];
     if (this.isNew()) return [{ name: 'Каталог', id: 0 }, { name: 'Новинки', id: 0 }];
     if (this.q()) return [{ name: 'Пошук', id: 0 }, { name: `"${this.q()}"`, id: 0 }];
-  
+
     return [{ name: 'Каталог', id: 0 }];
   });
 
@@ -67,14 +67,14 @@ export class ProductCatalog {
       const promoOnly = this.promo();
       const weekOnly = this.week();
       const newOnly = this.isNew();
-    
+
       untracked(() => {
         let filters: any = {};
-    
+
         if (promoOnly) {
           filters.isPromo = [true];
         }
-    
+
         this.activeFilters.set(filters);
         this.filterConfig.set([]);
         this.loadFilterOptions(id, searchTerm);
@@ -89,7 +89,7 @@ export class ProductCatalog {
       const newOnly = this.isNew();
       const currentSort = this.sort();
       const currentFilters = this.activeFilters();
-    
+
       untracked(() => {
         this.getProducts(id, searchTerm, promoOnly, weekOnly, newOnly, currentSort, currentFilters);
       });
@@ -142,11 +142,11 @@ export class ProductCatalog {
 
   private async getProducts(id: number | null, searchTerm: string | null, promoOnly: boolean, weekOnly: boolean,
     newOnly: boolean, sort: string, filters: any
-  ) 
-  
+  )
+
   {
     this.isLoading.set(true);
-    
+
     const { data, error } = await productsControllerFindAll({
       query: {
         categoryId: id,
@@ -155,14 +155,11 @@ export class ProductCatalog {
         minPrice: filters.price?.min,
         maxPrice: filters.price?.max,
         brands: filters.brands,
-    
+
         isPromo: promoOnly || filters.isPromo?.includes(true),
-    
-        // обмеження для новинок
-        limit: weekOnly ? 30 : newOnly ? 30 : undefined,
-    
-        randomSeed: weekOnly ? this.getWeekSeed() : undefined
-      } as any
+
+        weekOnly: weekOnly,
+      } as any,
     });
 
     if (error) {
@@ -171,18 +168,9 @@ export class ProductCatalog {
     } else {
       this.products.set(data || []);
     }
-    
+
     this.isLoading.set(false);
 
-    
-  }
 
-  private getWeekSeed(): number {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const diff = now.getTime() - start.getTime();
-    const oneWeek = 1000 * 60 * 60 * 24 * 7;
-  
-    return Math.floor(diff / oneWeek);
   }
 }

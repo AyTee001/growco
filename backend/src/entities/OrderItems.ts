@@ -9,7 +9,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Orders } from './Orders';
 import { Products } from './Products';
-import { ColumnNumericTransformer } from 'src/shared/column-numeric-transformer';
+import { ColumnNumericTransformer } from '../shared/column-numeric-transformer';
 
 @Index('OrderItems_pkey', ['itemId'], { unique: true })
 @Index('IX_OrderItems_Order_Id', ['orderId'], {})
