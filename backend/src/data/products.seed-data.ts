@@ -1,4 +1,4 @@
-Курага Winway
+
 // products.seed-data.ts - corrected
 export const PRODUCTS_DATA = [
   // --- PASTRIES ---
