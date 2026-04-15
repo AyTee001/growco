@@ -1,8 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,12 +22,16 @@ import { VALIDATION_PATTERNS } from '../../core/validation.constants';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private cookieService = inject(CookieService);
+
   name = '';
   phoneNumber = '';
   email = '';
@@ -39,12 +44,6 @@ export class RegisterComponent {
   hideConfirmPassword = true;
   patterns = VALIDATION_PATTERNS;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   onSubmit(form: NgForm) {
     this.submitted = true;
     this.errorMessage = '';
@@ -54,26 +53,32 @@ export class RegisterComponent {
     }
     
     this.loading = true;
-    this.authService.register({
-      name: this.name,
-      phoneNumber: this.phoneNumber,
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        this.loading = false;
-        let message = 'Помилка реєстрації';
-        if (err.error?.message === 'User already exists') {
-          message = 'Користувач з таким email вже зареєстрований';
-        } else if (err.error?.message) {
-          message = err.error.message;
-        }
-        this.errorMessage = message;
-        this.cdr.detectChanges();
-      }
-    });
+    this.authService
+      .register({
+        name: this.name,
+        phoneNumber: this.phoneNumber,
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe({
+        next: () => {
+          const guestSessionId = this.cookieService.get('guest_cart_id');
+          if (guestSessionId) {
+            this.authService.mergeCart(guestSessionId).subscribe({
+              next: () => {
+                this.cookieService.delete('guest_cart_id', '/');
+                this.router.navigate(['/']);
+              },
+              error: () => this.router.navigate(['/']),
+            });
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = err.error?.message || 'Помилка реєстрації';
+        },
+      });
   }
 }

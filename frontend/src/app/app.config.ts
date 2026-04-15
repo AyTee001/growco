@@ -3,9 +3,11 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { AuthInterceptor } from './core/auth.interceptor';
+import { CookieService } from 'ngx-cookie-service';
 import { routes } from './app.routes';
 import { client } from './client/client.gen';
 import { CategoryService } from './shared/services/category.service';
+
 
 function initializeCategories(categoryService: CategoryService) {
   return () => categoryService.init();
@@ -40,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeCategories,
       deps: [CategoryService],
       multi: true,
-    }
+    },
+    CookieService
   ]
 };
