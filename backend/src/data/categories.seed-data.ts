@@ -1,6 +1,6 @@
 export const CATEGORIES_SEED_DATA = [
   {
-    //done 20 + images сухофрукти
+    //done 20 + images Лаваші, коржі
     categoryId: 1,
     name: "М'ясні продукти",
     parentCategoryId: null,

@@ -5,9 +5,9 @@ import * as path from 'path';
 export const appDataSourceOptions: DataSourceOptions = {
     type: 'postgres',
     host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
+    port: parseInt(process.env.DB_PORT || '5438'),
     username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'root',
+    password: process.env.DB_PASSWORD || '12345',
     database: process.env.DB_NAME || 'growco_db',
     
     entities: [path.join(__dirname, '/../entities/**/*.{ts,js}')],
