@@ -3,7 +3,7 @@ import { CartService } from './cart.service';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { Cart } from 'src/entities/Cart';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/optional-jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
 import type { Request, Response } from 'express';
 
@@ -12,11 +12,11 @@ export class CartController {
   constructor(private readonly cartService: CartService) { }
 
   @Get('current')
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Get current cart (guest or user)' })
   @ApiOkResponse({ type: Cart })
   async getCurrent(@Req() req: Request, @CurrentUser() user?: any) {
     if (user) {
-      // Авторизованный пользователь
       return this.cartService.findOrCreateByUserId(user.userId);
     }
     const sessionId = req.cookies['guest_cart_id'];
@@ -25,6 +25,7 @@ export class CartController {
   }
 
   @Post('add-item')
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Add item to cart (guest or user)' })
   @ApiOkResponse({ type: Cart })
   async addToCart(
@@ -34,16 +35,16 @@ export class CartController {
     @CurrentUser() user?: any,
   ) {
     if (user) {
-      // Авторизованный пользователь
       const cart = await this.cartService.findOrCreateByUserId(user.userId);
       return this.cartService.updateItemQuantityByCartId(cart.cartId, body.productId, body.quantity);
     }
 
+    // Гость
     let sessionId = req.cookies['guest_cart_id'];
     if (!sessionId) {
       sessionId = crypto.randomUUID();
       res.cookie('guest_cart_id', sessionId, {
-        httpOnly: true,
+        httpOnly: false,
         secure: false,
         sameSite: 'lax',
         maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -54,6 +55,7 @@ export class CartController {
   }
 
   @Delete('item/:itemId')
+  @UseGuards(OptionalJwtAuthGuard)
   async removeItem(
     @Param('itemId', ParseIntPipe) itemId: number,
     @Req() req: Request,
@@ -70,6 +72,7 @@ export class CartController {
   }
 
   @Delete('clear')
+  @UseGuards(OptionalJwtAuthGuard)
   async clear(@Req() req: Request, @CurrentUser() user?: any) {
     if (user) {
       const cart = await this.cartService.findOrCreateByUserId(user.userId);
@@ -81,21 +84,18 @@ export class CartController {
   }
 
   @Post('merge')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Merge guest cart with user cart after login' })
   async mergeGuestCart(
     @CurrentUser() user: any,
     @Body('guestSessionId') guestSessionId: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    // Если передан guestSessionId, используем его для слияния
     if (guestSessionId) {
       const mergedCart = await this.cartService.mergeGuestCart(user.userId, guestSessionId);
-      // Очищаем cookie гостя
       res.clearCookie('guest_cart_id');
       return mergedCart;
     }
-    // Если нет guestSessionId, просто возвращаем корзину пользователя
     return this.cartService.findOrCreateByUserId(user.userId);
   }
 }

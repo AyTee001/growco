@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { JwtAuthGuard } from "./jwt-auth.guard";
+import { Injectable, ExecutionContext } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class OptionalJwtAuthGuard extends JwtAuthGuard {
-  handleRequest(err, user, info) {
-    return user;
+export class OptionalJwtAuthGuard extends AuthGuard('jwt') {
+  handleRequest(err: any, user: any, info: any) {
+    return user || null;
   }
 }
