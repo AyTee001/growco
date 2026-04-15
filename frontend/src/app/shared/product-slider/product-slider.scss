@@ -1,7 +1,14 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .slider-container {
   width: 100%;
-  max-width: 100%;
   overflow: hidden;
+  margin-top: 20px;
+  max-width: 2000px;
 }
 
 .slider-header {

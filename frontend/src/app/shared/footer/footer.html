@@ -24,10 +24,7 @@
       <div class="info-item mobile-collapsible">
         <div class="collapsible-header" (click)="toggleSection('company')">
           <span class="label">Компанія</span>
-          <mat-icon>{{ openSections().company ? 'expand_less' : 'expand_more' }}</mat-icon>
-        </div>
-        <div class="collapsible-content" *ngIf="openSections().company">
-          <a class="value link-action" href="/about">Про нас</a>
+          <a class="value link-action" (click)="goToAbout()">Про нас</a>
         </div>
       </div>
 

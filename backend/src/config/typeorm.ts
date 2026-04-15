@@ -7,7 +7,7 @@ export const appDataSourceOptions: DataSourceOptions = {
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
     username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'root',
+    password: process.env.DB_PASSWORD || 'admin',
     database: process.env.DB_NAME || 'growco_db',
     
     entities: [path.join(__dirname, '/../entities/**/*.{ts,js}')],

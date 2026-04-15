@@ -20,8 +20,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:categories": "ts-node -r dotenv/config src/db/categories.seed.ts",
     "seed:products": "ts-node -r dotenv/config src/db/products.seed.ts",
+    "seed:stores": "ts-node src/db/stores.seed.ts",
     "seed:categories:prod": "node dist/db/categories.seed.js",
-    "seed:products:prod": "node dist/db/products.seed.js"
+    "seed:products:prod": "node dist/db/products.seed.js",
+    "seed:stores:prod": "node dist/db/stores.seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -41,6 +43,7 @@
     "cookie-parser": "^1.4.7",
     "cron": "^4.4.0",
     "dotenv": "^17.4.1",
+    "luxon": "^3.7.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
@@ -57,6 +60,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/luxon": "^3.7.1",
     "@types/node": "^22.10.7",
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^6.0.2",

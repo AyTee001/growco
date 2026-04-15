@@ -1,34 +1,27 @@
 <div class="contact-card">
   <div class="contact-content" [formGroup]="contactForm">
-    
-    <div class="user-profile">
-      <mat-form-field appearance="outline" class="full-width">
+
+    <div class="user-profile" [formGroup]="contactForm">
+      <mat-form-field appearance="outline" class="full-width" [class.locked]="isReadOnly">
         <mat-label>Ім'я</mat-label>
-        <input 
-          matInput 
-          #newName 
-          [value]="userName" 
-          (input)="saveUserData(newName.value, newPhone.value)" 
-          placeholder="Наприклад, Іван Петренко">
+        <input matInput formControlName="name" placeholder="Наприклад, Іван Петренко" [readonly]="isReadOnly">
+        <mat-icon matSuffix *ngIf="isReadOnly" class="lock-icon">lock</mat-icon>
+        <mat-error *ngIf="contactForm.get('name')?.hasError('required')">Ім'я – обов'язкове поле</mat-error>
+        <mat-error *ngIf="contactForm.get('name')?.hasError('minlength')">Мінімум 2 символи</mat-error>
+        <mat-error *ngIf="contactForm.get('name')?.hasError('pattern')">Ім'я може містити лише літери</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline" class="full-width" [class.locked]="isReadOnly">
         <mat-label>Телефон</mat-label>
-        <input 
-          matInput 
-          #newPhone 
-          [value]="userPhone" 
-          (input)="saveUserData(newName.value, newPhone.value)" 
-          placeholder="+380 99 123 45 67">
+        <input matInput formControlName="phone" placeholder="+380XXXXXXXXX" [readonly]="isReadOnly">
+        <mat-icon matSuffix *ngIf="isReadOnly" class="lock-icon">lock</mat-icon>
+        <mat-error *ngIf="contactForm.get('phone')?.hasError('required')">Телефон – обов'язкове поле</mat-error>
+        <mat-error *ngIf="contactForm.get('phone')?.hasError('pattern')">Введіть у форматі: +380XXXXXXXXX</mat-error>
       </mat-form-field>
     </div>
-
+    
     <div class="comment-field">
-      <textarea
-        formControlName="comment"
-        placeholder="Коментар для збиральника"
-        rows="3"
-      ></textarea>
+      <textarea formControlName="comment" placeholder="Коментар для збиральника" rows="3"></textarea>
       <div class="counter">{{ commentLength }}/500</div>
     </div>
 
@@ -40,5 +33,6 @@
         </mat-slide-toggle>
       </div>
     </div>
+    
   </div>
 </div>

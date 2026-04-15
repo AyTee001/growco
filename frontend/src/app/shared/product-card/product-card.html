@@ -3,12 +3,16 @@
 
   <mat-card-content>
     <div class="header-section">
-      <h3 (click)="navigateToProduct()">{{ product().name }}</h3>
+      <h3 (click)="navigateToProduct()" [matTooltip]="product().name" [matTooltipDisabled]="product().name.length < 24"
+        matTooltipPosition="above">
+        {{ product().name }}
+      </h3>
+
       @if (product().netContent) {
       <span class="net-content">{{ product().netContent }} {{ product().unit }}</span>
       }
     </div>
-
+    
     <p class="description">{{ product().description }}</p>
 
     <div class="price-row">
@@ -21,18 +25,17 @@
         }
       </div>
 
-@if (cartQuantity() > 0 && product().qtyInStock > 0) {
-        <div class="cart-indicator-group">
-          <span class="quantity-text">{{ cartQuantity() }}</span>
-          <mat-icon class="in-cart-indicator">shopping_cart</mat-icon>
-        </div>
+      @if (cartQuantity() > 0 && product().qtyInStock > 0) {
+      <div class="cart-indicator-group">
+        <span class="quantity-text">{{ cartQuantity() }}</span>
+        <mat-icon class="in-cart-indicator">shopping_cart</mat-icon>
+      </div>
       }
 
-      <button mat-icon-button 
-              class="add-button" 
-              [disabled]="product().qtyInStock <= 0 || cartQuantity() >= product().qtyInStock"
-              (click)="addToCart()">
+      <button mat-icon-button class="add-button"
+        [disabled]="product().qtyInStock <= 0 || cartQuantity() >= product().qtyInStock" (click)="addToCart()">
         <mat-icon>{{ product().qtyInStock <= 0 ? 'block' : 'add' }}</mat-icon>
-      </button>    </div>
+      </button>
+    </div>
   </mat-card-content>
 </mat-card>

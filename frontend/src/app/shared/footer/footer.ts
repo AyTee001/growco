@@ -1,34 +1,22 @@
 import { Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
-
-interface FooterSections {
-  contacts: boolean;
-  company: boolean;
-}
+import { Router, RouterModule } from '@angular/router';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [
-    MatIconModule,
-    NgIf
-  ],
+  imports: [MatIconModule, RouterModule],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss'],
 })
 export class Footer {
   currentYear = signal(new Date().getFullYear());
+  private router = inject(Router);
 
-  openSections = signal<FooterSections>({
-    contacts: false,
-    company: false,
-  });
-
-  toggleSection(section: keyof FooterSections) {
-    this.openSections.update(prev => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+  goToAbout(): void {
+    this.router.navigate(['/about-us']).then(() => {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    });
   }
 }
