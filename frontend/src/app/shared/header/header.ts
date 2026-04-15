@@ -90,6 +90,7 @@ export class Header {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/']);
   }
 
   goToLogin(): void {
