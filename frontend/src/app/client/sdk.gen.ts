@@ -97,7 +97,14 @@ export const productsControllerFindSimilar = <ThrowOnError extends boolean = fal
  */
 export const deliverySlotsControllerFindByDate = <ThrowOnError extends boolean = false>(options: Options<DeliverySlotsControllerFindByDateData, ThrowOnError>) => (options.client ?? client).get<DeliverySlotsControllerFindByDateResponses, unknown, ThrowOnError>({ url: '/delivery-slots', ...options });
 
-export const authControllerLogin = <ThrowOnError extends boolean = false>(options?: Options<AuthControllerLoginData, ThrowOnError>) => (options?.client ?? client).post<AuthControllerLoginResponses, unknown, ThrowOnError>({ url: '/auth/login', ...options });
+export const authControllerLogin = <ThrowOnError extends boolean = false>(options: Options<AuthControllerLoginData, ThrowOnError>) => (options.client ?? client).post<AuthControllerLoginResponses, unknown, ThrowOnError>({
+    url: '/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 export const authControllerRegister = <ThrowOnError extends boolean = false>(options: Options<AuthControllerRegisterData, ThrowOnError>) => (options.client ?? client).post<AuthControllerRegisterResponses, unknown, ThrowOnError>({
     url: '/auth/register',

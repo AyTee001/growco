@@ -12,61 +12,6 @@ export type UpdateCategoryDto = {
     [key: string]: unknown;
 };
 
-export type OrderItems = {
-    [key: string]: unknown;
-};
-
-export type Categories = {
-    [key: string]: unknown;
-};
-
-export type Products = {
-    productId: number;
-    name: string;
-    description?: string | null;
-    /**
-     * Current product price
-     */
-    price: number;
-    qtyInStock: number;
-    imgUrl?: string | null;
-    brand?: string | null;
-    originCountry?: string | null;
-    isPromo: boolean;
-    /**
-     * Price before discount
-     */
-    oldPrice?: number | null;
-    netContent?: number | null;
-    unit?: string | null;
-    cartItems: Array<CartItems>;
-    orderItems: Array<OrderItems>;
-    categories: Array<Categories>;
-};
-
-export type CartItems = {
-    itemId: number;
-    cartId: number;
-    productId: number;
-    quantity: number;
-    cart: Cart;
-    product: Products;
-};
-
-export type Cart = {
-    /**
-     * Unique identifier for the cart
-     */
-    cartId: number;
-    userId?: number | null;
-    guestSessionId?: string | null;
-    user: Users | null;
-    /**
-     * List of items in the cart
-     */
-    cartItems: Array<CartItems>;
-};
-
 export type LoyaltyTransactions = {
     [key: string]: unknown;
 };
@@ -140,6 +85,73 @@ export type Orders = {
     user?: Users;
 };
 
+export type OrderItems = {
+    /**
+     * Unique identifier for the order item
+     */
+    itemId: number;
+    orderId: number;
+    productId: number;
+    quantity: number;
+    /**
+     * Price captured at the exact moment of purchase
+     */
+    priceAtPurchase: number;
+    order?: Orders;
+    product?: Products;
+};
+
+export type Categories = {
+    [key: string]: unknown;
+};
+
+export type Products = {
+    productId: number;
+    name: string;
+    description?: string | null;
+    /**
+     * Current product price
+     */
+    price: number;
+    qtyInStock: number;
+    imgUrl?: string | null;
+    brand?: string | null;
+    originCountry?: string | null;
+    isPromo: boolean;
+    /**
+     * Price before discount
+     */
+    oldPrice?: number | null;
+    netContent?: number | null;
+    unit?: string | null;
+    cartItems: Array<CartItems>;
+    orderItems: Array<OrderItems>;
+    categories: Array<Categories>;
+};
+
+export type CartItems = {
+    itemId: number;
+    cartId: number;
+    productId: number;
+    quantity: number;
+    cart: Cart;
+    product: Products;
+};
+
+export type Cart = {
+    /**
+     * Unique identifier for the cart
+     */
+    cartId: number;
+    userId?: number | null;
+    guestSessionId?: string | null;
+    user: Users | null;
+    /**
+     * List of items in the cart
+     */
+    cartItems: Array<CartItems>;
+};
+
 export type Addresses = {
     [key: string]: unknown;
 };
@@ -170,6 +182,10 @@ export type FilterOptionsDto = {
     minPrice: number;
     maxPrice: number;
     brands: Array<string>;
+};
+
+export type LoginDto = {
+    [key: string]: unknown;
 };
 
 export type RegisterDto = {
@@ -416,7 +432,7 @@ export type DeliverySlotsControllerFindByDateResponses = {
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
 
 export type AuthControllerLoginData = {
-    body?: never;
+    body: LoginDto;
     path?: never;
     query?: never;
     url: '/auth/login';
