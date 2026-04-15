@@ -45,76 +45,99 @@
 
 .homepage__categories {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
+  padding: 0 16px;
+  
+  grid-template-columns: repeat(2, 1fr);
   align-items: start;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1100px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 0 12px;
+    gap: 16px;
+  }
 }
 
+/* --- Тільки Секція Промо --- */
 .homepage__promo {
   position: relative;
   width: 100%;
   min-height: 350px;
-  margin: 60px 0;
+  margin: 40px 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 16px; // Щоб біла картка не вилазила за екран
 
   background-image: url('/images/promo/pattern-food.svg');
   background-repeat: repeat;
   background-position: center;
-  background-size: 825px; 
+  background-size: 600px; 
+
+  @media (min-width: 768px) {
+    margin: 60px 0;
+    background-size: 825px;
+  }
 }
 
 .homepage__promo-card {
   position: relative;
   z-index: 2;
-  width: 720px; /* Трохи ширше, щоб тексту було вільніше */
+  width: 100%;
+  max-width: 720px; /* Замість фіксованого width */
   min-height: 240px;
   background: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 20px;
-  padding: 35px 40px;
+  padding: 25px;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
-  
-  /* Важливо: дозволяємо вмісту виходити за межі білої картки */
+  flex-direction: column; /* На мобілках текст і картинка в стовпчик */
+  align-items: flex-start;
   overflow: visible; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Додамо легку тінь для об'єму */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* На десктопі повертаємо в ряд */
+    align-items: center;
+    padding: 35px 40px;
+  }
 }
 
 .homepage__promo-content {
-  max-width: 340px; /* Збільшено для кращої читабельності */
-}
-
-.homepage__promo-content h3 {
-  margin: 0 0 16px;
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #333;
-}
-
-.homepage__promo-content p {
-  margin: 0 0 12px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #666;
+  width: 100%;
+  max-width: 340px;
 }
 
 .homepage__promo-image {
-  position: absolute;
-  right: -30px;  /* Виносимо пакет за праву межу картки */
-  bottom: -40px; /* Виносимо пакет за нижню межу картки */
-  z-index: 3;
+  /* На мобілках прибираємо абсолютне позиціонування, щоб картинка не вилітала */
+  position: relative; 
+  margin-top: 20px;
+  align-self: flex-end;
+  right: 0;
+  bottom: 0;
+
+  @media (min-width: 768px) {
+    position: absolute;
+    right: -30px;
+    bottom: -40px;
+    margin-top: 0;
+  }
 }
 
 .homepage__promo-image img {
-  width: 300px; /* Трохи збільшуємо пакет */
+  width: 200px; /* Трохи менше для мобілок */
   height: auto;
   display: block;
-  /* Додаємо фільтр тіні саме для прозорого PNG/SVG, щоб пакет виглядав реалістично */
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+
+  @media (min-width: 768px) {
+    width: 300px;
+  }
 }
 
 .homepage__category-link {
