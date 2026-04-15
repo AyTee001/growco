@@ -11,16 +11,66 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsQueryDto } from './dto/products-query.dto';
 import { FilterOptionsDto } from './dto/filter-options.dto';
 import { FilterQueryDto } from './dto/filter-query.dto';
+import { WeeklyProductGeneratorService } from './weekly-generator.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
+    private readonly weeklyGenerator: WeeklyProductGeneratorService,
   ) { }
 
+
+  async findCollection(slug: string): Promise<Products[]> {
+    const query = this.productsRepository.createQueryBuilder('product')
+      .innerJoinAndSelect('product.categories', 'category');
+
+    switch (slug) {
+      case 'quick-tasty':
+        query.where('category.categoryId IN (:...cats)', { cats: [52, 18, 43] });
+        break;
+
+      case 'favourite-candies':
+        query.where('category.categoryId = :cat', { cat: 48 })
+          .andWhere('(product.brand IN (:...brands) OR product.name ILIKE :kw)', {
+            brands: ['Merci', 'Toffifee', 'Ritter Sport', 'Lindt', 'Milka', 'Ferrero'],
+            kw: '%цукерки%'
+          });
+        break;
+
+      case 'morning-coffee':
+        query.where('category.categoryId IN (:...cats)', { cats: [58, 40, 38] });
+        break;
+
+      case 'fresh-vitamins':
+        query.where('category.categoryId IN (:...cats)', { cats: [31, 34, 32] });
+        break;
+      default:
+        throw new NotFoundException(`Slider collection '${slug}' is not recognized.`);
+    }
+
+    return await query
+      .orderBy('RANDOM()')
+      .limit(12)
+      .getMany();
+  }
+
   async findAll(queryDto: ProductsQueryDto): Promise<Products[]> {
-    const { categoryId, search, brands, minPrice, maxPrice, isPromo, sort } = queryDto;
+    const {
+      categoryId,
+      search,
+      brands,
+      minPrice,
+      maxPrice,
+      isPromo,
+      weekOnly,
+      sort,
+    } = queryDto;
+
+    if (weekOnly) {
+      return this.findWeeklyDeals();
+    }
 
     const query = this.productsRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category');
@@ -128,7 +178,6 @@ export class ProductsService {
   async getFilterOptions(queryDto: FilterQueryDto): Promise<FilterOptionsDto> {
     const { categoryId, search } = queryDto;
 
-    // Create the base "Scope" (Where are we looking?)
     const baseQuery = this.productsRepository.createQueryBuilder('product')
       .leftJoin('product.categories', 'category');
 
@@ -170,6 +219,19 @@ export class ProductsService {
       .groupBy('product.productId')
       .orderBy('RANDOM()')
       .limit(15)
+      .getMany();
+  }
+
+  async findWeeklyDeals(): Promise<Products[]> {
+    const weeklyIds = this.weeklyGenerator.getWeeklyIds();
+
+    if (!weeklyIds || weeklyIds.length === 0) {
+      return [];
+    }
+
+    return await this.productsRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('product.productId IN (:...ids)', { ids: weeklyIds })
       .getMany();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, effect, OnInit } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserContextService } from '../../user.service';
 import { usersControllerUpdateProfile } from '../../../client';
+import { VALIDATION_PATTERNS } from '../../../core/validation.constants';
 
 @Component({
   selector: 'app-my-data-page',
@@ -28,8 +29,15 @@ export class MyDataPage {
   private snackBar = inject(MatSnackBar);
 
   userForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    phone: ['', [Validators.required]],
+    name: ['', [
+      Validators.required, 
+      Validators.minLength(2),
+      Validators.pattern(VALIDATION_PATTERNS.NAME)
+    ]],
+    phone: ['', [
+      Validators.required,
+      Validators.pattern(VALIDATION_PATTERNS.PHONE_UA)
+    ]],
     email: [{ value: '', disabled: true }]
   });
 

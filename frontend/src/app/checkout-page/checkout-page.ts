@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { AddressSelectorComponent } from './address-selector/address-selector';
 import { TimeSlotPickerComponent, TimeSlot } from './time-slot-picker/time-slot-picker';
 import { ContactBlockComponent } from './contact-block/contact-block';
@@ -11,6 +12,7 @@ import { firstValueFrom } from 'rxjs';
 import { DeliverySlots, deliverySlotsControllerFindByDate, Stores, usersControllerGetProfile, } from '../client';
 import { ordersControllerCreate, storesControllerFindAll } from '../client';
 import { AuthService } from '../core/auth.service';
+import { VALIDATION_PATTERNS } from '../core/validation.constants';
 
 interface DateOption {
   label: string;
@@ -23,6 +25,7 @@ interface DateOption {
   imports: [
     CommonModule,
     MatIconModule,
+    MatSnackBarModule,
     AddressSelectorComponent,
     TimeSlotPickerComponent,
     ContactBlockComponent,
@@ -36,6 +39,9 @@ export class CheckoutPageComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   public authService = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
+
+  patterns = VALIDATION_PATTERNS;
 
   userName = '';
   userPhone = '';
@@ -44,7 +50,6 @@ export class CheckoutPageComponent implements OnInit {
 
   timeSlots = signal<TimeSlot[]>([]);
   isLoadingSlots = signal(false);
-
 
   dateOptions: DateOption[] = [];
   selectedDate = signal<string>('');
@@ -57,6 +62,19 @@ export class CheckoutPageComponent implements OnInit {
   selectedAddress: string = '';
   selectedTimeSlot: TimeSlot | null = null;
   selectedPayment = 'cash_on_pickup';
+
+  get isContactInfoValid(): boolean {
+    if (!this.userName || !this.userPhone) return false;
+    
+    const nameRegex = new RegExp(this.patterns.NAME);
+    const phoneRegex = new RegExp(this.patterns.PHONE_UA);
+    
+    return nameRegex.test(this.userName) && phoneRegex.test(this.userPhone);
+  }
+
+  get canSubmitOrder(): boolean {
+    return !!this.selectedAddress && !!this.selectedTimeSlot && this.isContactInfoValid;
+  }
 
   async ngOnInit() {
     await this.loadUserProfile();
@@ -185,7 +203,6 @@ export class CheckoutPageComponent implements OnInit {
       .map((slot: DeliverySlots) => ({
         id: slot.slotId,
         time: `${this.formatTime(slot.startTime)} - ${this.formatTime(slot.endTime)}`,
-        // Keep the raw end time for comparison
         endTime: new Date(slot.endTime)
       }))
       .filter((slot: any) => {
@@ -235,15 +252,15 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   async confirmOrder() {
-    if (!this.selectedAddress || !this.selectedTimeSlot || !this.userName || !this.userPhone) {
-      alert('Будь ласка, заповніть всі обов\'язкові поля (Адреса, Час, Ім\'я, Телефон)');
+    if (!this.canSubmitOrder) {
+      this.snackBar.open('Будь ласка, перевірте правильність заповнення всіх обов\'язкових полів', 'Закрити', { duration: 3000 });
       return;
     }
 
     const currentCart = await firstValueFrom(this.basketService.cart$);
 
     if (!currentCart || currentCart.cartItems.length === 0) {
-      alert('Ваш кошик порожній');
+      this.snackBar.open('Ваш кошик порожній', 'Закрити', { duration: 3000 });
       return;
     }
 
@@ -254,7 +271,7 @@ export class CheckoutPageComponent implements OnInit {
       })),
 
       deliverySlotId: this.selectedTimeSlot?.id,
-      deliveryTimeRange: this.selectedTimeSlot.time,
+      deliveryTimeRange: this.selectedTimeSlot!.time,
       deliveryDate: this.selectedDate(),
 
       deliveryAddress: this.selectedAddress,
@@ -272,18 +289,19 @@ export class CheckoutPageComponent implements OnInit {
 
       if (error) {
         console.error('Помилка при створенні замовлення:', error);
-        alert('Не вдалося оформити замовлення. Спробуйте пізніше.');
+        this.snackBar.open('Не вдалося оформити замовлення. Спробуйте пізніше.', 'Закрити', { duration: 3000 });
         return;
       }
 
       console.log('Замовлення успішно створено:', data);
+      
+      this.snackBar.open('Замовлення успішно створено!', 'Закрити', { duration: 3000 });
 
       this.router.navigate(['/success']);
       this.basketService.refreshCart();
     } catch (err) {
       console.error('Системна помилка:', err);
-      alert('Сталася непередбачувана помилка');
+      this.snackBar.open('Сталася непередбачувана помилка', 'Закрити', { duration: 3000 });
     }
   }
 }
-

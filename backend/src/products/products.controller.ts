@@ -35,6 +35,13 @@ export class ProductsController {
     return this.productsService.getFilterOptions(query);
   }
 
+  @Get('collection/:slug')
+  @ApiOperation({ summary: 'Get curated products for homepage sliders by slug' })
+  @ApiOkResponse({ type: [Products] })
+  findCollection(@Param('slug') slug: string) {
+    return this.productsService.findCollection(slug);
+  }
+
   @Get(':id')
   @ApiOkResponse({ type: Products })
   findOne(@Param('id', ParseIntPipe) id: number) {

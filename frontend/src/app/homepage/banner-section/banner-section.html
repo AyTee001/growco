@@ -5,9 +5,9 @@
       <div class="swiper" #swiperContainer>
         <div class="swiper-wrapper">
           @for (img of leftImages; track img) {
-            <div class="swiper-slide">
-              <img [src]="img" alt="banner">
-            </div>
+          <div class="swiper-slide">
+            <img [src]="img" alt="banner">
+          </div>
           }
         </div>
         <!-- Кнопки навігації -->
@@ -18,19 +18,19 @@
       </div>
     </div>
 
-    <!-- Права сітка карток -->
-    <div class="right-grid">
+    <div class="right-list">
       @for (card of rightCards; track card.id) {
-        <div class="banner-card" 
-            (click)="onCardClick(card)"
-            [attr.data-id]="card.id">
-        <div class="card-header">
-            <span class="title">{{ card.title }}</span>
-            <mat-icon class="arrow-icon">chevron_right</mat-icon>
+      <div class="banner-card" (click)="onCardClick(card)" [attr.data-id]="card.id">
+
+        <div class="card-text">
+          <span class="title">{{ card.title }}</span>
         </div>
+
         <div class="image-container">
-            <img [src]="card.imageUrl" [alt]="card.title">
+          <img [src]="card.imageUrl" [alt]="card.title">
         </div>
+
+        <mat-icon class="arrow-icon">chevron_right</mat-icon>
       </div>
       }
     </div>

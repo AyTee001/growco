@@ -2,26 +2,28 @@
   <main class="homepage__content">
     <section class="homepage__hero">
       <div class="homepage__banner">
-        <app-banner-section
-          [leftImages]="leftImages"
-          (cardClick)="onBannerCardClick($event)">
+        <app-banner-section [leftImages]="leftImages" (cardClick)="onBannerCardClick($event)">
         </app-banner-section>
       </div>
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Швидко та смачно'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Швидко та смачно'" [items]="quickTastyProducts()" (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
     <section class="homepage__categories">
       @for (cat of extraCategories1; track cat.title) {
-      <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
-      </app-category-card>
+      <div class="homepage__category-link" (click)="goToCategory(cat.categoryId)">
+        <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
+        </app-category-card>
+      </div>
       }
     </section>
+
     <section class="homepage__products">
-      <app-product-slider [title]="'Коробки із цукерками'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Улюблені солодощі'" [items]="facouriteCandies()"
+        (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
@@ -45,19 +47,23 @@
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Солодке до хліба'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Для ранкової кави'" [items]="morningCoffeeProducts()"
+        (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
 
     <section class="homepage__categories">
       @for (cat of extraCategories2; track cat.title) {
-      <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
-      </app-category-card>
+      <div class="homepage__category-link" (click)="goToCategory(cat.categoryId)">
+        <app-category-card [title]="cat.title" [image]="cat.image" [bgColor]="cat.bgColor">
+        </app-category-card>
+      </div>
       }
     </section>
 
     <section class="homepage__products">
-      <app-product-slider [title]="'Протеїнові йогурти'" [items]="dummy_items" (addToCart)="onAddToCart($event)">
+      <app-product-slider [title]="'Свіжі вітаміни'" [items]="freshVitaminsProducts()"
+        (addToCart)="onAddToCart($event)">
       </app-product-slider>
     </section>
   </main>
