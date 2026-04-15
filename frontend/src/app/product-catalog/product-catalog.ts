@@ -6,13 +6,14 @@ import { FilterCategory, FilterSidebarComponent } from "../shared/filter-sidebar
 import { MatIcon } from "@angular/material/icon";
 import { CategoryService } from '../shared/services/category.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product-catalog',
   standalone: true,
   templateUrl: './product-catalog.html',
   styleUrl: './product-catalog.scss',
-  imports: [ProductGridComponent, SortSelectComponent, FilterSidebarComponent, MatIcon],
+  imports: [ProductGridComponent, SortSelectComponent, FilterSidebarComponent, MatIcon, MatButtonModule],
 })
 export class ProductCatalog {
   private categoryService = inject(CategoryService);
@@ -96,6 +97,11 @@ export class ProductCatalog {
     }, { allowSignalWrites: true });
   }
 
+  public resetFilters() {
+    this.activeFilters.set({});
+    this.sort.set(this.initialSort);
+  }
+
   private async loadFilterOptions(id: number | null, searchTerm: string | null) {
     const { data, error } = await productsControllerFindAllOptions({
       query: {
@@ -142,9 +148,7 @@ export class ProductCatalog {
 
   private async getProducts(id: number | null, searchTerm: string | null, promoOnly: boolean, weekOnly: boolean,
     newOnly: boolean, sort: string, filters: any
-  )
-
-  {
+  ) {
     this.isLoading.set(true);
 
     const { data, error } = await productsControllerFindAll({
