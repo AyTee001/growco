@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileErrors, UsersControllerGetProfileResponses, UsersControllerUpdateProfileData, UsersControllerUpdateProfileResponses } from './types.gen';
+import type { AppControllerCheckDbData, AppControllerCheckDbResponses, AppControllerGetHelloData, AppControllerGetHelloResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, CartControllerAddToCartData, CartControllerAddToCartResponses, CartControllerClearData, CartControllerClearResponses, CartControllerGetCurrentData, CartControllerGetCurrentResponses, CartControllerMergeGuestCartData, CartControllerMergeGuestCartResponses, CartControllerRemoveItemData, CartControllerRemoveItemResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindAllTreeData, CategoriesControllerFindAllTreeResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, DeliverySlotsControllerFindByDateData, DeliverySlotsControllerFindByDateResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindMyOrdersData, OrdersControllerFindMyOrdersResponses, ProductsControllerFindAllData, ProductsControllerFindAllOptionsData, ProductsControllerFindAllOptionsResponses, ProductsControllerFindAllResponses, ProductsControllerFindCollectionData, ProductsControllerFindCollectionResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerFindSimilarData, ProductsControllerFindSimilarResponses, StoresControllerFindAllData, StoresControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileErrors, UsersControllerGetProfileResponses, UsersControllerUpdateProfileData, UsersControllerUpdateProfileResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -49,12 +49,12 @@ export const categoriesControllerUpdate = <ThrowOnError extends boolean = false>
 });
 
 /**
- * Get current user cart based on session cookie
+ * Get current cart (guest or user)
  */
 export const cartControllerGetCurrent = <ThrowOnError extends boolean = false>(options?: Options<CartControllerGetCurrentData, ThrowOnError>) => (options?.client ?? client).get<CartControllerGetCurrentResponses, unknown, ThrowOnError>({ url: '/cart/current', ...options });
 
 /**
- * Add item to cart; initializes session if missing
+ * Add item to cart (guest or user)
  */
 export const cartControllerAddToCart = <ThrowOnError extends boolean = false>(options: Options<CartControllerAddToCartData, ThrowOnError>) => (options.client ?? client).post<CartControllerAddToCartResponses, unknown, ThrowOnError>({
     url: '/cart/add-item',
@@ -65,15 +65,14 @@ export const cartControllerAddToCart = <ThrowOnError extends boolean = false>(op
     }
 });
 
-/**
- * Remove specific item from cart
- */
 export const cartControllerRemoveItem = <ThrowOnError extends boolean = false>(options: Options<CartControllerRemoveItemData, ThrowOnError>) => (options.client ?? client).delete<CartControllerRemoveItemResponses, unknown, ThrowOnError>({ url: '/cart/item/{itemId}', ...options });
 
-/**
- * Remove all items from the current cart
- */
 export const cartControllerClear = <ThrowOnError extends boolean = false>(options?: Options<CartControllerClearData, ThrowOnError>) => (options?.client ?? client).delete<CartControllerClearResponses, unknown, ThrowOnError>({ url: '/cart/clear', ...options });
+
+/**
+ * Merge guest cart with user cart after login
+ */
+export const cartControllerMergeGuestCart = <ThrowOnError extends boolean = false>(options?: Options<CartControllerMergeGuestCartData, ThrowOnError>) => (options?.client ?? client).post<CartControllerMergeGuestCartResponses, unknown, ThrowOnError>({ url: '/cart/merge', ...options });
 
 /**
  * Find products with optional category, search, and filters
@@ -84,6 +83,11 @@ export const productsControllerFindAll = <ThrowOnError extends boolean = false>(
  * Get dynamic filter options based on search or category
  */
 export const productsControllerFindAllOptions = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllOptionsData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllOptionsResponses, unknown, ThrowOnError>({ url: '/products/filter-options', ...options });
+
+/**
+ * Get curated products for homepage sliders by slug
+ */
+export const productsControllerFindCollection = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindCollectionData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindCollectionResponses, unknown, ThrowOnError>({ url: '/products/collection/{slug}', ...options });
 
 export const productsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindOneResponses, unknown, ThrowOnError>({ url: '/products/{id}', ...options });
 

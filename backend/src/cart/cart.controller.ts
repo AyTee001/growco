@@ -56,6 +56,7 @@ export class CartController {
 
   @Delete('item/:itemId')
   @UseGuards(OptionalJwtAuthGuard)
+  @ApiOkResponse({ type: Cart })
   async removeItem(
     @Param('itemId', ParseIntPipe) itemId: number,
     @Req() req: Request,
@@ -73,6 +74,7 @@ export class CartController {
 
   @Delete('clear')
   @UseGuards(OptionalJwtAuthGuard)
+  @ApiOkResponse({ type: Cart })
   async clear(@Req() req: Request, @CurrentUser() user?: any) {
     if (user) {
       const cart = await this.cartService.findOrCreateByUserId(user.userId);
@@ -86,6 +88,7 @@ export class CartController {
   @Post('merge')
   @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Merge guest cart with user cart after login' })
+  @ApiOkResponse({ type: Cart })
   async mergeGuestCart(
     @CurrentUser() user: any,
     @Body('guestSessionId') guestSessionId: string,

@@ -349,6 +349,19 @@ export type CartControllerClearResponses = {
 
 export type CartControllerClearResponse = CartControllerClearResponses[keyof CartControllerClearResponses];
 
+export type CartControllerMergeGuestCartData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/cart/merge';
+};
+
+export type CartControllerMergeGuestCartResponses = {
+    200: Cart;
+};
+
+export type CartControllerMergeGuestCartResponse = CartControllerMergeGuestCartResponses[keyof CartControllerMergeGuestCartResponses];
+
 export type ProductsControllerFindAllData = {
     body?: never;
     path?: never;
@@ -385,6 +398,21 @@ export type ProductsControllerFindAllOptionsResponses = {
 };
 
 export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
+
+export type ProductsControllerFindCollectionData = {
+    body?: never;
+    path: {
+        slug: string;
+    };
+    query?: never;
+    url: '/products/collection/{slug}';
+};
+
+export type ProductsControllerFindCollectionResponses = {
+    200: Array<Products>;
+};
+
+export type ProductsControllerFindCollectionResponse = ProductsControllerFindCollectionResponses[keyof ProductsControllerFindCollectionResponses];
 
 export type ProductsControllerFindOneData = {
     body?: never;
