@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { BannerSectionComponent } from './banner-section/banner-section';
 import { CategoryCard } from './category-card/category-card';
-import { Products } from '../client';
+import { Products, productsControllerFindAll } from '../client';
 import { ProductSliderComponent } from "../shared/product-slider/product-slider";
 
 @Component({
@@ -20,7 +19,6 @@ import { ProductSliderComponent } from "../shared/product-slider/product-slider"
 export class Homepage implements OnInit {
 
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
 
   readonly leftImages = [
     'images/banners/banner.png',
@@ -48,17 +46,19 @@ export class Homepage implements OnInit {
     { title: "Свіже м'ясо", image: '/images/categories/meat.svg', bgColor: '#B7CFB2' }
   ];
 
-  ngOnInit(): void {
-    this.http.get<Products[]>('/api/products').subscribe({
-      next: (all) => {
-        // Split 40 seed products into 4 groups of 10 each
-        this.quickTastyItems    = all.slice(0, 10);
-        this.candyBoxesItems    = all.slice(10, 20);
-        this.sweetSpreadsItems  = all.slice(20, 30);
-        this.proteinYogurtsItems = all.slice(30, 40);
-      },
-      error: (err) => console.error('Failed to load products', err)
-    });
+  async ngOnInit() {
+    const { data, error } = await productsControllerFindAll();
+    
+    if (error) {
+      console.error('Failed to load products', error);
+      return;
+    }
+
+    const all = data || [];
+    this.quickTastyItems    = all.slice(0, 10);
+    this.candyBoxesItems    = all.slice(10, 20);
+    this.sweetSpreadsItems  = all.slice(20, 30);
+    this.proteinYogurtsItems = all.slice(30, 40);
   }
 
   onAddToCart(product: Products): void {
