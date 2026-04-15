@@ -7,7 +7,7 @@
     <div class="content-area">
         <h1 class="mat-headline-medium">
             {{ product.name }}
-            <span class="unit-text">{{ product.netContent }}{{ product.unit }}</span>
+            <span class="unit-text">{{ product.netContent }}&nbsp;{{ product.unit }}</span>
         </h1>
 
         <div class="price-cart-btn">
@@ -57,7 +57,7 @@
                         <span class="value">{{ product.brand || 'Не вказано' }}</span>
                     </div>
                     <div class="row">
-                        <span class="label">Об'єм/Вага</span>
+                        <span class="label">Кількість</span>
                         <span class="value">{{ product.netContent }} {{ product.unit }}</span>
                     </div>
                 </div>

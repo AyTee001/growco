@@ -232,6 +232,7 @@ export class ProductsService {
     return await this.productsRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
       .where('product.productId IN (:...ids)', { ids: weeklyIds })
+      .orderBy(`array_position(ARRAY[${weeklyIds.join(',')}], product.productId)`)
       .getMany();
   }
 }
