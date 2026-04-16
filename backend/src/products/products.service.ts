@@ -67,7 +67,7 @@ export class ProductsService {
       weekOnly,
       sort,
     } = queryDto;
-    
+
     const query = this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category');
@@ -105,26 +105,35 @@ export class ProductsService {
       query.andWhere('product.isPromo = :isPromo', { isPromo: true });
     }
 
+    const products = await query.getMany();
+
+    const ukCollator = new Intl.Collator('uk-UA', {
+      usage: 'sort',
+      sensitivity: 'base'
+    });
+
     switch (sort) {
-      case 'price_desc':
-        query.orderBy('product.price', 'DESC');
-        break;
       case 'name_asc':
-        query.orderBy('product.name', 'ASC');
-        break;
+        return products.sort((a, b) => ukCollator.compare(a.name ?? '', b.name ?? ''));
+
       case 'name_desc':
-        query.orderBy('product.name', 'DESC');
-        break;
+        return products.sort((a, b) => ukCollator.compare(b.name ?? '', a.name ?? ''));
+
+      case 'price_desc':
+        return products.sort((a, b) => Number(b.price ?? 0) - Number(a.price ?? 0));
+
       case 'promo':
-        query.orderBy('product.isPromo', 'DESC').addOrderBy('product.price', 'ASC');
-        break;
+        return products.sort((a, b) => {
+          if (a.isPromo === b.isPromo) {
+            return Number(a.price ?? 0) - Number(b.price ?? 0);
+          }
+          return a.isPromo ? -1 : 1;
+        });
+
       case 'price_asc':
       default:
-        query.orderBy('product.price', 'ASC');
-        break;
+        return products.sort((a, b) => Number(a.price ?? 0) - Number(b.price ?? 0));
     }
-
-    return await query.getMany();
   }
 
   async create(createProductDto: CreateProductDto): Promise<Products> {
@@ -199,16 +208,22 @@ export class ProductsService {
       .addSelect('MAX(product.price)', 'max')
       .getRawOne();
 
-    const brands = await baseQuery.clone()
+    const brandsRaw = await baseQuery.clone()
       .select('DISTINCT(product.brand)', 'brand')
       .andWhere('product.brand IS NOT NULL')
-      .orderBy('brand', 'ASC')
       .getRawMany();
+
+    const ukCollator = new Intl.Collator('uk-UA');
+
+    const sortedBrands = brandsRaw
+      .map(b => b.brand)
+      .filter(brand => brand !== null && brand !== undefined)
+      .sort((a, b) => ukCollator.compare(a, b));
 
     return {
       minPrice: parseFloat(stats?.min || '0'),
       maxPrice: parseFloat(stats?.max || '1000'),
-      brands: brands.map(b => b.brand),
+      brands: sortedBrands,
     };
   }
 

@@ -1997,7 +1997,7 @@ export const PRODUCTS_DATA = [
   },
   {
     productId: 137,
-      name: 'Короп дзеркальний живий',
+    name: 'Короп дзеркальний живий',
     description: 'Свіжий короп з ферми.',
     price: 145.0,
     qtyInStock: 15,
@@ -4604,7 +4604,7 @@ export const PRODUCTS_DATA = [
   },
   {
     productId: 312,
-      name: 'Курча табака',
+    name: 'Курча тапака',
     description: 'Молода курка, пласка форма.',
     price: 140.0,
     qtyInStock: 30,
