@@ -37,7 +37,7 @@ interface DecodedToken {
 export class AuthService {
   private tokenKey = 'access_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
-  private userNameSubject = new BehaviorSubject<string | null>(this.getUserNameFromToken());
+  private userNameSubject = new BehaviorSubject<string | null>('');
   private basketService = inject(BasketService);
   private router = inject(Router);
   private userContext = inject(UserContextService);
@@ -117,17 +117,6 @@ export class AuthService {
 
   get userName$(): Observable<string | null> {
     return this.userNameSubject.asObservable();
-  }
-
-  private getUserNameFromToken(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-      return decoded.name || null;
-    } catch (e) {
-      return null;
-    }
   }
 
   private setToken(token: string): void {

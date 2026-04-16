@@ -78,7 +78,7 @@ export class ProductCatalog {
 
         this.activeFilters.set(filters);
         this.filterConfig.set([]);
-        this.loadFilterOptions(id, searchTerm);
+        this.loadFilterOptions(id, searchTerm, weekOnly);
       });
     }, { allowSignalWrites: true });
 
@@ -102,11 +102,12 @@ export class ProductCatalog {
     this.sort.set(this.initialSort);
   }
 
-  private async loadFilterOptions(id: number | null, searchTerm: string | null) {
+  private async loadFilterOptions(id: number | null, searchTerm: string | null, week: boolean) {
     const { data, error } = await productsControllerFindAllOptions({
       query: {
         categoryId: id ?? undefined,
-        search: searchTerm ?? undefined
+        search: searchTerm ?? undefined,
+        weekOnly: week ?? false
       }
     });
 

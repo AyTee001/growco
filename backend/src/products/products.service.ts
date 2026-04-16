@@ -67,7 +67,7 @@ export class ProductsService {
       weekOnly,
       sort,
     } = queryDto;
-    
+
     const query = this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category');
@@ -182,10 +182,23 @@ export class ProductsService {
   }
 
   async getFilterOptions(queryDto: FilterQueryDto): Promise<FilterOptionsDto> {
-    const { categoryId, search } = queryDto;
+    const { categoryId, search, weekOnly } = queryDto;
 
     const baseQuery = this.productsRepository.createQueryBuilder('product')
       .leftJoin('product.categories', 'category');
+
+    if (weekOnly) {
+      const weeklyIds = this.weeklyGenerator.getWeeklyIds();
+      if (weeklyIds && weeklyIds.length > 0) {
+        baseQuery.andWhere('product.productId IN (:...weeklyIds)', { weeklyIds });
+      } else {
+        return {
+          minPrice: 0,
+          maxPrice: 0,
+          brands: [],
+        };
+      }
+    }
 
     if (categoryId) {
       baseQuery.andWhere('category.categoryId = :categoryId', { categoryId });

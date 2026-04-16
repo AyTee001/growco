@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
 import { Transform } from 'class-transformer';
 
 export class FilterQueryDto {
@@ -13,4 +13,10 @@ export class FilterQueryDto {
     @IsOptional()
     @IsString()
     search?: string;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @Transform(({ value }) => value === 'true' || value === true)
+    @IsBoolean()
+    weekOnly?: boolean;
 }
