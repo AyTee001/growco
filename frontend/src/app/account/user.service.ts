@@ -22,4 +22,10 @@ export class UserContextService {
     setUser(data: Users) {
         this.user.set(data);
     }
+
+    clear() {
+        this.user.set(null);
+        this.orders.set([]);
+        this.isLoading.set(false);
+    }
 }
