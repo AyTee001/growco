@@ -86,6 +86,10 @@ export class BasketService {
     this.isOpenSubject.next(!this.isOpenSubject.value);
   }
 
+  async refreshCart() {
+    await this.initCart();
+  }
+
   private async initCart() {
     const { data, error } = await cartControllerGetCurrent();
     if (!error && data) this.cartSubject.next(data);

@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>
         <div class="logo">
-          <img src="images/logo-no-bg2.png" alt="Growco" width="420" />
+          <img src="images/logo-no-bg2.png" alt="WoW Point" width="420" />
         </div>
         <h1>Ласкаво просимо!</h1>
       </mat-card-title>
@@ -11,17 +11,17 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
         <div class="error-message" [class.hidden]="!errorMessage">
           {{ errorMessage }}
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
-          <input matInput type="email" name="email" [(ngModel)]="email" required email #emailModel="ngModel">
+          <input matInput type="email" name="email" [(ngModel)]="email" required email [pattern]="patterns.EMAIL" #emailModel="ngModel">
           <mat-icon matPrefix>email</mat-icon>
-          <mat-error *ngIf="submitted && emailModel.errors?.['required']">Email обов'язковий</mat-error>
-          <mat-error *ngIf="submitted && emailModel.errors?.['email']">Введіть коректний email</mat-error>
+          <mat-error *ngIf="emailModel.hasError('required')">Email обов'язковий</mat-error>
+          <mat-error *ngIf="emailModel.hasError('email') || emailModel.hasError('pattern')">Введіть коректний email</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -31,7 +31,7 @@
           <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
             <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error *ngIf="submitted && passwordModel.errors?.['required']">Пароль обов'язковий</mat-error>
+          <mat-error *ngIf="passwordModel.hasError('required')">Пароль обов'язковий</mat-error>
         </mat-form-field>
 
         <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="loading">

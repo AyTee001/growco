@@ -6,11 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { Products } from '../../client';
 import { Router } from '@angular/router';
 import { BasketService } from '../header/basket/basket.service';
-
+import { MatTooltipModule } from '@angular/material/tooltip'
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.scss']
 })

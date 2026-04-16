@@ -100,6 +100,86 @@ export class CartService {
     return cart;
   }
 
+  async findOrCreateByUserId(userId: number): Promise<Cart> {
+    let cart = await this.cartRepository.findOne({
+      where: { userId },
+      relations: ['cartItems', 'cartItems.product'],
+    });
+
+    if (!cart) {
+      cart = this.cartRepository.create({ userId, guestSessionId: null });
+      cart = await this.cartRepository.save(cart);
+      cart.cartItems = [];
+    }
+
+    return cart;
+  }
+
+  async mergeGuestCart(userId: number, guestSessionId: string): Promise<Cart> {
+    const guestCart = await this.cartRepository.findOne({
+      where: { guestSessionId },
+      relations: ['cartItems', 'cartItems.product'],
+    });
+
+    const userCart = await this.findOrCreateByUserId(userId);
+
+    if (guestCart && guestCart.cartItems.length) {
+      for (const guestItem of guestCart.cartItems) {
+        const existingItem = userCart.cartItems.find(i => i.productId === guestItem.productId);
+        if (existingItem) {
+          existingItem.quantity += guestItem.quantity;
+          await this.cartItemsRepository.save(existingItem);
+        } else {
+          const newItem = this.cartItemsRepository.create({
+            cartId: userCart.cartId,
+            productId: guestItem.productId,
+            quantity: guestItem.quantity,
+          });
+          await this.cartItemsRepository.save(newItem);
+        }
+      }
+      // Очищаем гостевую корзину или удаляем её
+      await this.cartItemsRepository.delete({ cartId: guestCart.cartId });
+      await this.cartRepository.delete(guestCart.cartId);
+    }
+
+    return this.findOne(userCart.cartId);
+  }
+
+  async updateItemQuantityByCartId(cartId: number, productId: number, quantity: number) {
+    // Находим корзину по cartId, проверяем наличие товара
+    const cart = await this.findOne(cartId);
+    let item = cart.cartItems.find(i => i.productId === productId);
+    const targetQuantity = item ? item.quantity + quantity : quantity;
+    if (targetQuantity <= 0) {
+      if (item) await this.cartItemsRepository.remove(item);
+    } else {
+      await this.ensureStockAvailable(productId, targetQuantity);
+      if (item) {
+        item.quantity = targetQuantity;
+        await this.cartItemsRepository.save(item);
+      } else {
+        const newItem = this.cartItemsRepository.create({
+          cartId,
+          productId,
+          quantity: targetQuantity,
+        });
+        await this.cartItemsRepository.save(newItem);
+      }
+    }
+    return this.findOne(cartId);
+  }
+
+  async removeCartItemByCartId(cartId: number, itemId: number) {
+    await this.cartItemsRepository.delete({ itemId, cartId });
+    return this.findOne(cartId);
+  }
+
+  async clearCartByCartId(cartId: number) {
+    await this.cartItemsRepository.delete({ cartId });
+    return this.findOne(cartId);
+  }
+
   private normalizeGuestSessionId(value?: string | null): string | null {
     if (value === undefined || value === null) {
       return null;
@@ -206,8 +286,18 @@ export class CartService {
     }
   }
 
-  async clearCart(sessionId: string) {
-    const cart = await this.findOrCreateBySession(sessionId);
+  async clearCart(userId?: number, guestSessionId?: string) {
+    if (!userId && !guestSessionId) {
+      throw new BadRequestException('Must provide either userId or guestSessionId to clear cart');
+    }
+
+    const cart = await this.cartRepository.findOne({
+      where: userId ? { userId } : { guestSessionId },
+    });
+
+    if (!cart) {
+      return { cartItems: [] };
+    }
 
     await this.cartItemsRepository.delete({ cartId: cart.cartId });
 

@@ -47,18 +47,25 @@
           <div class="range-group" [formGroupName]="category.key">
             <mat-form-field appearance="outline">
               <mat-label>Мін</mat-label>
-              <input matInput type="number" formControlName="min">
+              <input matInput type="number" formControlName="min" [min]="category.min ?? null"
+                [max]="category.max ?? null">
             </mat-form-field>
 
             <span class="range-separator">—</span>
 
             <mat-form-field appearance="outline">
               <mat-label>Макс</mat-label>
-              <input matInput type="number" formControlName="max">
+              <input matInput type="number" formControlName="max" [min]="category.min ?? null"
+                [max]="category.max ?? null">
             </mat-form-field>
           </div>
+
+          @if (filterForm.get(category.key)?.errors?.['rangeInvalid']) {
+          <mat-error style="font-size: 12px; margin-top: -10px; margin-bottom: 10px;">
+            Мінімальна ціна не може бути більшою за максимальну
+          </mat-error>
           }
-          }
+          } }
         </div>
         }
       </div>
@@ -67,7 +74,7 @@
   </div>
 
   <div class="sidebar-footer">
-    <button mat-flat-button color="primary" class="apply-btn" (click)="onApply()">
+    <button mat-flat-button color="primary" class="apply-btn" (click)="onApply()" [disabled]="filterForm.invalid">
       Застосувати
     </button>
   </div>

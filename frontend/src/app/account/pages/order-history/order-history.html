@@ -1,0 +1,89 @@
+<div class="orders-container">
+  <header class="orders-header">
+    <h2>Історія покупок</h2>
+    @if (userContext.orders().length) {
+    <p>Кількість замовлень: {{ userContext.orders().length }}</p>
+    }
+  </header>
+
+  @if (userContext.isLoading()) {
+  <div class="orders-loading">
+    <p>Завантаження історії...</p>
+  </div>
+  } @else {
+  <div class="orders-list">
+    <mat-accordion multi="false">
+      @for (order of userContext.orders(); track order.orderId) {
+      <mat-expansion-panel class="order-card">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span class="order-id">№{{ order.orderId }}</span>
+            <span class="order-date">{{ order.orderDate | date:'dd.MM.yyyy' }}</span>
+          </mat-panel-title>
+
+          <mat-panel-description>
+            <span class="order-total">{{ order.totalAmount }} ₴</span>
+            <mat-chip-set>
+              <mat-chip [color]="getStatusColor(order.status)" selected>
+                {{ getStatusLabel(order.status) }}
+              </mat-chip>
+            </mat-chip-set>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="order-details">
+          <div class="detail-row">
+            <span>Спосіб оплати:</span>
+            <strong>{{ order.paymentMethod === 'cash_on_pickup' ? 'Готівка' : 'Картою' }}</strong>
+          </div>
+
+          @if (order.deliveryAddress) {
+          <div class="detail-row">
+            <span>Адреса:</span>
+            <strong>{{ order.deliveryAddress }}</strong>
+          </div>
+          }
+
+          @if (order.deliverySlotStart) {
+          <div class="detail-row">
+            <span>Час доставки:</span>
+            <strong>{{ order.deliverySlotStart }} — {{ order.deliverySlotEnd }}</strong>
+          </div>
+          }
+
+          <div class="order-items-list">
+            <h4>Товари у замовленні</h4>
+            @for (item of order.orderItems; track item.itemId) {
+            <div class="order-item">
+              <div class="item-image">
+                @if (item.product?.imgUrl) {
+                  <img [src]="'uploads/' + item.product!.imgUrl" [alt]="item.product?.name">
+                } @else {
+                <mat-icon class="placeholder-icon">inventory_2</mat-icon>
+                }
+              </div>
+
+              <div class="item-info">
+                <span class="item-name">{{ item.product?.name || 'Невідомий товар' }}</span>
+                <span class="item-qty-price">{{ item.quantity }} шт. × {{ item.priceAtPurchase }} ₴</span>
+              </div>
+
+              <div class="item-total">
+                <strong>{{ item.quantity * (item.priceAtPurchase * 1) | number:'1.2-2' }} ₴</strong>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </mat-expansion-panel>
+      } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">shopping_basket</span>
+        <h3>Поки що порожньо</h3>
+        <p>Ваші замовлення з'являться тут після оформлення.</p>
+      </div>
+      }
+    </mat-accordion>
+  </div>
+  }
+</div>

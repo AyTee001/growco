@@ -1,50 +1,69 @@
 .category-card {
-  width: 230px;
-  height: 320px;
-  border-radius: 8px;
-  background: #c9cbc3;
-
+  width: 100%;
+  min-height: 60px; /* На мобілці буде компактна плашка */
+  height: auto;
+  border-radius: 12px;
   position: relative;
-  overflow: visible; // дозволяє картинці виходити за межі
+  overflow: hidden; // Тепер краще сховати все, що виступає
   padding: 0;
-
   box-shadow: none;
   cursor: pointer;
+  transition: transform 0.2s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  @media (min-width: 768px) {
+    height: 320px;
+    max-width: 230px;
+    overflow: visible; // Повертаємо виліт картинки для десктопу
+  }
 }
 
 .category-card__content {
-  position: relative;
+  display: flex;
+  align-items: center; // Центруємо текст по вертикалі на мобільних
   width: 100%;
   height: 100%;
-  padding: 18px 14px;
+  padding: 16px;
   box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    align-items: flex-start;
+    padding: 18px 14px;
+  }
 }
 
 .category-card__title {
   margin: 0;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 16px; // Компактний шрифт
+  font-weight: 600;
   color: #111;
+  line-height: 1.2;
   z-index: 2;
-  position: relative;
+
+  @media (min-width: 768px) {
+    font-size: 24px;
+  }
 }
 
 .category-card__image-wrapper {
-  position: absolute;
+  display: none; // ПОВНІСТЮ ХОВАЄМО КАРТИНКУ НА МОБІЛЦІ
 
-  right: -8px;  // зміщення за межі картки
-  bottom: -10px;
-
-  width: 176px;
-  height: 177px;
-
-  pointer-events: none;
+  @media (min-width: 768px) {
+    display: block; // Показуємо тільки від планшета і вище
+    position: absolute;
+    right: -8px;
+    bottom: -10px;
+    width: 176px;
+    height: 177px;
+    pointer-events: none;
+  }
 }
 
 .category-card__image {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
 }
-

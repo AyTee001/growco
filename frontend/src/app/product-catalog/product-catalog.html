@@ -10,15 +10,15 @@
   }
 </div>
 
-@if(products().length > 0) {
-  <div class="sort-filter-pane">
-    <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)" />
-  
-    @if (filterConfig().length > 0) {
-    <app-filter-sidebar [config]="filterConfig()" [(activeFilters)]="activeFilters" (apply)="onFiltersApplied($event)">
-    </app-filter-sidebar>
-    }
-  </div>
+@if(products().length > 0 || filterConfig().length > 0) {
+<div class="sort-filter-pane">
+  <app-sort-select [selectedOption]="sort()" (sortChange)="onSortChanged($event)" />
+
+  @if (filterConfig().length > 0) {
+  <app-filter-sidebar [config]="filterConfig()" [(activeFilters)]="activeFilters" (apply)="onFiltersApplied($event)">
+  </app-filter-sidebar>
+  }
+</div>
 }
 
 @if (isLoading()) {
@@ -31,6 +31,11 @@
 <div class="empty-state">
   <mat-icon class="empty-icon">inventory_2</mat-icon>
   <h3>Тут поки що порожньо</h3>
-  <p>За вашим запитом чи вибраними фільтрами нічого не знайдено. Спробуйте змінити критерії пошуку.</p>
+  <p>За вашим запитом чи вибраними фільтрами нічого не знайдено.</p>
+
+  <button mat-flat-button color="primary" class="reset-button" (click)="resetFilters()" style="margin-top: 24px">
+    <mat-icon>restart_alt</mat-icon>
+    Скинути всі фільтри
+  </button>
 </div>
 }

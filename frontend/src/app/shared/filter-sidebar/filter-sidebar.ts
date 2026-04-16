@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, input, effect, inject, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -83,14 +83,27 @@ export class FilterSidebarComponent {
 
       } else if (category.type === 'range') {
         const rangeState = (savedValue as RangeFilterValue) || {};
+        const absMin = category.min ?? 0;
+        const absMax = category.max ?? 1000;
+
         group[category.key] = this.fb.group({
-          min: [rangeState.min ?? category.min ?? 0],
-          max: [rangeState.max ?? category.max ?? 1000]
-        });
+          min: [rangeState.min ?? absMin, [Validators.min(absMin), Validators.max(absMax)]],
+          max: [rangeState.max ?? absMax, [Validators.min(absMin), Validators.max(absMax)]]
+        }, { validators: this.rangeValidator });
       }
     });
 
     this.filterForm = this.fb.group(group);
+  }
+
+  private rangeValidator(group: AbstractControl): ValidationErrors | null {
+    const min = group.get('min')?.value;
+    const max = group.get('max')?.value;
+
+    if (min !== null && max !== null && min > max) {
+      return { rangeInvalid: true };
+    }
+    return null;
   }
 
   toggleCategory(index: number): void {

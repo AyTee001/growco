@@ -11,12 +11,8 @@ export const routes: Routes = [
   {
     path: 'account',
     loadChildren: () =>
-      import('./client/account/account.routes').then((m) => m.ACCOUNT_ROUTES)
-  },
-  {
-    path: '',
-    redirectTo: 'account',
-    pathMatch: 'full'
+      import('./account/account.routes').then((m) => m.ACCOUNT_ROUTES),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -46,10 +42,10 @@ export const routes: Routes = [
         path: 'checkout',
         loadComponent: () =>
           import('./checkout-page/checkout-page').then((m) => m.CheckoutPageComponent),
-        canActivate: [AuthGuard]
       }
     ]
   },
+  
   {
     path: '**',
     redirectTo: ''

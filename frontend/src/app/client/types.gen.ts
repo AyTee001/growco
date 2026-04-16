@@ -12,26 +12,93 @@ export type UpdateCategoryDto = {
     [key: string]: unknown;
 };
 
-export type Users = {
+export type LoyaltyTransactions = {
     [key: string]: unknown;
 };
 
-export type Cart = {
+export type DeliverySlots = {
     /**
-     * Unique identifier for the cart
+     * Unique identifier for the delivery slot
      */
-    cartId: number;
-    userId?: number | null;
-    guestSessionId?: string | null;
-    user: Users | null;
+    slotId: number;
     /**
-     * List of items in the cart
+     * The beginning of the delivery window
      */
-    cartItems: Array<CartItems>;
+    startTime: string;
+    /**
+     * The end of the delivery window
+     */
+    endTime: string;
+    /**
+     * Whether this slot is still open for booking
+     */
+    isAvailable: boolean;
+    orders?: Array<Orders>;
+};
+
+export type Stores = {
+    /**
+     * Unique identifier for the store
+     */
+    storeId: number;
+    name: string;
+    city: string;
+    street: string;
+    houseNumber: string;
+    workingHours: string;
+    orders?: Array<Orders>;
+    /**
+     * Latitude coordinate for map placement
+     */
+    lat: string;
+    /**
+     * Longitude coordinate for map placement
+     */
+    lng: string;
+};
+
+export type Orders = {
+    orderId: number;
+    userId: number | null;
+    deliverySlotId: number | null;
+    orderDate: string;
+    status: string;
+    /**
+     * Total order cost
+     */
+    totalAmount: number;
+    paymentMethod: string;
+    deliveryAddressId?: number | null;
+    storeId?: number | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
+    deliveryAddress?: string | null;
+    deliveryDate?: string | null;
+    comment?: string | null;
+    isPaperless: boolean;
+    deliverySlotStart?: string | null;
+    deliverySlotEnd?: string | null;
+    loyaltyTransactions?: Array<LoyaltyTransactions>;
+    orderItems?: Array<OrderItems>;
+    deliverySlot?: DeliverySlots;
+    store?: Stores;
+    user?: Users;
 };
 
 export type OrderItems = {
-    [key: string]: unknown;
+    /**
+     * Unique identifier for the order item
+     */
+    itemId: number;
+    orderId: number;
+    productId: number;
+    quantity: number;
+    /**
+     * Price captured at the exact moment of purchase
+     */
+    priceAtPurchase: number;
+    order?: Orders;
+    product?: Products;
 };
 
 export type Categories = {
@@ -71,6 +138,35 @@ export type CartItems = {
     product: Products;
 };
 
+export type Cart = {
+    /**
+     * Unique identifier for the cart
+     */
+    cartId: number;
+    userId?: number | null;
+    guestSessionId?: string | null;
+    user: Users | null;
+    /**
+     * List of items in the cart
+     */
+    cartItems: Array<CartItems>;
+};
+
+export type Addresses = {
+    [key: string]: unknown;
+};
+
+export type Users = {
+    userId: number;
+    phoneNumber: string;
+    email: string;
+    name: string;
+    carts: Array<Cart>;
+    loyaltyTransactions: Array<LoyaltyTransactions>;
+    orders: Array<Orders>;
+    addresses: Array<Addresses>;
+};
+
 export type AddToCartDto = {
     /**
      * The ID of the product to add
@@ -88,28 +184,21 @@ export type FilterOptionsDto = {
     brands: Array<string>;
 };
 
-export type Orders = {
+export type LoginDto = {
     [key: string]: unknown;
 };
 
-export type DeliverySlots = {
-    /**
-     * Unique identifier for the delivery slot
-     */
-    slotId: number;
-    /**
-     * The beginning of the delivery window
-     */
-    startTime: string;
-    /**
-     * The end of the delivery window
-     */
-    endTime: string;
-    /**
-     * Whether this slot is still open for booking
-     */
-    isAvailable: boolean;
-    orders?: Array<Orders>;
+export type RegisterDto = {
+    [key: string]: unknown;
+};
+
+export type CreateOrderDto = {
+    [key: string]: unknown;
+};
+
+export type UpdateUserDto = {
+    name?: string;
+    phoneNumber?: string;
 };
 
 export type AppControllerGetHelloData = {
@@ -260,6 +349,19 @@ export type CartControllerClearResponses = {
 
 export type CartControllerClearResponse = CartControllerClearResponses[keyof CartControllerClearResponses];
 
+export type CartControllerMergeGuestCartData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/cart/merge';
+};
+
+export type CartControllerMergeGuestCartResponses = {
+    200: Cart;
+};
+
+export type CartControllerMergeGuestCartResponse = CartControllerMergeGuestCartResponses[keyof CartControllerMergeGuestCartResponses];
+
 export type ProductsControllerFindAllData = {
     body?: never;
     path?: never;
@@ -296,6 +398,21 @@ export type ProductsControllerFindAllOptionsResponses = {
 };
 
 export type ProductsControllerFindAllOptionsResponse = ProductsControllerFindAllOptionsResponses[keyof ProductsControllerFindAllOptionsResponses];
+
+export type ProductsControllerFindCollectionData = {
+    body?: never;
+    path: {
+        slug: string;
+    };
+    query?: never;
+    url: '/products/collection/{slug}';
+};
+
+export type ProductsControllerFindCollectionResponses = {
+    200: Array<Products>;
+};
+
+export type ProductsControllerFindCollectionResponse = ProductsControllerFindCollectionResponses[keyof ProductsControllerFindCollectionResponses];
 
 export type ProductsControllerFindOneData = {
     body?: never;
@@ -341,3 +458,100 @@ export type DeliverySlotsControllerFindByDateResponses = {
 };
 
 export type DeliverySlotsControllerFindByDateResponse = DeliverySlotsControllerFindByDateResponses[keyof DeliverySlotsControllerFindByDateResponses];
+
+export type AuthControllerLoginData = {
+    body: LoginDto;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthControllerLoginResponses = {
+    201: unknown;
+};
+
+export type AuthControllerRegisterData = {
+    body: RegisterDto;
+    path?: never;
+    query?: never;
+    url: '/auth/register';
+};
+
+export type AuthControllerRegisterResponses = {
+    201: unknown;
+};
+
+export type OrdersControllerCreateData = {
+    body: CreateOrderDto;
+    path?: never;
+    query?: never;
+    url: '/orders';
+};
+
+export type OrdersControllerCreateResponses = {
+    200: Orders;
+};
+
+export type OrdersControllerCreateResponse = OrdersControllerCreateResponses[keyof OrdersControllerCreateResponses];
+
+export type OrdersControllerFindMyOrdersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/orders/my';
+};
+
+export type OrdersControllerFindMyOrdersResponses = {
+    200: Array<Orders>;
+};
+
+export type OrdersControllerFindMyOrdersResponse = OrdersControllerFindMyOrdersResponses[keyof OrdersControllerFindMyOrdersResponses];
+
+export type StoresControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/stores';
+};
+
+export type StoresControllerFindAllResponses = {
+    200: Array<Stores>;
+};
+
+export type StoresControllerFindAllResponse = StoresControllerFindAllResponses[keyof StoresControllerFindAllResponses];
+
+export type UsersControllerGetProfileData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerGetProfileErrors = {
+    /**
+     * Invalid or missing token.
+     */
+    401: unknown;
+};
+
+export type UsersControllerGetProfileResponses = {
+    /**
+     * The user profile has been successfully retrieved.
+     */
+    200: Users;
+};
+
+export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
+
+export type UsersControllerUpdateProfileData = {
+    body: UpdateUserDto;
+    path?: never;
+    query?: never;
+    url: '/users/profile';
+};
+
+export type UsersControllerUpdateProfileResponses = {
+    200: Users;
+};
+
+export type UsersControllerUpdateProfileResponse = UsersControllerUpdateProfileResponses[keyof UsersControllerUpdateProfileResponses];

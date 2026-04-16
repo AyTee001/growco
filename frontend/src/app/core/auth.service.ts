@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { client } from '../client/client.gen';
+import { BehaviorSubject, Observable, from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { BasketService } from '../shared/header/basket/basket.service';
+import { Cart } from '../client'; // добавьте импорт, если Cart экспортируется из client.gen.ts
 
 export interface LoginRequest {
   email: string;
@@ -10,6 +13,8 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+  name: string;
+  phoneNumber: string;
   email: string;
   password: string;
 }
@@ -18,29 +23,54 @@ export interface AuthResponse {
   access_token: string;
 }
 
+interface DecodedToken {
+  sub: number;
+  email: string;
+  name: string;
+  role?: string;
+  iat?: number;
+  exp?: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth';
   private tokenKey = 'access_token';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+  private userNameSubject = new BehaviorSubject<string | null>(this.getUserNameFromToken());
+  private basketService = inject(BasketService);
+  private router = inject(Router);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor() {}
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
+    return from(client.post({ url: '/auth/login', body: credentials })).pipe(
+      map(response => response.data as AuthResponse),
       tap(response => this.setToken(response.access_token))
     );
   }
 
-  register(user: { name: string; phoneNumber: string; email: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, user).pipe(
+  register(user: RegisterRequest): Observable<AuthResponse> {
+    return from(client.post({ url: '/auth/register', body: user })).pipe(
+      map(response => response.data as AuthResponse),
       tap(response => this.setToken(response.access_token))
+    );
+  }
+
+  mergeCart(guestSessionId: string): Observable<Cart> {
+    return from(client.post({ url: '/cart/merge', body: { guestSessionId } })).pipe(
+      map(response => response.data as Cart),
+      tap(cart => {
+        if (this.basketService) {
+          this.basketService.cartSubject.next(cart);
+        }
+      })
     );
   }
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.isAuthenticatedSubject.next(false);
+    this.userNameSubject.next(null);
     this.router.navigate(['/login']);
   }
 
@@ -49,19 +79,46 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.hasToken();
+    const token = this.getToken();
+    if (!token) return false;
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      if (!decoded.name) {
+        this.logout();
+        return false;
+      }
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        this.logout();
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   isAuthenticated$(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
+  get userName$(): Observable<string | null> {
+    return this.userNameSubject.asObservable();
+  }
+
+  private getUserNameFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      return decoded.name || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   private setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
     this.isAuthenticatedSubject.next(true);
-  }
-
-  private hasToken(): boolean {
-    return !!this.getToken();
+    this.userNameSubject.next(this.getUserNameFromToken());
   }
 }
