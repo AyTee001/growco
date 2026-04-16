@@ -67,13 +67,19 @@ export class ProductsService {
       weekOnly,
       sort,
     } = queryDto;
+    
+    const query = this.productsRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category');
 
     if (weekOnly) {
-      return this.findWeeklyDeals();
+      const weeklyIds = this.weeklyGenerator.getWeeklyIds();
+      if (weeklyIds && weeklyIds.length > 0) {
+        query.andWhere('product.productId IN (:...weeklyIds)', { weeklyIds });
+      } else {
+        return [];
+      }
     }
-
-    const query = this.productsRepository.createQueryBuilder('product')
-      .leftJoinAndSelect('product.categories', 'category');
 
     if (categoryId && categoryId !== 0) {
       query.where('category.categoryId = :categoryId', { categoryId });
