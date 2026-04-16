@@ -389,6 +389,7 @@ export type ProductsControllerFindAllOptionsData = {
     query?: {
         categoryId?: number;
         search?: string;
+        weekOnly?: boolean;
     };
     url: '/products/filter-options';
 };

@@ -1,11 +1,12 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, effect, inject } from '@angular/core';
 import { client } from '../client/client.gen';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { BasketService } from '../shared/header/basket/basket.service';
-import { Cart } from '../client'; // добавьте импорт, если Cart экспортируется из client.gen.ts
+import { Cart, usersControllerGetProfile } from '../client'; // добавьте импорт, если Cart экспортируется из client.gen.ts
+import { UserContextService } from '../account/user.service';
 
 export interface LoginRequest {
   email: string;
@@ -36,11 +37,23 @@ interface DecodedToken {
 export class AuthService {
   private tokenKey = 'access_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
-  private userNameSubject = new BehaviorSubject<string | null>(this.getUserNameFromToken());
+  private userNameSubject = new BehaviorSubject<string | null>('');
   private basketService = inject(BasketService);
   private router = inject(Router);
+  private userContext = inject(UserContextService);
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      const currentUser = this.userContext.user();
+      if (currentUser) {
+        this.userNameSubject.next(currentUser.name);
+      }
+    });
+
+    if (this.isAuthenticated()) {
+      this.refreshProfile();
+    }
+  }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return from(client.post({ url: '/auth/login', body: credentials })).pipe(
@@ -71,6 +84,7 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     this.isAuthenticatedSubject.next(false);
     this.userNameSubject.next(null);
+    this.userContext.clear();
     this.router.navigate(['/login']);
   }
 
@@ -105,20 +119,21 @@ export class AuthService {
     return this.userNameSubject.asObservable();
   }
 
-  private getUserNameFromToken(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-      return decoded.name || null;
-    } catch (e) {
-      return null;
-    }
-  }
-
   private setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
     this.isAuthenticatedSubject.next(true);
-    this.userNameSubject.next(this.getUserNameFromToken());
+    this.refreshProfile();
+  }
+
+  async refreshProfile(): Promise<void> {
+    try {
+      const { data, error } = await usersControllerGetProfile();
+      if (data && !error) {
+        this.userNameSubject.next(data.name);
+        this.userContext.setUser(data);
+      }
+    } catch (err) {
+      this.logout();
+    }
   }
 }
