@@ -1,6 +1,6 @@
 export const CATEGORIES_SEED_DATA = [
   {
-    //done 20 + images Лаваші, коржі
+    //done 20 + images Заморожені Іграшки
     categoryId: 1,
     name: "М'ясні продукти",
     parentCategoryId: null,
@@ -429,12 +429,6 @@ export const CATEGORIES_SEED_DATA = [
     name: 'Підгузки',
     parentCategoryId: 10,
     imgUrl: 'main-menu/subcategories/kids/diapers.png',
-  },
-  {
-    categoryId: 69,
-    name: 'Іграшки',
-    parentCategoryId: 10,
-    imgUrl: 'main-menu/subcategories/kids/basic_toys.png',
   },
   {
     categoryId: 70,
