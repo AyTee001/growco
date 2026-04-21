@@ -23,14 +23,14 @@ export class BannerSectionComponent implements AfterViewInit, OnDestroy {
 
   private readonly staticCardsData = [
     { 
-      id: 'discounts', 
-      title: 'Всі акції', 
-      imageUrl: 'images/discount.png'
-    },
-    { 
       id: 'about', 
       title: 'Про нас', 
       imageUrl: 'images/logo-no-bg.png'
+    },
+    { 
+      id: 'discounts', 
+      title: 'Всі акції', 
+      imageUrl: 'images/discount.png'
     },
     { 
       id: 'week-products', 
