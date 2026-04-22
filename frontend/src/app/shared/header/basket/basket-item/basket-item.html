@@ -41,9 +41,9 @@
         }
 
         <div class="basket-item__controls">
-          <button type="button" (click)="decrease()" [disabled]="item.quantity <= 1">−</button>
+          <button type="button" (click)="decrease()" [disabled]="item.quantity <= 1" [disabled]="basketService.isProductUpdating(item.productId)">−</button>
           <span class="basket-item__quantity">{{ item.quantity }} шт</span>
-          <button type="button" (click)="increase()" [disabled]="item.quantity >= item.product.qtyInStock">+</button>
+          <button type="button" (click)="increase()" [disabled]="item.quantity >= item.product.qtyInStock" [disabled]="basketService.isProductUpdating(item.productId)">+</button>
         </div>
       </div>
     </div>

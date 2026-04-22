@@ -114,9 +114,9 @@
       justify-content: center;
       color: #2f5f57;
 
-      &:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
+      .is-loading {
+        cursor: wait !important;
+        opacity: 0.8 !important;
       }
     }
 

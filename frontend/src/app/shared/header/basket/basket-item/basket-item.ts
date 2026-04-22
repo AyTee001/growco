@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class BasketItem {
   private router = inject(Router);
-  private basketService = inject(BasketService);
+  public basketService = inject(BasketService);
 
   @Input({ required: true }) item!: CartItems;
 

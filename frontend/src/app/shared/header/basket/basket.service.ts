@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, debounceTime, groupBy, mergeMap, Subject, switchMap } from 'rxjs';
+import { effect, inject, Injectable } from '@angular/core';
+import { BehaviorSubject, debounceTime, groupBy, mergeMap, Subject, switchMap, tap } from 'rxjs';
 import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { UserContextService } from '../../../account/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class BasketService {
   public readonly cartSubject = new BehaviorSubject<Cart | null>(null);
   readonly cart$ = this.cartSubject.asObservable();
-
+  private updatingProducts = new BehaviorSubject<Set<number>>(new Set());
+  public updatingProducts$ = this.updatingProducts.asObservable();
   public readonly cartSignal = toSignal(this.cart$, { initialValue: null });
+  private userContext = inject(UserContextService);
 
   private readonly quantityUpdate$ = new Subject<{ productId: number; targetQuantity: number }>();
   constructor() {
+    effect(() => {
+      let _ = this.userContext.user();
+      this.refreshCart(); 
+    });
+    
     this.initCart();
     this.setupDebouncedUpdates();
   }
@@ -43,17 +51,29 @@ export class BasketService {
       groupBy(update => update.productId),
       mergeMap(group => group.pipe(
         debounceTime(400),
+        tap(update => this.setProductLoading(update.productId, true)),
         switchMap(({ productId, targetQuantity }) =>
           cartControllerAddToCart({
             body: { productId, quantity: targetQuantity }
-          })
-        )
+          }).then(res => ({ ...res, productId })) // Pass ID through to clear loading
+        ),
+        tap(res => this.setProductLoading(res.productId, false))
       ))
     ).subscribe(({ data, error }) => {
       if (!error && data) {
         this.cartSubject.next(data);
       }
     });
+  }
+
+  private setProductLoading(productId: number, isLoading: boolean) {
+    const set = new Set(this.updatingProducts.value);
+    isLoading ? set.add(productId) : set.delete(productId);
+    this.updatingProducts.next(set);
+  }
+
+  isProductUpdating(productId: number): boolean {
+    return this.updatingProducts.value.has(productId);
   }
 
   updateQuantity(productId: number, delta: number) {
@@ -66,9 +86,13 @@ export class BasketService {
     if (itemIndex === -1) return;
 
     const targetQuantity = items[itemIndex].quantity + delta;
-    if (targetQuantity < 1) return; // Guard against negative/zero
 
-    items[itemIndex] = { ...items[itemIndex], quantity: targetQuantity };
+    if (targetQuantity <= 0) {
+      items.splice(itemIndex, 1);
+    } else {
+      items[itemIndex] = { ...items[itemIndex], quantity: targetQuantity };
+    }
+
     this.cartSubject.next({ ...currentCart, cartItems: items });
 
     this.quantityUpdate$.next({ productId, targetQuantity });
@@ -144,7 +168,7 @@ export class BasketService {
   }
 
   async decreaseQuantity(productId: number) {
-    await this.addItem(productId, -1);
+    this.updateQuantity(productId, -1);
   }
 
   async removeItem(itemId: number) {
@@ -177,5 +201,10 @@ export class BasketService {
     } else {
       await this.addItem(productId, 1);
     }
+  }
+
+  async resetCart() {
+    this.cartSubject.next(null);
+    await this.initCart();
   }
 }

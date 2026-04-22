@@ -146,11 +146,10 @@ export class CartService {
     return this.findOne(userCart.cartId);
   }
 
-  async updateItemQuantityByCartId(cartId: number, productId: number, quantity: number) {
-    // Находим корзину по cartId, проверяем наличие товара
+  async updateItemQuantityByCartId(cartId: number, productId: number, targetQuantity: number) {
     const cart = await this.findOne(cartId);
     let item = cart.cartItems.find(i => i.productId === productId);
-    const targetQuantity = item ? item.quantity + quantity : quantity;
+
     if (targetQuantity <= 0) {
       if (item) await this.cartItemsRepository.remove(item);
     } else {

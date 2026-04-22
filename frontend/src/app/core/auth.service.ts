@@ -86,6 +86,7 @@ export class AuthService {
     this.userNameSubject.next(null);
     this.userContext.clear();
     this.router.navigate(['/login']);
+    this.basketService.resetCart();
   }
 
   getToken(): string | null {

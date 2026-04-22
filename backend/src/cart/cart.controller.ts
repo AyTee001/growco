@@ -39,7 +39,6 @@ export class CartController {
       return this.cartService.updateItemQuantityByCartId(cart.cartId, body.productId, body.quantity);
     }
 
-    // Гость
     let sessionId = req.cookies['guest_cart_id'];
     if (!sessionId) {
       sessionId = crypto.randomUUID();
@@ -82,7 +81,7 @@ export class CartController {
     }
     const sessionId = req.cookies['guest_cart_id'];
     if (!sessionId) return { cartItems: [] };
-    return this.cartService.clearCart(sessionId);
+    return this.cartService.clearCart(undefined, sessionId);
   }
 
   @Post('merge')
