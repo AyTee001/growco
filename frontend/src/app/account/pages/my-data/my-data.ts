@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserContextService } from '../../user.service';
 import { usersControllerUpdateProfile } from '../../../client';
 import { VALIDATION_PATTERNS } from '../../../core/validation.constants';
+import { NgxMaterialIntlTelInputComponent, TextLabels } from 'ngx-material-intl-tel-input';
 
 @Component({
   selector: 'app-my-data-page',
@@ -18,7 +19,8 @@ import { VALIDATION_PATTERNS } from '../../../core/validation.constants';
     MatFormFieldModule, 
     MatInputModule, 
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxMaterialIntlTelInputComponent
   ],
   templateUrl: './my-data.html',
   styleUrl: './my-data.scss'
@@ -27,6 +29,17 @@ export class MyDataPage {
   private fb = inject(FormBuilder);
   private userContext = inject(UserContextService);
   private snackBar = inject(MatSnackBar);
+  public textLabels: TextLabels = {
+    mainLabel: 'Номер телефону',
+    nationalNumberLabel: 'Номер',
+    hintLabel: '',
+    codePlaceholder: 'Код', 
+    invalidNumberError: 'Некоректний номер',
+    requiredError: 'Це поле обов’язкове',
+    searchPlaceholderLabel: 'Пошук',
+    noEntriesFoundLabel: 'Країну не знайдено'
+  }
+
 
   userForm = this.fb.group({
     name: ['', [
@@ -34,10 +47,7 @@ export class MyDataPage {
       Validators.minLength(2),
       Validators.pattern(VALIDATION_PATTERNS.NAME)
     ]],
-    phone: ['', [
-      Validators.required,
-      Validators.pattern(VALIDATION_PATTERNS.PHONE_UA)
-    ]],
+    phone: ['', [Validators.required]],
     email: [{ value: '', disabled: true }]
   });
 
@@ -57,9 +67,11 @@ export class MyDataPage {
   async onSave() {
     if (this.userForm.invalid) return;
 
+    const cleanPhone = this.userForm.value.phone?.replace(/\s+/g, '') || '';
+
     const updatedData = {
       name: this.userForm.value.name!,
-      phoneNumber: this.userForm.value.phone!
+      phoneNumber: cleanPhone
     };
 
     const { data, error } = await usersControllerUpdateProfile({ body: updatedData });

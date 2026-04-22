@@ -15,13 +15,20 @@
           <mat-error *ngIf="userForm.get('name')?.hasError('pattern')">Ім'я може містити лише літери</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Номер телефону</mat-label>
-          <input matInput formControlName="phone" placeholder="+380...">
-          <mat-error *ngIf="userForm.get('phone')?.hasError('required')">Телефон обов'язковий</mat-error>
-          <mat-error *ngIf="userForm.get('phone')?.hasError('pattern')">Введіть у форматі: +380XXXXXXXXX</mat-error>
-          <mat-hint>Формат: +380XXXXXXXXX</mat-hint>
-        </mat-form-field>
+        <div class="phone-input-wrapper">
+          <ngx-material-intl-tel-input
+            [fieldControl]="$any(userForm.get('phone'))"
+            [required]="true"
+            [appearance]="'outline'"
+            [hidePhoneIcon]="true"
+            [visibleCountries]="['ua']"
+            [autoSelectedCountry]="'ua'"
+            [autoIpLookup]="false"
+            [outputNumberFormat]="0"
+            [textLabels]="textLabels"
+          >
+          </ngx-material-intl-tel-input>
+        </div>
 
         <mat-form-field appearance="outline" class="full-width readonly-field">
           <mat-label>Електронна пошта (незмінно)</mat-label>

@@ -8,7 +8,7 @@
         <h1>Створити акаунт</h1>
       </mat-card-title>
       <mat-card-subtitle>Заповніть форму для реєстрації</mat-card-subtitle>
-    </mat-card-header>  
+    </mat-card-header>
 
     <mat-card-content>
       <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
@@ -18,32 +18,35 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Ім'я</mat-label>
-          <input matInput name="name" [(ngModel)]="name" required minlength="2" [pattern]="patterns.NAME" #nameModel="ngModel">
+          <input matInput name="name" [(ngModel)]="name" required minlength="2" [pattern]="patterns.NAME"
+            #nameModel="ngModel">
           <mat-icon matPrefix>person</mat-icon>
           <mat-error *ngIf="nameModel.hasError('required')">Ім'я обов'язкове</mat-error>
           <mat-error *ngIf="nameModel.hasError('minlength')">Мінімум 2 символи</mat-error>
           <mat-error *ngIf="nameModel.hasError('pattern')">Ім'я може містити лише літери</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Телефон</mat-label>
-          <input matInput name="phoneNumber" [(ngModel)]="phoneNumber" required [pattern]="patterns.PHONE_UA" #phoneModel="ngModel">
-          <mat-icon matPrefix>phone</mat-icon>
-          <mat-error *ngIf="phoneModel.hasError('required')">Телефон обов'язковий</mat-error>
-          <mat-error *ngIf="phoneModel.hasError('pattern')">Введіть у форматі: +380XXXXXXXXX</mat-error>
-        </mat-form-field>
-
+        <div class="phone-input-container">
+          <ngx-material-intl-tel-input [hidePhoneIcon]="true" [fieldControl]="phoneControl" [required]="true" [appearance]="'outline'"
+            [mainLabel]="'Номер телефону'" [visibleCountries]="['ua']" [autoSelectedCountry]="'ua'" [autoIpLookup]="false"
+            [enablePlaceholder]="true" [outputNumberFormat]="0" [textLabels]="textLabels">
+          </ngx-material-intl-tel-input>
+        </div>
+        
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
-          <input matInput type="email" name="email" [(ngModel)]="email" required email [pattern]="patterns.EMAIL" #emailModel="ngModel">
+          <input matInput type="email" name="email" [(ngModel)]="email" required email [pattern]="patterns.EMAIL.source"
+            #emailModel="ngModel">
           <mat-icon matPrefix>email</mat-icon>
           <mat-error *ngIf="emailModel.hasError('required')">Email обов'язковий</mat-error>
-          <mat-error *ngIf="emailModel.hasError('email') || emailModel.hasError('pattern')">Введіть коректний email</mat-error>
+          <mat-error *ngIf="emailModel.hasError('email') || emailModel.hasError('pattern')">Введіть коректний
+            email</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Пароль</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" [(ngModel)]="password" required minlength="6" #passwordModel="ngModel">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" [(ngModel)]="password" required
+            minlength="6" #passwordModel="ngModel">
           <mat-icon matPrefix>lock</mat-icon>
           <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
             <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -54,7 +57,8 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Підтвердження пароля</mat-label>
-          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="confirmPassword" [(ngModel)]="confirmPassword" required pattern="{{ password }}" #confirmModel="ngModel">
+          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" name="confirmPassword"
+            [(ngModel)]="confirmPassword" required pattern="{{ password }}" #confirmModel="ngModel">
           <mat-icon matPrefix>lock_outline</mat-icon>
           <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
             <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>

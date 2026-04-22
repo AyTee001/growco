@@ -24,6 +24,7 @@
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "ngx-cookie-service": "^21.3.1",
+    "ngx-material-intl-tel-input": "^21.0.1",
     "rxjs": "~7.8.0",
     "swiper": "^12.1.2",
     "tslib": "^2.3.0"
