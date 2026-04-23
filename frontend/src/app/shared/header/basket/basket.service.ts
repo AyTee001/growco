@@ -11,16 +11,22 @@ export class BasketService {
   public readonly cartSubject = new BehaviorSubject<Cart | null>(null);
   readonly cart$ = this.cartSubject.asObservable().pipe(
     map(cart => {
-      if (!cart || !cart.cartItems) return cart;
+      if (!cart?.cartItems?.length) {
+        return cart;
+      }
 
       return {
         ...cart,
         cartItems: [...cart.cartItems].sort((a, b) => {
-          return a.productId - b.productId;
+          const idA = a?.productId ?? 0;
+          const idB = b?.productId ?? 0;
+
+          return idA - idB;
         })
       };
     })
   );
+  
   private updatingProducts = new BehaviorSubject<Set<number>>(new Set());
   public updatingProducts$ = this.updatingProducts.asObservable();
   public readonly cartSignal = toSignal(this.cart$, { initialValue: null });
