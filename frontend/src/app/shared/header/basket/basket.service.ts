@@ -1,5 +1,5 @@
 import { effect, inject, Injectable } from '@angular/core';
-import { BehaviorSubject, debounceTime, groupBy, mergeMap, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, groupBy, map, mergeMap, Subject, switchMap, tap } from 'rxjs';
 import { Cart, cartControllerAddToCart, cartControllerClear, cartControllerGetCurrent, cartControllerRemoveItem } from '../../../client';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserContextService } from '../../../account/user.service';
@@ -9,7 +9,18 @@ import { UserContextService } from '../../../account/user.service';
 })
 export class BasketService {
   public readonly cartSubject = new BehaviorSubject<Cart | null>(null);
-  readonly cart$ = this.cartSubject.asObservable();
+  readonly cart$ = this.cartSubject.asObservable().pipe(
+    map(cart => {
+      if (!cart || !cart.cartItems) return cart;
+
+      return {
+        ...cart,
+        cartItems: [...cart.cartItems].sort((a, b) => {
+          return a.productId - b.productId;
+        })
+      };
+    })
+  );
   private updatingProducts = new BehaviorSubject<Set<number>>(new Set());
   public updatingProducts$ = this.updatingProducts.asObservable();
   public readonly cartSignal = toSignal(this.cart$, { initialValue: null });
@@ -19,9 +30,9 @@ export class BasketService {
   constructor() {
     effect(() => {
       let _ = this.userContext.user();
-      this.refreshCart(); 
+      this.refreshCart();
     });
-    
+
     this.initCart();
     this.setupDebouncedUpdates();
   }
